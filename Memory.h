@@ -1,6 +1,6 @@
 #ifndef _MEMORY_H
 #define _MEMORY_H
-
+//testing mergermentism
 //This is used to convert 32byte words to 4 8byte words
 typedef struct bytes4
 {
