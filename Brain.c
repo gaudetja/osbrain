@@ -21,8 +21,10 @@
 #include <time.h>
 #include <string.h>
 
-#include "Exec_Brain.h"
 #include "Memory.h"
+#include "Exec_Brain.h"
+#include "sched.h"
+
 
 
 int LoadProgram(char* argv);
