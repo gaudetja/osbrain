@@ -10,5 +10,6 @@
 
 u_int8_t sched();
 void BuildQueue(char NPID);
-
+void Block(int PID);
+void Unblock(int PID);
 #endif
