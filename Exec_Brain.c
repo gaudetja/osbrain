@@ -53,13 +53,12 @@ int Exec_Brain(int NPID)
                 PCB_Array[i].LR=(i+1)*100-1;
                 PCB_Array[i].BR=0;
                 PCB_Array[i].B=0;
-                //sched(PCB_Array[i],0);
         }
         BuildQueue(NPID);
         while(1)
         {
                 TDMA=0;
-        //PID=sched(Current_PCB,0);   //Get next process from ready queue.
+                //PID=sched(Current_PCB,0);   //Get next process from ready queue.
                 //Current_PCB=PCB_Array[PID);
                 while(TDMA<10)
                 {
