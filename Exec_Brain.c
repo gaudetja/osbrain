@@ -49,12 +49,13 @@ int Exec_Brain(int NPID)
 		PCB_Array[i].SP=0;
 		PCB_Array[i].C=0;
 		PCB_Array[i].IC=0;
-		PCB_Array[i].PID=0;
-		PCB_Array[i].LR=0;
+		PCB_Array[i].PID=i;
+		PCB_Array[i].LR=(PID+1)*100-1;
 		PCB_Array[i].BR=0;
 		PCB_Array[i].B=0;
 		//sched(PCB_Array[i],0);
 	}
+	BuildQueue(NPID);
 	while(1)
 	{
 		TDMA=0;
@@ -426,6 +427,9 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2)
 }
 void Send(u_int8_t rand1,u_int8_t rand2)
 {
+	int i;
+	PCB Rec_PCB;
+	Rec_PCB = PCB_Array[(rand1*10)+rand2];
 	//psuedo
 	//request to send
 	//send when ready, block if not
@@ -433,12 +437,19 @@ void Send(u_int8_t rand1,u_int8_t rand2)
 }
 void Rec(u_int8_t rand1,u_int8_t rand2)
 {
+	int i;
+	PCB Sending_PCB;
+	Sending_PCB = PCB_Array[(rand1*10)+rand2];
 	//psuedo
 	//request message
 	//Receive when ready, block if cannot
-	//
-}
+	for (i = Current_PCB->R; i<Current_PCB->R+10; i++) {
+		WriteMemory(ReadMemory(i/10,i%10),i/10,i%10),
+	}
 
+
+	//unblock
+}
 
 
 

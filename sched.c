@@ -24,21 +24,22 @@
 #include "Exec_Brain.h"
 #include "sched.h"
 
-static ReadyQueue;
+static char* Queue_Start;
+static char* Queue_End;
+static char* Queue_Current;
+
+
+void BuildQueue(NPID)
+{
+	Queue_Start=malloc(NPID);
+	Queue_End=Queue_Start+NPID;
+	Queue_Current=Queue_Start;
+}
 
 u_int8_t sched(PCB* ControlBlock, int io)
 {
-			switch (io)
-			{
-				case 0:
-				{
-
-
-					break;
-				}
-				case 1:		break;
-				default:	{fprintf(stderr,"Something Broke"); break;}
-			}
-		return 0;
+	Queue_Current++;
+	if (ControlBlock->B==1);
+	return PID;
 }
 
