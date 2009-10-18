@@ -19,6 +19,9 @@ typedef struct ProcessControl
 /*
  *holds two 8 bit
  */
+
+extern PCB* PCB_Array;
+
 typedef struct bytes2
 {
 	u_int8_t byte2;

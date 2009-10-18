@@ -9,6 +9,6 @@
  */
 
 u_int8_t sched(PCB* ControlBlock, int io);
-void BuildQueue(NPID);
+void BuildQueue(char NPID);
 
 #endif
