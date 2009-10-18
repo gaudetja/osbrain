@@ -182,9 +182,9 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2);
 
 void LoadHigh(u_int8_t rand1,u_int8_t rand2);
 
-void Send(int PID);
+void Send(u_int8_t rand1,u_int8_t rand2);
 //sends data to PID starting with location in R
-void Rec(int PID);
+void Rec(u_int8_t rand1,u_int8_t rand2);
 //gets data from PID and stores starting from location in R
 
 
@@ -217,6 +217,8 @@ void printstatus();
 #define ISTR_NP COMBINE('N','P')
 #define ISTR_H COMBINE('H',' ')
 #define ISTR_HN COMBINE('H',10)
+#define ISTR_SD COMBINE('S','D')
+#define ISTR_RC COMBINE('R','C')
 
 
 #endif
