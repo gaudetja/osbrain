@@ -77,7 +77,7 @@ return 0;
  *Also takes two words as the operands:
  *@param rand1
  *@param rand2
- *///test
+ *///testy
 void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 {
 		Current_PCB->IC++;
