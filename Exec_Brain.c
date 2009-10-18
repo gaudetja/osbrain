@@ -28,9 +28,9 @@
 
 
 PCB* Current_PCB;                       //Current Process control block
-WORDBYTES CurrentWord;          //Current 4 byte word read from memory
+WORDBYTES CurrentWord;          		//Current 4 byte word read from memory
 OPERATOR operator;                      //Operator to be chosen from the list
-WORDBYTES MemoryContents;       //4 byte word read from memory
+WORDBYTES MemoryContents;       		//4 byte word read from memory
 PCB* PCB_Array;
 
 /*
@@ -41,6 +41,7 @@ int Exec_Brain(int NPID)
         //initialize all the PCB variables to 0
 
         int TDMA=0;
+        int PID=0;
         PCB_Array=malloc(sizeof(PCB)*NPID);
         int i=0;
         for (i=0;i<NPID;i++)
@@ -58,8 +59,8 @@ int Exec_Brain(int NPID)
         while(1)
         {
                 TDMA=0;
-                //PID=sched(Current_PCB,0);   //Get next process from ready queue.
-                //Current_PCB=PCB_Array[PID);
+                PID=sched();   //Get next process from ready queue.
+                Current_PCB=&PCB_Array[PID];
                 while(TDMA<10)
                 {
                         CurrentWord=GetInstruction(Current_PCB->IC);                                                                                    //gets instruction

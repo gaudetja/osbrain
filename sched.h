@@ -8,7 +8,7 @@
  * the ready queue, and the wait queue
  */
 
-u_int8_t sched(PCB* ControlBlock, int io);
+u_int8_t sched();
 void BuildQueue(char NPID);
 
 #endif

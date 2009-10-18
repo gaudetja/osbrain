@@ -37,7 +37,7 @@ void BuildQueue(char NPID)
         Queue_Current=Queue_Start;
 }
 
-u_int8_t sched(PCB* ControlBlock, int io)
+u_int8_t sched()
 {
 		Queue_Current++;
 		while(Queue_Current->Block!=0)
