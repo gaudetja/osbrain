@@ -117,7 +117,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 
 /*
  *Push PCB.R(the register) data onto the stack
- */
+ *///hey change
 void RegToStack()
 {
 	Current_PCB->SP=Current_PCB->SP+1;   								//Consider Adding a subroutine which converts ascii2dec and dec2ascii
