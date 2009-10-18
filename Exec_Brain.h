@@ -217,6 +217,8 @@ void printstatus();
 #define ISTR_NP COMBINE('N','P')
 #define ISTR_H COMBINE('H',' ')
 #define ISTR_HN COMBINE('H',10)
+#define ISTR_SD COMBINE('S','D')
+#define ISTR_RC COMBINE('R','C')
 
 
 #endif
