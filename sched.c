@@ -32,8 +32,7 @@ static PCB* Queue_Current;
 void BuildQueue(char NPID)
 {
         Queue_Start=&PCB_Array[0];
-        Queue_Start--;
-        Queue_End=&PCB_Array[(int)NPID];
+        Queue_End=&PCB_Array[(int)NPID]+1;
         Queue_Current=Queue_Start;
 }
 
@@ -43,9 +42,9 @@ u_int8_t sched()
 		while(Queue_Current->Block!=0)
 		{
 			Queue_Current++;
-			if (Queue_Current==Queue_End)
-				Queue_Current=Queue_Start;
 		}
+		if (Queue_Current==Queue_End)
+			Queue_Current=Queue_Start;
 		return Queue_Current->PID;
 
 }

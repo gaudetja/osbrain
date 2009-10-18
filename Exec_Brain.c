@@ -27,11 +27,12 @@
 
 
 
-PCB* Current_PCB;                       //Current Process control block
+PCB* Current_PCB; 					     //Current Process control block
+PCB* PCB_Array;
 WORDBYTES CurrentWord;          		//Current 4 byte word read from memory
 OPERATOR operator;                      //Operator to be chosen from the list
 WORDBYTES MemoryContents;       		//4 byte word read from memory
-PCB* PCB_Array;
+
 
 /*
  *Invokes the main loop which reads, executes the operations and writes back to memory
@@ -44,7 +45,7 @@ int Exec_Brain(int NPID)
         int PID=0;
         PCB_Array=malloc(sizeof(PCB)*NPID);
         int i=0;
-        for (i=0;i<NPID;i++)
+        for (i=0;i<NPID+1;i++)
         {
                 PCB_Array[i].R=0;
                 PCB_Array[i].SP=0;
@@ -69,13 +70,12 @@ int Exec_Brain(int NPID)
                         Instruction(operator.twobytes, CurrentWord.bytes.byte3, CurrentWord.bytes.byte4);       //Calls Instruction function
                         TDMA++;
                 }
-                //sched(Current_PCB,1);  //Put Current Process on ready queue.
         }
 return 0;
 }
 
 /*
- *Takes two 1 byte operators standing for ANSI letters:
+ *Takes two 1 byte operators standing for ASCII letters:
  *@param rator
  *
  *Also takes two words as the operands:
@@ -92,25 +92,25 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
                         case ISTR_LL:  LoadLow(rand1, rand2);           break;  // Load Low (LL)
                         case ISTR_LH:  LoadHigh(rand1, rand2);          break;  // Load High (LH)
                         case ISTR_SR:  StoreReg(rand1,rand2);           break;  // Stack Register (SR)
-                        case ISTR_SP:  RegToSP();                                       break;  // Copies the register to the Stack Pointer (SP)
-                        case ISTR_PS:  SPToReg();                                       break;  // Copies the Stack Pointer to the register (PS)
-                        case ISTR_PH:  RegToStack();                            break;  // Push (PH)
-                        case ISTR_PP:  StackToReg(Current_PCB->SP); break;      // Pop (PP)
+                        case ISTR_SP:  RegToSP();                       break;  // Copies the register to the Stack Pointer (SP)
+                        case ISTR_PS:  SPToReg();                       break;  // Copies the Stack Pointer to the register (PS)
+                        case ISTR_PH:  RegToStack();                    break;  // Push (PH)
+                        case ISTR_PP:  StackToReg(Current_PCB->SP);     break;      // Pop (PP)
                         case ISTR_CE:  CompareEqual(rand1,rand2);       break;  // Compare Equal (CE)
                         case ISTR_CL:  CompareLess(rand1,rand2);        break;  // Compare Less (CL)
                         case ISTR_BT:  BranchTrue(rand1,rand2);         break;  // Branch Conditional (BT)
                         case ISTR_BU:  BranchUnc(rand1,rand2);          break;  // Branch Unconditional (BU)
                         case ISTR_GD:  GetData(rand1,rand2);            break;  // Get Data (GD)
-                        case ISTR_PD:  PutData(rand1);                          break;  // Put Data (PD)
+                        case ISTR_PD:  PutData(rand1);                  break;  // Put Data (PD)
                         case ISTR_AD:  AddToReg(rand1,rand2);           break;  // Add (AD)
                         case ISTR_SU:  RegSubtract(rand1,rand2);        break;  // Subtract (SU)
                         case ISTR_MU:  RegMultiply(rand1,rand2);        break;  // Multiply (MU)
                         case ISTR_DI:  RegDivide(rand1,rand2);          break;  // Divide (DI)
-                        case ISTR_AS:  AddStack();                                      break;  // Add Stack (AS)
-                        case ISTR_SS:  SubStack();                                      break;  // Subtract Stack (SS)
-                        case ISTR_MS:  MultStack();                             break;  // Multiply Stack (MS)
-                        case ISTR_DS:  DivStack();                                      break;  // Divide Stack (DS)
-                        case ISTR_NP:                                                           break;  // No-op (NP)
+                        case ISTR_AS:  AddStack();                      break;  // Add Stack (AS)
+                        case ISTR_SS:  SubStack();                      break;  // Subtract Stack (SS)
+                        case ISTR_MS:  MultStack();                     break;  // Multiply Stack (MS)
+                        case ISTR_DS:  DivStack();                      break;  // Divide Stack (DS)
+                        case ISTR_NP:                                   break;  // No-op (NP)
                         case ISTR_H:   exit(1);                                                         // Hault (H)
                         case ISTR_HN:  exit(1);                                                         // Hault (H)
                         case ISTR_SD:  Send(rand1,rand2);                       break;  // Send (SD)
