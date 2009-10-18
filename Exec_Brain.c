@@ -115,7 +115,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 	return;
 }
 
-/*
+/*test
  *Push PCB.R(the register) data onto the stack
  */
 void RegToStack()
