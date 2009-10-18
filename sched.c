@@ -24,23 +24,29 @@
 #include "Exec_Brain.h"
 #include "sched.h"
 
-static char* Queue_Start;
-static char* Queue_End;
-static char* Queue_Current;
+static PCB* Queue_Start;
+static PCB* Queue_End;
+static PCB* Queue_Current;
 
 
 void BuildQueue(char NPID)
 {
-        Queue_Start=malloc(NPID);
-        Queue_End=Queue_Start+NPID;
+        Queue_Start=&PCB_Array[0];
+        Queue_Start--;
+        Queue_End=&PCB_Array[NPID];
         Queue_Current=Queue_Start;
 }
 
 u_int8_t sched(PCB* ControlBlock, int io)
 {
-		PCB* test=&PCB_Array[1];
- //       Queue_Current++;
-   //     if (ControlBlock->B==1);
-     //   return PID;
+		Queue_Current++;
+		while(Queue_Current->B!=0)
+		{
+			Queue_Current++;
+			if (Queue_Current==Queue_End)
+				Queue_Current=Queue_Start;
+		}
+		return Queue_Current->PID;
+
 }
 
