@@ -1,8 +1,8 @@
 /*
  *          File: sched.c
  *        Author: Gary S. Jordan
- *		 		  Zach Norris
- *		  		  Joe Gaudet
+*                                Zach Norris
+*                                Joe Gaudet
  * Last Modified:
  *         Topic:
  * ----------------------------------------------------------------
@@ -29,17 +29,18 @@ static char* Queue_End;
 static char* Queue_Current;
 
 
-void BuildQueue(NPID)
+void BuildQueue(char NPID)
 {
-	Queue_Start=malloc(NPID);
-	Queue_End=Queue_Start+NPID;
-	Queue_Current=Queue_Start;
+        Queue_Start=malloc(NPID);
+        Queue_End=Queue_Start+NPID;
+        Queue_Current=Queue_Start;
 }
 
 u_int8_t sched(PCB* ControlBlock, int io)
 {
-	Queue_Current++;
-	if (ControlBlock->B==1);
-	return PID;
+		PCB* test=&PCB_Array[1];
+ //       Queue_Current++;
+   //     if (ControlBlock->B==1);
+     //   return PID;
 }
 
