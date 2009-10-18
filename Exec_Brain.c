@@ -445,9 +445,9 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         //request message
         //Receive when ready, block if cannot
         for (i = Current_PCB->R; i<Current_PCB->R+10; i++) {
-//                WriteMemory(ReadMemory(i/10,i%10),i/10,i%10),
+        	ReadMemory(i/10,i%10);
+			WriteMemory(/*DATA*/i,i/10,i%10);
         }
-
 
         //unblock
 }
