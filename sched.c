@@ -49,4 +49,12 @@ u_int8_t sched()
 		return Queue_Current->PID;
 
 }
+void Block(int PID)
+{
+
+}
+void Unblock(int PID)
+{
+
+}
 
