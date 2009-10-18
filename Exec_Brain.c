@@ -52,7 +52,7 @@ int Exec_Brain(int NPID)
                 PCB_Array[i].PID=i;
                 PCB_Array[i].LR=(i+1)*100-1;
                 PCB_Array[i].BR=0;
-                PCB_Array[i].B=0;
+                PCB_Array[i].Block=0;
         }
         BuildQueue(NPID);
         while(1)
@@ -428,7 +428,7 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2)
 }
 void Send(u_int8_t rand1,u_int8_t rand2)
 {
-        int i;
+
         PCB Rec_PCB;
         Rec_PCB = PCB_Array[(rand1*10)+rand2];
         //psuedo

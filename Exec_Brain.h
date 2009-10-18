@@ -13,7 +13,7 @@ typedef struct ProcessControl
 	u_int8_t PID;
 	u_int32_t BR;
 	u_int32_t LR;
-	u_int8_t B;
+	u_int8_t Block;
 } PCB;
 
 /*
