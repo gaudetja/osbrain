@@ -11,6 +11,8 @@ typedef struct ProcessControl
 	u_int8_t C;
 	u_int16_t IC;
 	u_int8_t PID;
+	u_int32_t BR;
+	u_int32_t LR;
 } PCB;
 
 /*

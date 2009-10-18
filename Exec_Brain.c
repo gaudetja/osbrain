@@ -26,9 +26,9 @@
 
 
 
-PCB* Current_PCB; 		//Current Process control block
+PCB* Current_PCB; 			//Current Process control block
 WORDBYTES CurrentWord;		//Current 4 byte word read from memory
-OPERATOR operator;		//Operator to be chosen from the list
+OPERATOR operator;			//Operator to be chosen from the list
 WORDBYTES MemoryContents;	//4 byte word read from memory
 
 
@@ -43,8 +43,9 @@ int Exec_Brain(int NPID)
 	Current_PCB->C=0;
 	Current_PCB->IC=0;
 	Current_PCB->PID=0;
+	Current_PCB->LR=0;
+	Current_PCB->BR=0;
 	int TDMA=0;
-//	int PID=0;
 	PCB* PCB_Array=malloc(sizeof(PCB)*NPID);
 	int i=0;
 	for (i=0;i<NPID;i++)
