@@ -49,4 +49,12 @@ u_int8_t sched(PCB* ControlBlock, int io)
 		return Queue_Current->PID;
 
 }
+void Block(int PID)
+{
+
+}
+void Unblock(int PID)
+{
+
+}
 
