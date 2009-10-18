@@ -174,3 +174,4 @@ void MemoryDump()
 	for (i=0;i<10;i++)
 		printf("Memory %2d:%2d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",i*10,i*10+9, Memory_Start[i*10+0],Memory_Start[i*10+1],Memory_Start[i*10+2],Memory_Start[i*10+3],Memory_Start[i*10+4],Memory_Start[i*10+5],Memory_Start[i*10+6],Memory_Start[i*10+7],Memory_Start[i*10+8],Memory_Start[i*10+9]);
 }
+

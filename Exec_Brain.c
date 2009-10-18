@@ -8,7 +8,7 @@
  * ----------------------------------------------------------------
  *
  */
-
+//gary test
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -107,10 +107,8 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_MS:  MultStack(); 				break;	// Multiply Stack (MS)
 			case ISTR_DS:  DivStack();					break;	// Divide Stack (DS)
 			case ISTR_NP:								break;	// No-op (NP)
-			case ISTR_H:   exit(1);								// Halt (H)
-			case ISTR_HN:  exit(1);								// Halt (H)
-			case ISTR_SD:  Send(rand1,rand2);			break;	// Send (SD)
-			case ISTR_RC:  Rec(rand1,rand2);			break;	// Receive (RC)
+			case ISTR_H:   exit(1);								// Hault (H)
+			case ISTR_HN:  exit(1);								// Hault (H)
 			default:									break;
 		}
 		printstatus();
@@ -421,18 +419,9 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2)
 	Current_PCB.R=(Current_PCB.R & 0xFF00);
 	Current_PCB.R=(MemoryContents.word|0x00FF) & Current_PCB.R;
 }
-void Send(u_int8_t rand1,u_int8_t rand2)
-{
-	//psuedo
-	//request to send
-	//send when ready, block if not
-	//unblock
-}
-void Rec(u_int8_t rand1,u_int8_t rand2)
-{
-	//psuedo
-	//request message
-	//Receive when ready, block if cannot
-	//
-}
+
+
+
+
+
 
