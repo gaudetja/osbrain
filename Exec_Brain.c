@@ -428,7 +428,6 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2)
 }
 void Send(u_int8_t rand1,u_int8_t rand2)
 {
-        int i;
         PCB Rec_PCB;
         Rec_PCB = PCB_Array[(rand1*10)+rand2];
         //psuedo
