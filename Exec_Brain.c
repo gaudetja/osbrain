@@ -109,6 +109,8 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_NP:								break;	// No-op (NP)
 			case ISTR_H:   exit(1);								// Hault (H)
 			case ISTR_HN:  exit(1);								// Hault (H)
+			case ISTR_SD:  Send(rand1,rand2);			break;	// Send (SD)
+			case ISTR_RC:  Rec(rand1,rand2);			break;	// Receive (RC)
 			default:									break;
 		}
 		printstatus();
@@ -117,7 +119,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 
 /*test
  *Push PCB.R(the register) data onto the stack
- *///hey change
+ */
 void RegToStack()
 {
 	Current_PCB->SP=Current_PCB->SP+1;   								//Consider Adding a subroutine which converts ascii2dec and dec2ascii
@@ -418,6 +420,20 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2)
 	MemoryContents=ReadMemory(rand1-48,rand2-48);
 	Current_PCB->R=(Current_PCB->R & 0xFF00);
 	Current_PCB->R=(MemoryContents.word|0x00FF) & Current_PCB->R;
+}
+void Send(u_int8_t rand1,u_int8_t rand2)
+{
+	//psuedo
+	//request to send
+	//send when ready, block if not
+	//unblock
+}
+void Rec(u_int8_t rand1,u_int8_t rand2)
+{
+	//psuedo
+	//request message
+	//Receive when ready, block if cannot
+	//
 }
 
 
