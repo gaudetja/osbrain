@@ -8,6 +8,7 @@
  * ----------------------------------------------------------------
  *
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -22,6 +23,7 @@
 
 #include "Memory.h"
 #include "Exec_Brain.h"
+#include "sched.h"
 
 
 
@@ -37,21 +39,23 @@ WORDBYTES MemoryContents;	//4 byte word read from memory
 int Exec_Brain(int NPID)
 {
 	//initialize all the PCB variables to 0
-	Current_PCB->R=0;
-	Current_PCB->SP=0;
-	Current_PCB->C=0;
-	Current_PCB->IC=0;
-	Current_PCB->PID=0;
-	Current_PCB->LR=0;
-	Current_PCB->BR=0;
+
 	int TDMA=0;
 	PCB* PCB_Array=malloc(sizeof(PCB)*NPID);
 	int i=0;
 	for (i=0;i<NPID;i++)
 	{
+		PCB_Array[i].R=0;
+		PCB_Array[i].SP=0;
+		PCB_Array[i].C=0;
+		PCB_Array[i].IC=0;
 		PCB_Array[i].PID=i;
-		PCB_Array[i].IC=i*100;
+		PCB_Array[i].LR=(PID+1)*100-1;
+		PCB_Array[i].BR=0;
+		PCB_Array[i].B=0;
+		//sched(PCB_Array[i],0);
 	}
+	BuildQueue(NPID);
 	while(1)
 	{
 		TDMA=0;
@@ -77,7 +81,7 @@ return 0;
  *Also takes two words as the operands:
  *@param rand1
  *@param rand2
- *///testy
+ */
 void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 {
 		Current_PCB->IC++;
@@ -102,7 +106,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_SU:  RegSubtract(rand1,rand2);	break;	// Subtract (SU)
 			case ISTR_MU:  RegMultiply(rand1,rand2);	break;	// Multiply (MU)
 			case ISTR_DI:  RegDivide(rand1,rand2);		break;	// Divide (DI)
-			case ISTR_AS:  AddStac//gary testk();					break;	// Add Stack (AS)
+			case ISTR_AS:  AddStack();					break;	// Add Stack (AS)
 			case ISTR_SS:  SubStack();					break; 	// Subtract Stack (SS)
 			case ISTR_MS:  MultStack(); 				break;	// Multiply Stack (MS)
 			case ISTR_DS:  DivStack();					break;	// Divide Stack (DS)
@@ -117,7 +121,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 	return;
 }
 
-/*
+/*test
  *Push PCB.R(the register) data onto the stack
  */
 void RegToStack()
@@ -160,7 +164,7 @@ void LoadRegister(u_int8_t rand1,u_int8_t rand2)
  *@param rand2
  *
  */
-void CompareEqual(u_inCurrent_PCB->R;t8_t rand1,u_int8_t rand2)
+void CompareEqual(u_int8_t rand1,u_int8_t rand2)
 {
 	MemoryContents=ReadMemory(rand1-48,rand2-48);
 	if(Current_PCB->R==MemoryContents.word)
@@ -169,7 +173,7 @@ void CompareEqual(u_inCurrent_PCB->R;t8_t rand1,u_int8_t rand2)
 	}
 	else {
 		Current_PCB->C = 'F';
-	}Current_PCB->R;
+	}
 }
 
 /*
@@ -220,7 +224,7 @@ void BranchUnc(u_int8_t rand1,u_int8_t rand2)
  *
  *@param rand2
  */
-void AddCurrent_PCB->R;ToReg(u_int8_t rand1,u_int8_t rand2)
+void AddToReg(u_int8_t rand1,u_int8_t rand2)
 {
 	MemoryContents=ReadMemory(rand1,rand2);
 	Current_PCB->R=Current_PCB->R+MemoryContents.word;
@@ -282,7 +286,7 @@ void StoreReg(u_int8_t rand1,u_int8_t rand2)
  */
 void RegToSP()
 {
-	Current_PCB->SP = Current_PCB->R;pass a struct pointer to a function c
+	Current_PCB->SP = Current_PCB->R;
 
 }
 
@@ -298,7 +302,7 @@ void SPToReg()
  *Reads data from memory and prints it from location
  *@param rand1
  */
-void PutData(u_int8_t ranCurrent_PCB->R;d1)
+void PutData(u_int8_t rand1)
 {
 	int i;
 	for(i=0; i<10; i++){
@@ -312,7 +316,7 @@ void PutData(u_int8_t ranCurrent_PCB->R;d1)
 /*
  *Calculates the difference of the top number on the stack and the next number and stores it in place of the top number
  */
-void SubStack()Current_PCB->R;
+void SubStack()
 {
 	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10));
 	u_int32_t Temp=MemoryContents.word;
@@ -333,7 +337,7 @@ void SubStack()Current_PCB->R;
 
 /*
  *Multiplies the value of the top number on the stack by the next number and stores it in place of the top number
- */Current_PCB->R;
+ */
 void MultStack()
 {
 	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10));
@@ -351,12 +355,12 @@ void MultStack()
 	MemoryContents.bytes.byte4=Tempbyte4;
 	WriteMemory(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10));
 
-}//gary test
+}
 
 /*
  *Divides the value of the top number on the stack by the next number and stores it in place of the top number
  */
-void DivStack()Current_PCB->R;
+void DivStack()
 {
 	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10));
 	u_int32_t Temp=MemoryContents.word;
@@ -379,7 +383,7 @@ void DivStack()Current_PCB->R;
  *Adds the value of the top number on the stack to the next number and stores it in place of the top number
  */
 void AddStack()
-{//gary test
+{
 	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10));
 	u_int32_t Temp=MemoryContents.word;
 	Current_PCB->SP-=1;
@@ -406,7 +410,7 @@ void printstatus()
 	printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
 	MemoryDump();
 
-}//gary test
+}
 
 void LoadHigh(u_int8_t rand1,u_int8_t rand2)
 {
@@ -446,3 +450,8 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 
 	//unblock
 }
+
+
+
+
+
