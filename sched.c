@@ -24,12 +24,21 @@
 #include "Exec_Brain.h"
 #include "sched.h"
 
-PCB* sched(PCB* ControlBlock, int io)
+static ReadyQueue;
+
+u_int8_t sched(PCB* ControlBlock, int io)
 {
-/*	void * pid;
-	if (io == 0) {
-		pid = curlyqueue_dequeue(queue, PCB);
-		return pid;
-	}*/
+			switch (io)
+			{
+				case 0:
+				{
+
+
+					break;
+				}
+				case 1:		break;
+				default:	{fprintf(stderr,"Something Broke"); break;}
+			}
+		return 0;
 }
 

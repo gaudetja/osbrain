@@ -46,13 +46,21 @@ int Exec_Brain(int NPID)
 	Current_PCB->PID=0;
 	Current_PCB->LR=0;
 	Current_PCB->BR=0;
+	Current_PCB->B=0;
 	int TDMA=0;
 	PCB* PCB_Array=malloc(sizeof(PCB)*NPID);
 	int i=0;
 	for (i=0;i<NPID;i++)
 	{
-		PCB_Array[i].PID=i;
-		PCB_Array[i].IC=i*100;
+		PCB_Array[i]->R=0;
+		PCB_Array[i]->SP=0;
+		PCB_Array[i]->C=0;
+		PCB_Array[i]->IC=0;
+		PCB_Array[i]->PID=0;
+		PCB_Array[i]->LR=0;
+		PCB_Array[i]->BR=0;
+		PCB_Array[i]>B=0;
+		//sched(PCB_Array[i],0);
 	}
 	while(1)
 	{
