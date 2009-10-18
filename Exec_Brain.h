@@ -182,9 +182,9 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2);
 
 void LoadHigh(u_int8_t rand1,u_int8_t rand2);
 
-void Send(int PID);
+void Send(u_int8_t rand1,u_int8_t rand2);
 //sends data to PID starting with location in R
-void Rec(int PID);
+void Rec(u_int8_t rand1,u_int8_t rand2);
 //gets data from PID and stores starting from location in R
 
 
