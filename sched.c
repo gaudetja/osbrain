@@ -33,6 +33,7 @@ int buildq(void)
 	rq = curlyqueue_create_queue();
 	bq = curlyqueue_create_queue();
 }
+
 int readyq(void * pPID, char io)
 {
 	void * pid;
@@ -45,14 +46,13 @@ int readyq(void * pPID, char io)
 	}
 }
 
-void * blockq(struct ProcessControl * PCB, int io, curlyqueue_t * bq)
+int blockq(void * PID, int io, curlyqueue_t * bq)
 {
 	void * pid;
 	if (io == 0) {
-		pid = curlyqueue_dequeue(bq, PCB);
-		return pid;
+		
 	}
 	else {
-		curlyqueue_enqueue(bq, PCB);
+		curlyqueue_enqueue(bq, pPID);
 	}
 }
