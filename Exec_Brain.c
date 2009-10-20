@@ -61,6 +61,7 @@ int Exec_Brain(char NPID)
                 PCB_Array[i].Block=0;
                 PCB_Array[i].MailBox_Start=PostOffice+(i*NPID);
                 PCB_Array[i].MailBox_End=PostOffice+((i+1)*NPID-1);
+                PCB_Array[i].TDMA=0;
                 readyq(&(PCB_Array[i].PID), 1);
 		}
 
@@ -69,14 +70,15 @@ int Exec_Brain(char NPID)
                 TDMA=0;
                 PID=readyq(&(Current_PCB->PID),0);   //Get next process from ready queue.
                 Current_PCB=&PCB_Array[(int)PID];
-                while(TDMA<10)
+                while(Current_PCB->TDMA<10)
                 {
                         CurrentWord=GetInstruction(Current_PCB->IC);                                                                                    //gets instruction
                         operator.bytes.byte1=CurrentWord.bytes.byte1;                                                                           //give operator 1 a value
                         operator.bytes.byte2=CurrentWord.bytes.byte2;                                                                           //give operator 1 a value
                         Instruction(operator.twobytes, CurrentWord.bytes.byte3, CurrentWord.bytes.byte4);       //Calls Instruction function
-                        TDMA++;
+                        Current_PCB->TDMA++;
                 }
+                Current_PCB->TDMA=0;
                 if (Current_PCB->Block!=0)
                 	readyq(&(Current_PCB->PID),1);
         }
@@ -469,6 +471,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         else
         {
 //        	TDMA=10;
-//        	Block(Current_PCB->PID);
+        	blockq(&Current_PCB->PID,1)
+        	Current_PCB->Block=1;
         }
 }
