@@ -11,7 +11,8 @@
  *
  */
 
-int readyq(void * pPID, char io, curlyqueue_t * rq);
-void * blockq(struct ProcessControl * PCB, int io, curlyqueue_t * bq);
+int readyq(void * pPID, char io);
+void * blockq(struct ProcessControl * PCB, int io);
+void buildq(void);
 
 #endif
