@@ -25,10 +25,15 @@
 #include "Exec_Brain.h"
 #include "sched.h"
 
-curlyqueue_t * rq curlyqueue_create_queue();
-curlyqueue_t * bq curlyqueue_create_queue();
+static curlyqueue_t * rq;
+static curlyqueue_t * bq;
 
-int readyq(void * pPID, char io, curlyqueue_t * rq)
+int buildq(void)
+{
+	rq = curlyqueue_create_queue();
+	bq = curlyqueue_create_queue();
+}
+int readyq(void * pPID, char io)
 {
 	void * pid;
 	if (io == 0) {
