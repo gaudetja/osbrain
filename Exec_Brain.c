@@ -67,7 +67,7 @@ int Exec_Brain(char NPID)
         while(1)
         {
                 TDMA=0;
-                PID=sched(PID);   //Get next process from ready queue.
+                PID=readyq(&(Current_PCB->PID),0);   //Get next process from ready queue.
                 Current_PCB=&PCB_Array[(int)PID];
                 while(TDMA<10)
                 {
@@ -77,6 +77,8 @@ int Exec_Brain(char NPID)
                         Instruction(operator.twobytes, CurrentWord.bytes.byte3, CurrentWord.bytes.byte4);       //Calls Instruction function
                         TDMA++;
                 }
+                if (Current_PCB->Block!=0)
+                	readyq(&(Current_PCB->PID),1);
         }
 return 0;
 }
