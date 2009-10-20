@@ -32,7 +32,7 @@ int ProgramWrite(char* argv);
  *
  *return CurrentWord; (16byte word)
  */
-WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2);
+WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
 
 /*
  *Reads from a specified memory location(rand1 concatinated with rand2)
@@ -41,7 +41,7 @@ WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2);
  *
  *return ReadWord; (16byte word)
  */
-void WriteMemory(u_int32_t Value, u_int8_t rand1,u_int8_t rand2);
+void WriteMemory(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
 
 /*
  *Write a specified value to memory location(rand1 concatinated with rand2)

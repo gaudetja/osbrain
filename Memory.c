@@ -108,12 +108,12 @@ WORDBYTES GetInstruction(u_int16_t IC)
  *
  *return ReadWord; (16byte word)
  */
-WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2)
+WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t PID)
 {
 	int location;
 	WORDBYTES ReadWord;
 
-	location=(rand1)*10 + (rand2);
+	location=(rand1)*10 + (rand2)+ PID*100;
 	ReadWord.word=Memory_Start[location];
 
 
@@ -132,9 +132,9 @@ WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2)
  *@param rand1
  *@param rand2
  */
-void WriteMemory(u_int32_t Value, u_int8_t rand1,u_int8_t rand2)
+void WriteMemory(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
-	u_int16_t location=(rand1)*10 + (rand2);
+	u_int16_t location=(rand1)*10 + (rand2)+PID*100;
 	Memory_Start[location]=Value;
 	return;
 
