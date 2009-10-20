@@ -34,12 +34,22 @@ void EnQueue(char PID)
 
 }
 
-u_int8_t sched(int PID, int io)
+char DeQueue()
 {
-		if (PID!=NULL)
-			EnQueue(PID);
-		Next_PID=DeQueue;
-		}
+
+//  Get Next PID
+
+//	return PID;
+}
+
+
+u_int8_t sched(char PID)
+{
+	int Next_PID;
+	if (PID!=101)
+		EnQueue(PID);
+	Next_PID=DeQueue();
+
 
 }
 void Block(int PID)

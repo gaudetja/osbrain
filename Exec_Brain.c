@@ -37,14 +37,14 @@ WORDBYTES MemoryContents;       		//4 byte word read from memory
 /*
  *Invokes the main loop which reads, executes the operations and writes back to memory
  */
-int Exec_Brain(int NPID)
+int Exec_Brain(char NPID)
 {
         //initialize all the PCB variables to 0
 		NPID++;
         int TDMA=0;
-        int PID=NULL;
+        char PID=101;
         PCB_Array=malloc(sizeof(PCB)*(NPID));
-        u_int8_t* BigMailBox=malloc((NPID)*(NPID));
+        u_int32_t* PostOffice=malloc((NPID)*(NPID)*4);
         int i=0;
         for (i=0;i<NPID;i++)
         {
@@ -56,8 +56,8 @@ int Exec_Brain(int NPID)
                 PCB_Array[i].LR=(i+1)*100-1;
                 PCB_Array[i].BR=0;
                 PCB_Array[i].Block=0;
-                PCB_Array[i].MailBox_Start=BigMailBox+(i*NPID);
-                PCB_Array[i].MailBox_End=BigMailBox+((i+1)*NPID-1);
+                PCB_Array[i].MailBox_Start=PostOffice+(i*NPID);
+                PCB_Array[i].MailBox_End=PostOffice+((i+1)*NPID-1);
                 EnQueue(i);
 		}
 
@@ -65,7 +65,7 @@ int Exec_Brain(int NPID)
         {
                 TDMA=0;
                 PID=sched(PID);   //Get next process from ready queue.
-                Current_PCB=&PCB_Array[PID];
+                Current_PCB=&PCB_Array[(int)PID];
                 while(TDMA<10)
                 {
                         CurrentWord=GetInstruction(Current_PCB->IC);                                                                                    //gets instruction
@@ -84,7 +84,7 @@ return 0;
  *
  *Also takes two words as the operands:
  *@param rand1
- *@param rand2
+ *@param rand2control
  */
 void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 {
@@ -443,15 +443,20 @@ void Send(u_int8_t rand1,u_int8_t rand2)
 void Rec(u_int8_t rand1,u_int8_t rand2)
 {
         int i;
+
         PCB Sending_PCB;
-        Sending_PCB = PCB_Array[(rand1*10)+rand2];
+        if (*((Current_PCB->MailBox_Start)+(rand1*10)+rand2)==1) //If something in mailbox from a the specific process
+        	;
+
         //psuedo
         //request message
         //Receive when ready, block if cannot
         for (i = Current_PCB->R; i<Current_PCB->R+10; i++) {
         	ReadMemory(i/10,i%10);
 			WriteMemory(/*DATA*/i,i/10,i%10);
-        }
+        }1) //If something in mailbox from a the specific process
+1) //If something in mailbox from a the specific process
+
 
         //unblock
 }

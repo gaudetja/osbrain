@@ -8,8 +8,9 @@
  * the ready queue, and the wait queue
  */
 
-u_int8_t sched(int PID);
+u_int8_t sched(char PID);
 void EnQueue(char PID);
+char DeQueue();
 void Block(int PID);
 void Unblock(int PID);
 #endif
