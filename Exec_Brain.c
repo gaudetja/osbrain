@@ -106,8 +106,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
                         case ISTR_SU:  RegSubtract(rand1,rand2);        break;  // Subtract (SU)
                         case ISTR_MU:  RegMultiply(rand1,rand2);        break;  // Multiply (MU)
                         case ISTR_DI:  RegDivide(rand1,rand2);          break;  // Divide (DI)
-                        case IS
-                        PCB_Array[i].Block=0;TR_AS:  AddStack();                      break;  // Add Stack (AS)
+                        case ISTR_AS:  AddStack();                      break;  // Add Stack (AS)
                         case ISTR_SS:  SubStack();                      break;  // Subtract Stack (SS)
                         case ISTR_MS:  MultStack();                     break;  // Multiply Stack (MS)
                         case ISTR_DS:  DivStack();                      break;  // Divide Stack (DS)
@@ -430,9 +429,8 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2)
 }
 void Send(u_int8_t rand1,u_int8_t rand2)
 {
-        PCB* Rec_PCB;
-        Rec_PCB = &PCB_Array[(rand1*10)+rand2];
-        Rec_PCB->PID;
+        PCB Rec_PCB;
+        Rec_PCB = PCB_Array[(rand1*10)+rand2];
         //psuedo
         //request to send
         //send when ready, block if not

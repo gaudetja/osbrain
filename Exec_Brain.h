@@ -2,7 +2,9 @@
 #define _EXECBRAIN_H
 
 /*
- *Process control block(PCB) holds the current register, stack pointer, toggle(flag) and instruction counter
+ *Process control block(P    //request to send
+        //send when ready, block if not
+        //unblockCB) holds the current register, stack pointer, toggle(flag) and instruction counter
  */
 typedef struct ProcessControl
 {
@@ -19,6 +21,8 @@ typedef struct ProcessControl
 /*
  *holds two 8 bit
  */
+
+
 
 extern PCB* PCB_Array;
 
