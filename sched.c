@@ -47,7 +47,7 @@ char DeQueue()
 u_int8_t sched(char PID)
 {
 	int Next_PID;
-	if (PID!=101)
+	if (PID!=0xFF)
 		EnQueue(PID);
 	Next_PID=DeQueue();
 

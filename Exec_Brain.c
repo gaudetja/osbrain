@@ -42,10 +42,13 @@ int Exec_Brain(char NPID)
         //initialize all the PCB variables to 0
 		NPID++;
         int TDMA=0;
-        char PID=101;
+        char PID=0xFF;
         PCB_Array=calloc(NPID,sizeof(PCB));
-        u_int32_t* PostOffice=malloc((NPID)*(NPID)*4);
+        u_int32_t* PostOffice=calloc(NPID*NPID,4);
         int i=0;
+        for(i=0;i<NPID*NPID;i++)
+        	*(PostOffice+i)=0xFF;
+
         for (i=0;i<NPID;i++)
         {
                 PCB_Array[i].R=0;
@@ -87,7 +90,7 @@ return 0;
  *@param rand2control
  */
 void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
-{
+{101
                 Current_PCB->IC++;
                 //instruction set
                 switch (rator)
@@ -107,7 +110,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
                         case ISTR_GD:  GetData(rand1,rand2);            break;  // Get Data (GD)
                         case ISTR_PD:  PutData(rand1);                  break;  // Put Data (PD)
                         case ISTR_AD:  AddToReg(rand1,rand2);           break;  // Add (AD)
-                        case ISTR_SU:  RegSubtract(rand1,rand2);        break;  // Subtract (SU)
+                        case ISTR_SU:  RegSubtract(rand1,rand2);        break;  // Subtra101ct (SU)
                         case ISTR_MU:  RegMultiply(rand1,rand2);        break;  // Multiply (MU)
                         case ISTR_DI:  RegDivide(rand1,rand2);          break;  // Divide (DI)
                         case ISTR_AS:  AddStack();                      break;  // Add Stack (AS)
@@ -148,7 +151,7 @@ void StackToReg()
         Current_PCB->SP--;
 }
 
-/*
+/*101
  *Load a place in memory to the register
  *@param rand1
  *
@@ -166,7 +169,7 @@ void LoadRegister(u_int8_t rand1,u_int8_t rand2)
  *@param rand1
  *
  *@param rand2
- *
+ *101
  */
 void CompareEqual(u_int8_t rand1,u_int8_t rand2)
 {
@@ -203,7 +206,7 @@ void CompareLess(u_int8_t rand1,u_int8_t rand2)
  *If the toggle is true then PBC.IC(instruction counter) gets the value specified
  *@param rand1
  *
- *@param rand2
+ *@param rand2101
  */
 void BranchTrue(u_int8_t rand1,u_int8_t rand2)
 {
@@ -240,7 +243,7 @@ void AddToReg(u_int8_t rand1,u_int8_t rand2)
  *@param rand1
  *
  *@param rand2
- */
+ */101
 void RegDivide(u_int8_t rand1,u_int8_t rand2)
 {
         MemoryContents=ReadMemory (rand1-48,rand2-48);
@@ -445,8 +448,8 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         int i;
 
         PCB Sending_PCB;
-        if (*((Current_PCB->MailBox_Start)+(rand1*10)+rand2)==1) //If something in mailbox from a the specific process
-        	;
+        if (*((Current_PCB->MailBox_Start)+(rand1*10)+rand2)!=FF) //If something in mailbox from a the specific process
+        	Current_PCB->R=*((Current_PCB->MailBox_Start)+(rand1*10)+rand2);
 
         //psuedo
         //request message
