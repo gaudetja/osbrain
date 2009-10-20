@@ -36,17 +36,24 @@ void BuildQueue(char NPID)
         Queue_Current=Queue_Start;
 }
 
-u_int8_t sched()
+u_int8_t sched(int io)
 {
-		Queue_Current++;
-		while(Queue_Current->Block!=0)
+		switch (io)
 		{
-			Queue_Current++;
+			case 0:
+			{
+				Queue_Current++;
+				while((Queue_Current->Block!=0)&&(Queue_Current->PID!=(int)NULL))
+				{
+					Queue_Current++;
+				}
+				if (Queue_Current==Queue_End)
+					Queue_Current=Queue_Start;
+				return Queue_Current->PID;
+			}
+		case 1:  Queue_Current->PID=(int)NULL; break;
+		default: return 0;
 		}
-		if (Queue_Current==Queue_End)
-			Queue_Current=Queue_Start;
-		return Queue_Current->PID;
-
 }
 void Block(int PID)
 {
