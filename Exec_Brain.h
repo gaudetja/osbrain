@@ -16,6 +16,8 @@ typedef struct ProcessControl
 	u_int32_t BR;
 	u_int32_t LR;
 	u_int8_t Block;
+	u_int8_t* MailBox_Start;
+	u_int8_t* MailBox_End;
 } PCB;
 
 /*

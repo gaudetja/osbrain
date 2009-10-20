@@ -8,8 +8,8 @@
  * the ready queue, and the wait queue
  */
 
-u_int8_t sched(int io);
-void BuildQueue(char NPID);
+u_int8_t sched(int PID);
+void EnQueue(char PID);
 void Block(int PID);
 void Unblock(int PID);
 #endif
