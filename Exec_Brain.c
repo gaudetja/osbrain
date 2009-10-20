@@ -60,7 +60,7 @@ int Exec_Brain(int NPID)
         while(1)
         {
                 TDMA=0;
-                PID=sched();   //Get next process from ready queue.
+                PID=sched(0);   //Get next process from ready queue.
                 Current_PCB=&PCB_Array[PID];
                 while(TDMA<10)
                 {
@@ -106,13 +106,14 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
                         case ISTR_SU:  RegSubtract(rand1,rand2);        break;  // Subtract (SU)
                         case ISTR_MU:  RegMultiply(rand1,rand2);        break;  // Multiply (MU)
                         case ISTR_DI:  RegDivide(rand1,rand2);          break;  // Divide (DI)
-                        case ISTR_AS:  AddStack();                      break;  // Add Stack (AS)
+                        case IS
+                        PCB_Array[i].Block=0;TR_AS:  AddStack();                      break;  // Add Stack (AS)
                         case ISTR_SS:  SubStack();                      break;  // Subtract Stack (SS)
                         case ISTR_MS:  MultStack();                     break;  // Multiply Stack (MS)
                         case ISTR_DS:  DivStack();                      break;  // Divide Stack (DS)
                         case ISTR_NP:                                   break;  // No-op (NP)
-                        case ISTR_H:   exit(1);                                                         // Hault (H)
-                        case ISTR_HN:  exit(1);                                                         // Hault (H)
+                        case ISTR_H:   sched(1);                         // Halt (H)
+                        case ISTR_HN:  sched(1);                        // Halt (H)
                         case ISTR_SD:  Send(rand1,rand2);                       break;  // Send (SD)
                         case ISTR_RC:  Rec(rand1,rand2);                        break;  // Receive (RC)
                         default:                                                                        break;
@@ -407,7 +408,7 @@ void AddStack()
  */
 void printstatus()
 {
-        printf("PCB Status:  R:%d  SP:%d  IC:%d   C:%c\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C);
+        printf("PCB Status:  R:%d  SP:%d  IC:%d   C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
         printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
         MemoryDump();
 
@@ -429,8 +430,9 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2)
 }
 void Send(u_int8_t rand1,u_int8_t rand2)
 {
-        PCB Rec_PCB;
-        Rec_PCB = PCB_Array[(rand1*10)+rand2];
+        PCB* Rec_PCB;
+        Rec_PCB = &PCB_Array[(rand1*10)+rand2];
+        Rec_PCB->PID;
         //psuedo
         //request to send
         //send when ready, block if not
