@@ -1,0 +1,53 @@
+/*
+ *          File: sched.c
+ *        Author: Gary S. Jordan
+ *		  Zach Norris
+ *		  Joe Gaudet
+ * Last Modified:
+ *         Topic:
+ * ----------------------------------------------------------------
+ *
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <signal.h>
+#include <errno.h>
+#include <time.h>
+#include <string.h>
+
+#include "Memory.h"
+#include "Exec_Brain.h"
+#include "sched.h"
+
+curlyqueue_t * rq curlyqueue_create_queue();
+curlyqueue_t * bq curlyqueue_create_queue();
+
+int readyq(void * pPID, char io, curlyqueue_t * rq)
+{
+	void * pid;
+	if (io == 0) {
+		pid = curlyqueue_dequeue(rq);
+		return *pid;
+	}
+	else {
+		curlyqueue_enqueue(rq, pPID);
+	}
+}
+
+void * blockq(struct ProcessControl * PCB, int io, curlyqueue_t * bq)
+{
+	void * pid;
+	if (io == 0) {
+		pid = curlyqueue_dequeue(bq, PCB);
+		return pid;
+	}
+	else {
+		curlyqueue_enqueue(bq, PCB);
+	}
+}
