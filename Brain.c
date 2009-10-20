@@ -23,6 +23,7 @@
 
 #include "Memory.h"
 #include "Exec_Brain.h"
+#include "curlyqueue.h"
 #include "sched.h"
 
 

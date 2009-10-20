@@ -11,8 +11,8 @@
  *
  */
 
-int readyq(void * pPID, char io);
-void * blockq(struct ProcessControl * PCB, int io);
+int readyq(u_int8_t * pPID, char io);
+int blockq(u_int8_t * PID, int io);
 void buildq(void);
 
 #endif

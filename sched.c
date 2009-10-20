@@ -23,10 +23,12 @@
 
 #include "Memory.h"
 #include "Exec_Brain.h"
+#include "curlyqueue.h"
 #include "sched.h"
 
 static curlyqueue_t * rq;
 static curlyqueue_t * bq;
+static except_t* e;
 
 void buildq(void)
 {
@@ -34,11 +36,11 @@ void buildq(void)
 	bq = curlyqueue_create_queue();
 }
 
-int readyq(void * pPID, char io)
+int readyq(u_int8_t* pPID, char io)
 {
-	void * pid;
+	u_int8_t * pid;
 	if (io == 0) {
-		pid = curlyqueue_dequeue(rq);
+		pid = curlyqueue_dequeue(rq,e);
 		return *pid;
 	}
 	else {
@@ -46,9 +48,8 @@ int readyq(void * pPID, char io)
 	}
 }
 
-int blockq(void * PID, int io)
+int blockq(u_int8_t * pPID, int io)
 {
-	void * pid;
 	if (io == 0) {
 
 	}

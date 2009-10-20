@@ -472,7 +472,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         else
         {
 //
-        	blockq(&Current_PCB->PID,1);
+        	blockq(&(Current_PCB->PID),1);
         	Current_PCB->Block=1;
         	Current_PCB->TDMA=10;
         }
