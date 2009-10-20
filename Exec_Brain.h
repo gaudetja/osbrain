@@ -43,10 +43,10 @@ typedef union inttobytes
 	BYTES2 bytes;
 } OPERATOR;
 
-/*
+/*control
  *Invokes the main loop which reads, executes the operations and writes back to memory
  */
-int Exec_Brain(int NPID);
+int Exec_Brain(char NPID);control
 
 /*
  *Takes a 8 byte operator standing for two ANSI letter:
