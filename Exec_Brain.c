@@ -43,7 +43,7 @@ int Exec_Brain(char NPID)
 		NPID++;
         int TDMA=0;
         char PID=101;
-        PCB_Array=malloc(sizeof(PCB)*(NPID));
+        PCB_Array=calloc(NPID,sizeof(PCB));
         u_int32_t* PostOffice=malloc((NPID)*(NPID)*4);
         int i=0;
         for (i=0;i<NPID;i++)
@@ -454,8 +454,8 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         for (i = Current_PCB->R; i<Current_PCB->R+10; i++) {
         	ReadMemory(i/10,i%10);
 			WriteMemory(/*DATA*/i,i/10,i%10);
-        }1) //If something in mailbox from a the specific process
-1) //If something in mailbox from a the specific process
+        }
+
 
 
         //unblock

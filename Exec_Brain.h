@@ -16,8 +16,8 @@ typedef struct ProcessControl
 	u_int32_t BR;
 	u_int32_t LR;
 	u_int8_t Block;
-	u_int8_t* MailBox_Start;
-	u_int8_t* MailBox_End;
+	u_int32_t* MailBox_Start;
+	u_int32_t* MailBox_End;
 } PCB;
 
 /*
@@ -46,7 +46,7 @@ typedef union inttobytes
 /*control
  *Invokes the main loop which reads, executes the operations and writes back to memory
  */
-int Exec_Brain(char NPID);control
+int Exec_Brain(char NPID);
 
 /*
  *Takes a 8 byte operator standing for two ANSI letter:
