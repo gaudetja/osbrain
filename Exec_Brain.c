@@ -55,7 +55,7 @@ int Exec_Brain(char NPID)
                 PCB_Array[i].SP=0;
                 PCB_Array[i].C=0;
                 PCB_Array[i].IC=0;
-                PCB_Array[i].PID= curlyqueue_i;
+                PCB_Array[i].PID=i;
                 PCB_Array[i].LR=(i+1)*100-1;
                 PCB_Array[i].BR=0;
                 PCB_Array[i].Block=0;
@@ -122,8 +122,8 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
                         case ISTR_MS:  MultStack();                     break;  // Multiply Stack (MS)
                         case ISTR_DS:  DivStack();                      break;  // Divide Stack (DS)
                         case ISTR_NP:                                   break;  // No-op (NP)
-                        case ISTR_H:   sched(1);                        // Halt (H)
-                        case ISTR_HN:  sched(1);                        // Halt (H)
+                        case ISTR_H:   readyq(&(Current_PCB->PID),1);                        // Halt (H)
+                        case ISTR_HN:  readyq(&(Current_PCB->PID),1);                         // Halt (H)
                         case ISTR_SD:  Send(rand1,rand2);               break;  // Send (SD)
                         case ISTR_RC:  Rec(rand1,rand2);                break;  // Receive (RC)
                         default:                                                                        break;
@@ -391,6 +391,7 @@ void DivStack()
 
 }
 
+
 /*
  *Adds the value of the top number on the stack to the next number and stores it in place of the top number
  */
@@ -470,8 +471,9 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         }
         else
         {
-//        	TDMA=10;
-        	blockq(&Current_PCB->PID,1)
+//
+        	blockq(&Current_PCB->PID,1);
         	Current_PCB->Block=1;
+        	Current_PCB->TDMA=10;
         }
 }

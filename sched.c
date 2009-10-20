@@ -28,7 +28,7 @@
 static curlyqueue_t * rq;
 static curlyqueue_t * bq;
 
-int buildq(void)
+void buildq(void)
 {
 	rq = curlyqueue_create_queue();
 	bq = curlyqueue_create_queue();
@@ -46,11 +46,11 @@ int readyq(void * pPID, char io)
 	}
 }
 
-int blockq(void * PID, int io, curlyqueue_t * bq)
+int blockq(void * PID, int io)
 {
 	void * pid;
 	if (io == 0) {
-		
+
 	}
 	else {
 		curlyqueue_enqueue(bq, pPID);

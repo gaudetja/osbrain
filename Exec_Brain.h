@@ -18,6 +18,7 @@ typedef struct ProcessControl
 	u_int8_t Block;
 	u_int32_t* MailBox_Start;
 	u_int32_t* MailBox_End;
+	u_int8_t TDMA;
 } PCB;
 
 /*
