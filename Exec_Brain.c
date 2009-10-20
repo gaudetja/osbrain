@@ -40,12 +40,13 @@ WORDBYTES MemoryContents;       		//4 byte word read from memory
 int Exec_Brain(int NPID)
 {
         //initialize all the PCB variables to 0
-
+		NPID++;
         int TDMA=0;
-        int PID=0;
-        PCB_Array=malloc(sizeof(PCB)*NPID);
+        int PID=NULL;
+        PCB_Array=malloc(sizeof(PCB)*(NPID));
+        u_int8_t* BigMailBox=malloc((NPID)*(NPID));
         int i=0;
-        for (i=0;i<NPID+1;i++)
+        for (i=0;i<NPID;i++)
         {
                 PCB_Array[i].R=0;
                 PCB_Array[i].SP=0;
@@ -55,12 +56,15 @@ int Exec_Brain(int NPID)
                 PCB_Array[i].LR=(i+1)*100-1;
                 PCB_Array[i].BR=0;
                 PCB_Array[i].Block=0;
-        }
-        BuildQueue(NPID);
+                PCB_Array[i].MailBox_Start=BigMailBox+(i*NPID);
+                PCB_Array[i].MailBox_End=BigMailBox+((i+1)*NPID-1);
+                EnQueue(i);
+		}
+
         while(1)
         {
                 TDMA=0;
-                PID=sched(0);   //Get next process from ready queue.
+                PID=sched(PID);   //Get next process from ready queue.
                 Current_PCB=&PCB_Array[PID];
                 while(TDMA<10)
                 {
@@ -111,10 +115,10 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
                         case ISTR_MS:  MultStack();                     break;  // Multiply Stack (MS)
                         case ISTR_DS:  DivStack();                      break;  // Divide Stack (DS)
                         case ISTR_NP:                                   break;  // No-op (NP)
-                        case ISTR_H:   sched(1);                         // Halt (H)
+                        case ISTR_H:   sched(1);                        // Halt (H)
                         case ISTR_HN:  sched(1);                        // Halt (H)
-                        case ISTR_SD:  Send(rand1,rand2);                       break;  // Send (SD)
-                        case ISTR_RC:  Rec(rand1,rand2);                        break;  // Receive (RC)
+                        case ISTR_SD:  Send(rand1,rand2);               break;  // Send (SD)
+                        case ISTR_RC:  Rec(rand1,rand2);                break;  // Receive (RC)
                         default:                                                                        break;
                 }
                 printstatus();
