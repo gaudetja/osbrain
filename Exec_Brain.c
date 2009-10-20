@@ -48,20 +48,20 @@ int Exec_Brain(char NPID)
         int i=0;
         for(i=0;i<NPID*NPID;i++)
         	*(PostOffice+i)=0xFF;
-
+        buildq();
         for (i=0;i<NPID;i++)
         {
                 PCB_Array[i].R=0;
                 PCB_Array[i].SP=0;
                 PCB_Array[i].C=0;
                 PCB_Array[i].IC=0;
-                PCB_Array[i].PID=i;
+                PCB_Array[i].PID= curlyqueue_i;
                 PCB_Array[i].LR=(i+1)*100-1;
                 PCB_Array[i].BR=0;
                 PCB_Array[i].Block=0;
                 PCB_Array[i].MailBox_Start=PostOffice+(i*NPID);
                 PCB_Array[i].MailBox_End=PostOffice+((i+1)*NPID-1);
-                EnQueue(i);
+                readyq(&(PCB_Array[i].PID), 1);
 		}
 
         while(1)
