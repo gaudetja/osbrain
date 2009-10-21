@@ -62,6 +62,6 @@ void GetData(u_int8_t rand1, u_int8_t rand2);
  */
 
 
-void MemoryDump();
+void MemoryDump(u_int16_t PID);
 
 #endif
