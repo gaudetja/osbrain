@@ -77,9 +77,10 @@ int Exec_Brain(char NPID)
                         operator.bytes.byte2=CurrentWord.bytes.byte2;                                                                           //give operator 1 a value
                         Instruction(operator.twobytes, CurrentWord.bytes.byte3, CurrentWord.bytes.byte4);       //Calls Instruction function
                         Current_PCB->TDMA++;
+                        Current_PCB->IC++;
                 }
                 Current_PCB->TDMA=0;
-                if (Current_PCB->Block!=0)
+                if (Current_PCB->Block==0)
                 	readyq(&(Current_PCB->PID),1);
         }
 return 0;
@@ -95,7 +96,7 @@ return 0;
  */
 void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 {
-                Current_PCB->IC++;
+
                 //instruction set
                 switch (rator)
                 {
@@ -122,8 +123,8 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
                         case ISTR_MS:  MultStack();                     break;  // Multiply Stack (MS)
                         case ISTR_DS:  DivStack();                      break;  // Divide Stack (DS)
                         case ISTR_NP:                                   break;  // No-op (NP)
-                        case ISTR_H:   readyq(&(Current_PCB->PID),1);                        // Halt (H)
-                        case ISTR_HN:  readyq(&(Current_PCB->PID),1);                         // Halt (H)
+                        case ISTR_H:   Current_PCB->Block=0;Current_PCB->TDMA=10;                       // Halt (H)
+                        case ISTR_HN:  Current_PCB->Block=0;Current_PCB->TDMA=10;                       // Halt (H)
                         case ISTR_SD:  Send(rand1,rand2);               break;  // Send (SD)
                         case ISTR_RC:  Rec(rand1,rand2);                break;  // Receive (RC)
                         default:                                                                        break;
