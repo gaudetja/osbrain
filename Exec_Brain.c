@@ -53,7 +53,7 @@ int Exec_Brain(char NPID)
         {
                 PCB_Array[i].R=0;
                 PCB_Array[i].SP=0;
-                PCB_Array[i].C=0;
+                PCB_Array[i].C='F';
                 PCB_Array[i].IC=0;
                 PCB_Array[i].PID=i;
                 PCB_Array[i].LR=(i+1)*100-1;
@@ -420,7 +420,7 @@ void AddStack()
  */
 void printstatus()
 {
-        printf("PCB Status:  R:%d  SP:%d  IC:%d   C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
+        printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
         printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
         MemoryDump(Current_PCB->PID);
 
