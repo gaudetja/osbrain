@@ -149,7 +149,7 @@ void WriteMemory(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 void GetData(u_int8_t rand1, u_int8_t rand2)
 {
 	char buff[1024]={0};
-	char tempbuff[3];
+	char tempbuff[4];
 	int i;
 	fgets(buff,1024,stdin);
 	if(strncmp(buff,"END",3)==0)

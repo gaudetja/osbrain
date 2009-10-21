@@ -52,10 +52,10 @@ int blockq(u_int8_t * pPID, int io)
 {
 	u_int8_t * pid;
 	if (io == 0) {
-		curlyqueue_iterator_jump_to_front(bq,e);
+		//curlyqueue_iterator_jump_to_front(bq,e);
 		while (*pid != *pPID) {
 			pid = curlyqueue_get_value_at_iterator(bq,e);
-			
+
 		}
 	}
 	else {
