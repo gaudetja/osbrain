@@ -18,10 +18,11 @@ typedef struct ProcessControl
 	u_int8_t Block;
 	u_int32_t* MailBox_Start;
 	u_int32_t* MailBox_End;
+	u_int32_t WaitID;
 	u_int8_t TDMA;
 } PCB;
 
-/*
+/*       *(PCB_Array[Dest_PID].MailBox_Start+Current_PCB->PID)=Current_PCB->R;
  *holds two 8 bit
  */
 
