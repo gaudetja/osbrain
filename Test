@@ -1,0 +1,50 @@
+BRAIN09
+BU10  # 00 branch to start Program
+0000  # 01 constant 0
+0001  # 02 constant 1
+0002  # 03 constant 2
+0000  # 04 null
+0000  # 05 null
+0000  # 06 null
+0000  # 07 null
+0000  # 08 null
+1024  # 09 constant 1024
+GD5   # 10 read the data line
+RC01
+LR50  # 11 load input value in register
+SR51  # 12 store reg to n
+LR51  # 13 load n to register
+MU03  # 14 multiply n by constant (2)
+SR51  # 15 store n * constant (2) to n
+LR51  # 16 load n to register
+CE09  # 17 compare n with 1024
+BT20  # 18 if n = 1024, go to 20
+BU13  # 19 if n != 1024 go to line 13
+PD50  # 50 print data
+H     # halt
+BRAIN09
+GD9   ;Load Data
+GD8   ;Load Data
+GD6
+LR89  ;Initialize Stack Point
+SP    	
+PP    ;Pop First Value
+SR80  :Store First Value
+LR88  ;Load Counter (started at 10)
+SU87  ;Dec Countersched.c
+SR88  ;Store Counter
+PP    ;Pop Next Value	
+MU80  ;Multiply Next Value and Stored Value
+SR80  ;Store Result
+LR88  ;Load Counter0000000000000000000000000060000100100099
+CE87  ;Compare Counter to 0;
+BT16  ;If True Exit
+BU06  ;False Loop to Dec Counter
+LR86
+SD00
+H     ;Program Done.
+DATA
+0002000000000000000000000000000000000000
+0001000200030004000500060007000800090010
+0000000000000000000000000060000100100099
+1234567891234567891234567891234567891234

@@ -444,7 +444,7 @@ void Send(u_int8_t rand1,u_int8_t rand2)
 {
 		u_int16_t Dest_PID;
 		Dest_PID=((rand1-48)*10)+rand2-48;
-        *(PCB_Array[Dest_PID].MailBox_Start+Current_PCB->PID)=Current_PCB->R;
+        *(PCB_Array[Dest_PID].MailBox_Start+Current_PCB->PID)=(Current_PCB->R+(Current_PCB->PID<<16));
         if (PCB_Array[Dest_PID].WaitID==Current_PCB->PID)
         {
         	blockq(&(PCB_Array[Dest_PID].PID),0);
@@ -464,11 +464,11 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         u_int16_t Source_PID;
         if (*((Current_PCB->MailBox_Start)+((rand1-48)*10)+(rand2-48))!=0xFF) //If something in mailbox from a the specific process
         {
-        	Current_PCB->R=*((Current_PCB->MailBox_Start)+(rand1*10)+rand2);
+        	Current_PCB->R=*((Current_PCB->MailBox_Start)+((rand1-48)*10)+rand2-48);
         	CurrentWord.word=Current_PCB->R;
-        	Source_PID=((CurrentWord.bytes.byte1)<<8)&&(CurrentWord.bytes.byte2);
-			rand1=CurrentWord.bytes.byte3;                                                                           //give operator 1 a value
-			rand2=CurrentWord.bytes.byte4;
+        	Source_PID=(CurrentWord.bytes.byte2);
+			rand1=CurrentWord.bytes.byte4/10;                                                                           //give operator 1 a value
+			rand2=CurrentWord.bytes.byte4%10;
 			for (i=0;i<10;i++)
 			{
 				Value=ReadMemory(rand1,rand2+i,Source_PID);
@@ -483,5 +483,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         	Current_PCB->Block=1;
         	Current_PCB->TDMA=10;
         	Current_PCB->WaitID=((rand1-48)*10)+rand2-48;
+        	Current_PCB->IC--;
+
         }
 }
