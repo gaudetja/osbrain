@@ -123,8 +123,8 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
                         case ISTR_MS:  MultStack();                     break;  // Multiply Stack (MS)
                         case ISTR_DS:  DivStack();                      break;  // Divide Stack (DS)
                         case ISTR_NP:                                   break;  // No-op (NP)
-                        case ISTR_H:   Current_PCB->Block=0;Current_PCB->TDMA=10;                       // Halt (H)
-                        case ISTR_HN:  Current_PCB->Block=0;Current_PCB->TDMA=10;                       // Halt (H)
+                        case ISTR_H:   Current_PCB->Block=1;Current_PCB->TDMA=10; break;                      // Halt (H)
+                        case ISTR_HN:  Current_PCB->Block=1;Current_PCB->TDMA=10; break;                      // Halt (H)
                         case ISTR_SD:  Send(rand1,rand2);               break;  // Send (SD)
                         case ISTR_RC:  Rec(rand1,rand2);                break;  // Receive (RC)
                         default:                                                                        break;
@@ -422,7 +422,7 @@ void printstatus()
 {
         printf("PCB Status:  R:%d  SP:%d  IC:%d   C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
         printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
-        MemoryDump();
+        MemoryDump(Current_PCB->PID);
 
 
 }

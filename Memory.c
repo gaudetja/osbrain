@@ -61,6 +61,7 @@ int ProgramWrite(char* argv)
 			if(strncmp(buff,"BRAIN09",7)==0)
 			{
 				PID++;
+				i=0;
 			}
 			tempbuff[3]=buff[0];
 			tempbuff[2]=buff[1];
@@ -105,7 +106,8 @@ WORDBYTES GetInstruction(u_int16_t IC)
  *Reads from a specified memory location(rand1 concatinated with rand2)
  *@param rand1
  *@param rand2
- *
+ *CurrentWord.word=Memory_Start[i];
+			printf("%x\n",CurrentWord.word);
  *return ReadWord; (16byte word)
  */
 WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t PID)
@@ -168,10 +170,10 @@ void GetData(u_int8_t rand1, u_int8_t rand2)
 /*
  *Prints all 100 bytes of memory on in blocks of 10
  */
-void MemoryDump()
+void MemoryDump(u_int16_t PID)
 {
 	int i;
 	for (i=0;i<10;i++)
-		printf("Memory %2d:%2d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",i*10,i*10+9, Memory_Start[i*10+0],Memory_Start[i*10+1],Memory_Start[i*10+2],Memory_Start[i*10+3],Memory_Start[i*10+4],Memory_Start[i*10+5],Memory_Start[i*10+6],Memory_Start[i*10+7],Memory_Start[i*10+8],Memory_Start[i*10+9]);
+		printf("Memory %2d:%2d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",i*10+PID*100,i*10+9+PID*100, Memory_Start[i*10+0+PID*100],Memory_Start[i*10+1+PID*100],Memory_Start[i*10+2+PID*100],Memory_Start[i*10+3+PID*100],Memory_Start[i*10+4+PID*100],Memory_Start[i*10+5+PID*100],Memory_Start[i*10+6+PID*100],Memory_Start[i*10+7+PID*100],Memory_Start[i*10+8+PID*100],Memory_Start[i*10+9+PID*100]);
 }
 
