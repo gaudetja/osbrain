@@ -42,7 +42,7 @@ int readyq(u_int8_t* pPID, char io)		//address of PID and I/O
 {
 	u_int8_t * pid;
 	if (io == 0) {
-		pid = curlyqueue_dequeue(rq,e);
+		pid = curlyqueue_dequeue(rq,e);	
 		return *pid;
 	}
 	else {
