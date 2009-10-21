@@ -55,7 +55,7 @@ int blockq(u_int8_t * pPID, int io)
 		//curlyqueue_iterator_jump_to_front(bq,e);
 		while (*pid != *pPID) {
 			pid = curlyqueue_get_value_at_iterator(bq,e);
-
+			curlyqueue_iterator_step_forward(bq,e);
 		}
 	}
 	else {
