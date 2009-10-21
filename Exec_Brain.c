@@ -72,7 +72,7 @@ int Exec_Brain(char NPID)
                 Current_PCB=&PCB_Array[(int)PID];
                 while(Current_PCB->TDMA<10)
                 {
-                        CurrentWord=GetInstruction(Current_PCB->IC);                                                                                    //gets instruction
+                        CurrentWord=GetInstruction(Current_PCB->IC,Current_PCB->PID);                                                                                    //gets instruction
                         operator.bytes.byte1=CurrentWord.bytes.byte1;                                                                           //give operator 1 a value
                         operator.bytes.byte2=CurrentWord.bytes.byte2;                                                                           //give operator 1 a value
                         Instruction(operator.twobytes, CurrentWord.bytes.byte3, CurrentWord.bytes.byte4);       //Calls Instruction function
@@ -112,7 +112,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
                         case ISTR_CL:  CompareLess(rand1,rand2);        break;  // Compare Less (CL)
                         case ISTR_BT:  BranchTrue(rand1,rand2);         break;  // Branch Conditional (BT)
                         case ISTR_BU:  BranchUnc(rand1,rand2);          break;  // Branch Unconditional (BU)
-                        case ISTR_GD:  GetData(rand1,rand2);            break;  // Get Data (GD)
+                        case ISTR_GD:  GetData(rand1,rand2,Current_PCB->PID);            break;  // Get Data (GD)
                         case ISTR_PD:  PutData(rand1);                  break;  // Put Data (PD)
                         case ISTR_AD:  AddToReg(rand1,rand2);           break;  // Add (AD)
                         case ISTR_SU:  RegSubtract(rand1,rand2);        break;  // Subtra101ct (SU)
