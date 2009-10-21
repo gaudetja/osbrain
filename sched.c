@@ -26,17 +26,19 @@
 #include "curlyqueue.h"
 #include "sched.h"
 
-static curlyqueue_t * rq;
-static curlyqueue_t * bq;
-static except_t* e;
+static curlyqueue_t * rq;			//variables for ready queue
+static curlyqueue_t * bq;			//blocked queue
+static except_t* e;				//exceptions for curlyqueue
 
 void buildq(void)
 {
-	rq = curlyqueue_create_queue();
+	rq = curlyqueue_create_queue();		//create queues
 	bq = curlyqueue_create_queue();
 }
 
-int readyq(u_int8_t* pPID, char io)
+int readyq(u_int8_t* pPID, char io)		//address of PID and I/O
+						//input to io: 1 = push 
+						//	       0 = pop
 {
 	u_int8_t * pid;
 	if (io == 0) {
@@ -48,11 +50,13 @@ int readyq(u_int8_t* pPID, char io)
 	}
 }
 
-int blockq(u_int8_t * pPID, int io)
+int blockq(u_int8_t * pPID, int io)		//address of PID and I/O
+						//input to io: 1 = push
+						//	       0 = pop
 {
 	u_int8_t * pid;
 	if (io == 0) {
-		//curlyqueue_iterator_jump_to_front(bq,e);
+		curlyqueue_iterator_jump_to_front(bq,e);
 		while (*pid != *pPID) {
 			pid = curlyqueue_get_value_at_iterator(bq,e);
 			curlyqueue_iterator_step_forward(bq,e);
