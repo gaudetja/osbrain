@@ -1,5 +1,5 @@
 #!/bin/sh
 hg pull -u
 hg merge
-hg commit
+hg commit -m '$*'
 hg push
