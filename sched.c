@@ -37,12 +37,12 @@ void buildq(void)
 }
 
 int readyq(u_int8_t* pPID, char io)		//address of PID and I/O
-						//input to io: 1 = push 
+						//input to io: 1 = push
 						//	       0 = pop
 {
 	u_int8_t * pid;
 	if (io == 0) {
-		pid = curlyqueue_dequeue(rq,e);	
+		pid = curlyqueue_dequeue(rq,e);
 		return *pid;
 	}
 	else {
@@ -56,7 +56,7 @@ int blockq(u_int8_t * pPID, int io)		//address of PID and I/O
 {
 	u_int8_t * pid;
 	if (io == 0) {
-		curlyqueue_iterator_jump_to_front(bq,e);
+		//curlyqueue_iterator_jump_to_front(bq,e);
 		while (*pid != *pPID) {
 			pid = curlyqueue_get_value_at_iterator(bq,e);
 			curlyqueue_iterator_step_forward(bq,e);

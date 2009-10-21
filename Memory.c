@@ -62,6 +62,7 @@ int ProgramWrite(char* argv)
 			{
 				PID++;
 				i=0;
+				fgets(buff,64,stdin);
 			}
 			tempbuff[3]=buff[0];
 			tempbuff[2]=buff[1];
