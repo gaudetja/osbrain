@@ -57,10 +57,16 @@ int blockq(u_int8_t * pPID, int io)		//address of PID and I/O
 	u_int8_t * pid;
 	if (io == 0) {
 		curlyqueue_iterator_jump_to_front(bq);
-		while (*pid != *pPID) {
+
+		do
+		{
 			pid = curlyqueue_get_value_at_iterator(bq,e);
 			curlyqueue_iterator_step_forward(bq,e);
 		}
+		while (*pid != *pPID);
+
+
+
 	}
 	else {
 		curlyqueue_enqueue(bq, pPID);
