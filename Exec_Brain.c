@@ -41,7 +41,7 @@ int Exec_Brain(char NPID)
 {
         //initialize all the PCB variables to 0
 		NPID++;
-        int TDMA=0;
+
         char PID=0xFF;
         PCB_Array=calloc(NPID,sizeof(PCB));
         u_int32_t* PostOffice=calloc(NPID*NPID,4);
@@ -61,13 +61,13 @@ int Exec_Brain(char NPID)
                 PCB_Array[i].Block=0;
                 PCB_Array[i].MailBox_Start=PostOffice+(i*NPID);
                 PCB_Array[i].MailBox_End=PostOffice+((i+1)*NPID-1);
+                PCB_Array[i].WaitID=0xFF;
                 PCB_Array[i].TDMA=0;
                 readyq(&(PCB_Array[i].PID), 1);
 		}
 
         while(1)
         {
-                TDMA=0;
                 PID=readyq(&(Current_PCB->PID),0);   //Get next process from ready queue.
                 Current_PCB=&PCB_Array[(int)PID];
                 while(Current_PCB->TDMA<10)
@@ -443,8 +443,15 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2)
 void Send(u_int8_t rand1,u_int8_t rand2)
 {
 		u_int16_t Dest_PID;
-		Dest_PID=(rand1*10)+rand2;
+		Dest_PID=((rand1-48)*10)+rand2-48;
         *(PCB_Array[Dest_PID].MailBox_Start+Current_PCB->PID)=Current_PCB->R;
+        if (PCB_Array[Dest_PID].WaitID==Current_PCB->PID)
+        {
+        	blockq(&(PCB_Array[Dest_PID].PID),0);
+        	PCB_Array[Dest_PID].Block=0;
+        	readyq(&(PCB_Array[Dest_PID].PID),1);
+        }
+
 //      Block(Current_PCB->PID);
 //		Unblock(Dest_PID);
 
@@ -455,7 +462,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         int i;
         WORDBYTES Value;
         u_int16_t Source_PID;
-        if (*((Current_PCB->MailBox_Start)+(rand1*10)+rand2)!=0xFF) //If something in mailbox from a the specific process
+        if (*((Current_PCB->MailBox_Start)+((rand1-48)*10)+(rand2-48))!=0xFF) //If something in mailbox from a the specific process
         {
         	Current_PCB->R=*((Current_PCB->MailBox_Start)+(rand1*10)+rand2);
         	CurrentWord.word=Current_PCB->R;
@@ -472,9 +479,9 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         }
         else
         {
-//
         	blockq(&(Current_PCB->PID),1);
         	Current_PCB->Block=1;
         	Current_PCB->TDMA=10;
+        	Current_PCB->WaitID=((rand1-48)*10)+rand2-48;
         }
 }
