@@ -126,17 +126,26 @@ WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t PID)
 		ReadWord.bytes.byte4='0';
 	}
 
-	u_int32_t Temp1=(ReadWord.bytes.byte1-48)*1000+
-			(ReadWord.bytes.byte2-48)*100+
-			(ReadWord.bytes.byte3-48)*10+
-			(ReadWord.bytes.byte4-48);
+	u_int32_t Temp1=(ReadWord.bytes.byte1-'0')*1000+
+			(ReadWord.bytes.byte2-'0')*100+
+			(ReadWord.bytes.byte3-'0')*10+
+			(ReadWord.bytes.byte4-'0');
 	ReadWord.word=Temp1;
 	return ReadWord;
 
 }
-
+void CopyMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t PID1,u_int8_t PID2)
+{
+	int temp1=rand1*10+rand2+PID1*100;
+	int temp2=rand1*10+rand2+PID2*100;
+	printf("Memory Address %d :%d\n ",temp1,Memory_Start[rand1*10+rand2+PID1*100]);
+	printf("Memory Address %d :%d\n ",temp2,Memory_Start[rand1*10+rand2+PID2*100]);
+	Memory_Start[rand1*10+rand2+PID1*100]=Memory_Start[rand1*10+rand2+PID2*100];
+	printf("Memory Address %d :%d\n ",temp1,Memory_Start[rand1*10+rand2+PID1*100]);
+	printf("Memory Address %d :%d\n ",temp2,Memory_Start[rand1*10+rand2+PID2*100]);
+}
 /*
- *Write a specified value to memory location(rand1 concatinated with rand2)
+ *Write a specified value to memory location(rand1 concatinaReadWord.bytes.byte3-48ted with rand2)
  *@param Value
  *@param rand1
  *@param rand2
