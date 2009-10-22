@@ -463,7 +463,6 @@ void Send(u_int8_t rand1,u_int8_t rand2)
 void Rec(u_int8_t rand1,u_int8_t rand2)
 {
         int i;
-        WORDBYTES Value;
         u_int16_t Source_PID;
         if ((rand1=='X')&&(rand2=='X'))  // If Special Case  XX
         {
@@ -479,8 +478,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 						rand2=CurrentWord.bytes.byte4%10;
 						for (i=0;i<10;i++)
 						{
-							Value=ReadMemory(rand1,rand2+i,Source_PID);								// Copy Memory Values
-							WriteMemory(Value.word,rand1,rand2+i,Current_PCB->PID);					// Write over memory values
+							CopyMemory(rand1,rand2+i,Current_PCB->PID,Source_PID);			// Write over memory values
 						}
 						blockq(&(PCB_Array[Source_PID].PID),0);										// Remove from blocked queue
 						PCB_Array[Source_PID].Block=0;												// Unblock
@@ -500,8 +498,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 			rand2=CurrentWord.bytes.byte4%10;
 			for (i=0;i<10;i++)
 			{
-				Value=ReadMemory(rand1,rand2+i,Source_PID);								// Copy Memory Values
-				WriteMemory(Value.word,rand1,rand2+i,Current_PCB->PID);					// Write over memory values
+				CopyMemory(rand1,rand2+i,Current_PCB->PID,Source_PID); 	// Copy Memory Values
 			}
 
 			blockq(&(PCB_Array[Source_PID].PID),0);										// Remove from blocked queue
