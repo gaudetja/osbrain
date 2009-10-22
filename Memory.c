@@ -85,7 +85,7 @@ int ProgramWrite(char* argv)
 		}
 	}
 	else
-		fprintf(stderr,"You Suck\n");
+		fprintf(stderr,"Brain09 Syntax Error\n");
 	return PID;
 }
 
