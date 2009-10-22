@@ -127,7 +127,8 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
                         case ISTR_HN:  Current_PCB->Block=1;Current_PCB->TDMA=10; break;                      // Halt (H)
                         case ISTR_SD:  Send(rand1,rand2);               break;  // Send (SD)
                         case ISTR_RC:  Rec(rand1,rand2);                break;  // Receive (RC)
-                        default:                                                                        break;
+                        case ISTR_GP:  GetPID();			break;  // Return Process ID to reg
+                        default:					break;
                 }
                 printstatus();
         return;
@@ -532,4 +533,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
                 Current_PCB->IC--;
         }
 }
-
+void GetPID()
+{
+	Current_PCB->R = Current_PCB->PID;
+}

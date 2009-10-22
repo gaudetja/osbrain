@@ -202,6 +202,9 @@ void Send(u_int8_t rand1,u_int8_t rand2);
 void Rec(u_int8_t rand1,u_int8_t rand2);
 //gets data from PID and stores starting from location in R
 
+void GetPID();
+//gets the process ID and loads it into the register
+
 
 
 void printstatus();
@@ -231,10 +234,11 @@ void printstatus();
 #define ISTR_MS COMBINE('M','S')
 #define ISTR_DS COMBINE('D','S')
 #define ISTR_NP COMBINE('N','P')
-#define ISTR_H COMBINE('H',' ')
-#define ISTR_HN COMBINE('H',10)
+#define ISTR_H  COMBINE('H',' ')
+#define ISTR_HN COMBINE('H', 10)
 #define ISTR_SD COMBINE('S','D')
 #define ISTR_RC COMBINE('R','C')
+#define ISTR_GP COMBINE('G','P')
 
 
 #endif
