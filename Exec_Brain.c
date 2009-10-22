@@ -21,8 +21,7 @@
 #include <time.h>
 #include <string.h>
 
-#include "Memory.h"	u_int32_t* MailBox_Start;
-	u_int32_t* MailBox_End;
+#include "Memory.h"
 #include "Exec_Brain.h"
 #include "sched.h"
 
@@ -33,7 +32,7 @@ PCB* PCB_Array;
 WORDBYTES CurrentWord;          		//Current 4 byte word read from memory
 OPERATOR operator;                      //Operator to be chosen from the list
 WORDBYTES MemoryContents;       		//4 byte word read from memory
-
+u_int32_t* MailBox_Start;
 
 /*
  *Invokes the main loop which reads, executes the operations and writes back to memory
@@ -466,14 +465,14 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         int i;
         WORDBYTES Value;
         u_int16_t Source_PID;
-        if ((rand1=='X')&&(rand2=='X'));  // If Special Case
+        if ((rand1=='X')&&(rand2=='X'));  // If Special Case  XX
         {
 			for (i=0;i<((Current_PCB->MailBox_End)-(Current_PCB->MailBox_Start));i++)
 			{
-				 if (*((Current_PCB->MailBox_Start)+i))
+				 if (*((Current_PCB->MailBox_Start)+i)!=0xFF)
 				 {
 			        	Current_PCB->R=*((Current_PCB->MailBox_Start)+i);  							// Get Message
-			        	*(Current_PCB->MailBox_Start)+i=0xFF;										// Reset Mailbox
+			        	*((Current_PCB->MailBox_Start)+i)=0xFF;										// Reset Mailbox
 			        	CurrentWord.word=Current_PCB->R;											// Store to a word
 			        	Source_PID=(CurrentWord.bytes.byte2);										// Pull out Source PID
 						rand1=CurrentWord.bytes.byte4/10;                                           // Pull out memory address
@@ -493,7 +492,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         if (*((Current_PCB->MailBox_Start)+((rand1-48)*10)+(rand2-48))!=0xFF) //If something in mailbox from a the specific process
         {
         	Current_PCB->R=*((Current_PCB->MailBox_Start)+((rand1-48)*10)+rand2-48);  	// Get Message
-        	*(Current_PCB->MailBox_Start)+i=0xFF;										// Reset Mailbox
+        	*((Current_PCB->MailBox_Start)+((rand1-48)*10)+rand2-48)=0xFF;										// Reset Mailbox
         	CurrentWord.word=Current_PCB->R;											// Store to a word
         	Source_PID=(CurrentWord.bytes.byte2);										// Pull out Source PID
 			rand1=CurrentWord.bytes.byte4/10;                                           // Pull out memory address
