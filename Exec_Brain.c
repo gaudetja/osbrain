@@ -485,6 +485,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 						blockq(&(PCB_Array[Source_PID].PID),0);										// Remove from blocked queue
 						PCB_Array[Source_PID].Block=0;												// Unblock
 						readyq(&(PCB_Array[Source_PID].PID),1);										// Place in ready queue.
+						break;
 				 }
 			}
         }
