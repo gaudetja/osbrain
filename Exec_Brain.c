@@ -465,7 +465,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         int i;
         WORDBYTES Value;
         u_int16_t Source_PID;
-        if ((rand1=='X')&&(rand2=='X'));  // If Special Case  XX
+        if ((rand1=='X')&&(rand2=='X'))  // If Special Case  XX
         {
 			for (i=0;i<((Current_PCB->MailBox_End)-(Current_PCB->MailBox_Start));i++)
 			{
