@@ -474,6 +474,8 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 				WriteMemory(Value.word,rand1,rand2+i,Current_PCB->PID);
 			}
 			blockq(&(PCB_Array[Source_PID].PID),0);
+			Current_PCB->Block=1;
+			Current_PCB->TDMA=10;
 
         }
         else
