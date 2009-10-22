@@ -31,7 +31,7 @@ SP
 PP    ;Pop First Value
 SR80  :Store First Value
 LR88  ;Load Counter (started at 10)
-SU87  ;Dec Countersched.c
+SU87  ;Dec Counter
 SR88  ;Store Counter
 PP    ;Pop Next Value	
 MU80  ;Multiply Next Value and Stored Value
@@ -39,7 +39,7 @@ SR80  ;Store Result
 LR88  ;Load Counter0000000000000000000000000060000100100099
 CE87  ;Compare Counter to 0;
 BT17  ;If True Exit
-BU06  ;False Loop to Dec Counter
+BU08  ;False Loop to Dec Counter
 LR86
 RC00
 H     ;Program Done.
