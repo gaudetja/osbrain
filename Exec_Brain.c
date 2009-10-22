@@ -452,7 +452,8 @@ void Send(u_int8_t rand1,u_int8_t rand2)
         	readyq(&(PCB_Array[Dest_PID].PID),1);
         }
         blockq(&(Current_PCB->PID),1);
-//		Unblock(Dest_PID);
+		Current_PCB->Block=1;
+		Current_PCB->TDMA=10;
 
 
 }
@@ -474,9 +475,8 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 				WriteMemory(Value.word,rand1,rand2+i,Current_PCB->PID);
 			}
 			blockq(&(PCB_Array[Source_PID].PID),0);
-			Current_PCB->Block=1;
-			Current_PCB->TDMA=10;
-
+			PCB_Array[Source_PID].Block=0;
+			readyq(&(PCB_Array[Source_PID].PID),1);
         }
         else
         {
