@@ -47,6 +47,7 @@ int readyq(u_int8_t* pPID, char io)		//address of PID and I/O
 	}
 	else {
 		curlyqueue_enqueue(rq, pPID);
+		return io;
 	}
 }
 
@@ -57,20 +58,15 @@ int blockq(u_int8_t * pPID, int io)		//address of PID and I/O
 	u_int8_t * pid;
 	if (io == 0) {
 		curlyqueue_iterator_jump_to_front(bq);
-
-		do
-		{
+		while (*pid != *pPID) {
 			pid = curlyqueue_get_value_at_iterator(bq,e);
-	//		printf("Looking for one and found:  %x\n",pid);
-			curlyqueue_iterator_step_backward(bq,e);
+			curlyqueue_iterator_step_forward(bq,e);
 		}
-		while (*pid != *pPID);
-
-
-
+		curlyqueue_delete_value_at_iterator(bq,e);
+		return *pid;
 	}
 	else {
 		curlyqueue_enqueue(bq, pPID);
-	//	printf("Put onto block: %x\n",pPID);
+		return io;
 	}
 }
