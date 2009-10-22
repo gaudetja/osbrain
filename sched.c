@@ -61,7 +61,8 @@ int blockq(u_int8_t * pPID, int io)		//address of PID and I/O
 		do
 		{
 			pid = curlyqueue_get_value_at_iterator(bq,e);
-			curlyqueue_iterator_step_forward(bq,e);
+	//		printf("Looking for one and found:  %x\n",pid);
+			curlyqueue_iterator_step_backward(bq,e);
 		}
 		while (*pid != *pPID);
 
@@ -70,5 +71,6 @@ int blockq(u_int8_t * pPID, int io)		//address of PID and I/O
 	}
 	else {
 		curlyqueue_enqueue(bq, pPID);
+	//	printf("Put onto block: %x\n",pPID);
 	}
 }

@@ -118,7 +118,13 @@ WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t PID)
 
 	location=(rand1)*10 + (rand2)+ PID*100;
 	ReadWord.word=Memory_Start[location];
-
+	if (ReadWord.word==0)
+	{
+		ReadWord.bytes.byte1='0';
+		ReadWord.bytes.byte2='0';
+		ReadWord.bytes.byte3='0';
+		ReadWord.bytes.byte4='0';
+	}
 
 	u_int32_t Temp1=(ReadWord.bytes.byte1-48)*1000+
 			(ReadWord.bytes.byte2-48)*100+
