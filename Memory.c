@@ -175,6 +175,6 @@ void MemoryDump(u_int16_t PID)
 {
 	int i;
 	for (i=0;i<10;i++)
-		printf("Memory %2d:%2d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",i*10+PID*100,i*10+9+PID*100, Memory_Start[i*10+0+PID*100],Memory_Start[i*10+1+PID*100],Memory_Start[i*10+2+PID*100],Memory_Start[i*10+3+PID*100],Memory_Start[i*10+4+PID*100],Memory_Start[i*10+5+PID*100],Memory_Start[i*10+6+PID*100],Memory_Start[i*10+7+PID*100],Memory_Start[i*10+8+PID*100],Memory_Start[i*10+9+PID*100]);
+		printf("Memory %02d:%02d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",i*10+PID*100,i*10+9+PID*100, Memory_Start[i*10+0+PID*100],Memory_Start[i*10+1+PID*100],Memory_Start[i*10+2+PID*100],Memory_Start[i*10+3+PID*100],Memory_Start[i*10+4+PID*100],Memory_Start[i*10+5+PID*100],Memory_Start[i*10+6+PID*100],Memory_Start[i*10+7+PID*100],Memory_Start[i*10+8+PID*100],Memory_Start[i*10+9+PID*100]);
 }
 
