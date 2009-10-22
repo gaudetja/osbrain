@@ -123,9 +123,11 @@ void* curlyqueue_dequeue( curlyqueue_t* queue, except_t* e ){
 	
 	if( curlyqueue_is_empty( queue ) ){
 		/* throw exception */
-		e->thrown = 1;
-		memcpy( e->type, "empty_q", 8 );
-		return NULL;
+		if (e) {
+			e->thrown = 1;
+			memcpy( e->type, "empty_q", 8 );
+			return NULL;
+		}
 	}
 
 	/* store the value of the node currently at the front of the q */
@@ -169,6 +171,11 @@ int curlyqueue_is_empty( curlyqueue_t* queue ){
 	}else{
 		return 0;
 	}
+}
+
+int curlyqueue_length( curlyqueue_t* queue )
+{
+	return queue->count;
 }
 
 /**
@@ -395,7 +402,26 @@ void curlyqueue_insert_value_after_iterator( curlyqueue_t* queue, void* value, e
  * the assoc node from the list, and deallocates memory.
  * @throws	null_iter	if iterator is not set to an element
  */
-void curlyqueue_delete_value_at_iterator( curlyqueue_t* queue, except_t* e ) {
+void curlyqueue_delete_value_at_iterator( curlyqueue_t* queue, except_t* e )
+{
+	if (!queue->count || !queue->iterator) return;
+	if (queue->iterator == queue->front)
+		queue->front = queue->iterator->prev;
+	if (queue->iterator == queue->back)
+		queue->back = queue->iterator->next;
+
+	if (queue->iterator->next)
+		queue->iterator->next->prev = queue->iterator->prev;
+	if (queue->iterator->prev)
+		queue->iterator->prev->next = queue->iterator->next;
+	
+	queue->count--;
+	free(queue->iterator);
+	queue->iterator = NULL;
+}
+
+#if 0
+{
 	
 	/* BEGIN: case - iter is uninitialized */
 	if ( NULL == queue->iterator ) {
@@ -480,7 +506,7 @@ void curlyqueue_delete_value_at_iterator( curlyqueue_t* queue, except_t* e ) {
 	/* END: case - iter points to middle value */
 	
 }
-
+#endif
 
 
 
