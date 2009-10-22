@@ -443,17 +443,20 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2)
 void Send(u_int8_t rand1,u_int8_t rand2)
 {
 		u_int16_t Dest_PID;
-		Dest_PID=((rand1-48)*10)+rand2-48;
-        *(PCB_Array[Dest_PID].MailBox_Start+Current_PCB->PID)=(Current_PCB->R+(Current_PCB->PID<<16));
-        if (PCB_Array[Dest_PID].WaitID==Current_PCB->PID)
+		Dest_PID=((rand1-48)*10)+rand2-48;						//Destination of Send
+
+		*(PCB_Array[Dest_PID].MailBox_Start+Current_PCB->PID)   //Determine Value to send based on R and Address
+			=(Current_PCB->R+(Current_PCB->PID<<16));
+
+        if (PCB_Array[Dest_PID].WaitID==Current_PCB->PID)		//If Other process is waiting for this message
         {
-        	blockq(&(PCB_Array[Dest_PID].PID),0);
-        	PCB_Array[Dest_PID].Block=0;
-        	readyq(&(PCB_Array[Dest_PID].PID),1);
+        	blockq(&(PCB_Array[Dest_PID].PID),0);				//Take of block queue
+        	PCB_Array[Dest_PID].Block=0;						//Unblock it
+        	readyq(&(PCB_Array[Dest_PID].PID),1);				//Put in ready queue
         }
-        blockq(&(Current_PCB->PID),1);
-		Current_PCB->Block=1;
-		Current_PCB->TDMA=10;
+        blockq(&(Current_PCB->PID),1);							//Block the sender
+		Current_PCB->Block=1;									//Block
+		Current_PCB->TDMA=10;									//Do no more instructions until message confirmation.
 
 
 }
@@ -464,27 +467,27 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         u_int16_t Source_PID;
         if (*((Current_PCB->MailBox_Start)+((rand1-48)*10)+(rand2-48))!=0xFF) //If something in mailbox from a the specific process
         {
-        	Current_PCB->R=*((Current_PCB->MailBox_Start)+((rand1-48)*10)+rand2-48);
-        	CurrentWord.word=Current_PCB->R;
-        	Source_PID=(CurrentWord.bytes.byte2);
-			rand1=CurrentWord.bytes.byte4/10;                                                                           //give operator 1 a value
+        	Current_PCB->R=*((Current_PCB->MailBox_Start)+((rand1-48)*10)+rand2-48);  	// Get Message
+        	CurrentWord.word=Current_PCB->R;											// Store to a word
+        	Source_PID=(CurrentWord.bytes.byte2);										// Pull out Source PID
+			rand1=CurrentWord.bytes.byte4/10;                                           // Pull out memory address
 			rand2=CurrentWord.bytes.byte4%10;
 			for (i=0;i<10;i++)
 			{
-				Value=ReadMemory(rand1,rand2+i,Source_PID);
-				WriteMemory(Value.word,rand1,rand2+i,Current_PCB->PID);
+				Value=ReadMemory(rand1,rand2+i,Source_PID);								// Copy Memory Values
+				WriteMemory(Value.word,rand1,rand2+i,Current_PCB->PID);					// Write over memory values
 			}
-			blockq(&(PCB_Array[Source_PID].PID),0);
-			PCB_Array[Source_PID].Block=0;
-			readyq(&(PCB_Array[Source_PID].PID),1);
+			blockq(&(PCB_Array[Source_PID].PID),0);										// Remove from blocked queue
+			PCB_Array[Source_PID].Block=0;												// Unblock
+			readyq(&(PCB_Array[Source_PID].PID),1);										// Place in ready queue.
         }
-        else
+        else										//If no message from desired process
         {
-        	blockq(&(Current_PCB->PID),1);
-        	Current_PCB->Block=1;
-        	Current_PCB->TDMA=10;
-        	Current_PCB->WaitID=((rand1-48)*10)+rand2-48;
-        	Current_PCB->IC--;
+        	blockq(&(Current_PCB->PID),1);			//Block
+        	Current_PCB->Block=1;					//Block
+        	Current_PCB->TDMA=10;					//Do not run any more processes
+        	Current_PCB->WaitID=((rand1-48)*10)+rand2-48; // Set whom process is waiting for
+        	Current_PCB->IC--;						//Decrement Counter -- If unblocked by appropriate sender will repeat this instruct.
 
         }
 }
