@@ -72,7 +72,8 @@ void StackToReg();
 
 /*
  *Load a place in memory to the register
- *@param rand1
+ *@param rand1mory  0: 9   42553130 30303030 30303031 30303032 30303030 30303030 30303030 30303030 30303030 31303234
+Memory 10:1
  *
  *@param rand2
  *
