@@ -1,8 +1,8 @@
 /*
  *          File:
  *        Author: Gary S. Jordan
- *		  Eric Payne
- *		  Jered Philippon
+ *					JOe GaUdEt
+ *					Zachayoyo "chuck" norris
  * Last Modified:
  *         Topic:
  * ----------------------------------------------------------------

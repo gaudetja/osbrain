@@ -9,7 +9,7 @@ BU10  # 00 branch to start Program
 0000  # 07 null
 0000  # 08 null
 1024  # 09 constant 1024
-GD50  # 10 read the data line
+GD5   # 10 read the data line
 LR50  # 11 load input value in register
 SR51  # 12 store reg to n
 LR51  # 13 load n to register
@@ -20,13 +20,12 @@ CE09  # 17 compare n with 1024
 BT20  # 18 if n = 1024, go to 20
 BU13  # 19 if n != 1024 go to line 13
 PD50  # 50 print data
-GD60
-LR59
-SD01
+GD6
+RC01
 H     # halt
 BRAIN09
-GD90   ;Load Data
-GD80   ;Load Data
+GD9   ;Load Data
+GD8   ;Load Data
 LR89  ;Initialize Stack Point
 SP    	
 PP    ;Pop First Value
@@ -41,13 +40,13 @@ LR88  ;Load Counter
 CE87  ;Compare Counter to 0;
 BT16  ;If True Exit
 BU07  ;False Loop to Dec Counter
-GD70
+GD7
 LR86
-RCXX
+SD00
 H     ;Program Done.
 DATA
-0002000000000000000000000000000000000050
+0002000000000000000000000000000000000070
 0001000200030004000500060007000800090010
-0000000000000000000000000080000100100099
+0000000000000000000000000060000100100099
 1234567891234567891234567891234567891234
 1234567891234567891234567891234567891234
