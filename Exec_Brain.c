@@ -21,7 +21,8 @@
 #include <time.h>
 #include <string.h>
 
-#include "Memory.h"
+#include "Memory.h"	u_int32_t* MailBox_Start;
+	u_int32_t* MailBox_End;
 #include "Exec_Brain.h"
 #include "sched.h"
 
@@ -465,9 +466,34 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         int i;
         WORDBYTES Value;
         u_int16_t Source_PID;
+        if ((rand1=='X')&&(rand2=='X'));  // If Special Case
+        {
+			for (i=0;i<((Current_PCB->MailBox_End)-(Current_PCB->MailBox_Start));i++)
+			{
+				 if (*((Current_PCB->MailBox_Start)+i))
+				 {
+			        	Current_PCB->R=*((Current_PCB->MailBox_Start)+i);  							// Get Message
+			        	*(Current_PCB->MailBox_Start)+i=0xFF;										// Reset Mailbox
+			        	CurrentWord.word=Current_PCB->R;											// Store to a word
+			        	Source_PID=(CurrentWord.bytes.byte2);										// Pull out Source PID
+						rand1=CurrentWord.bytes.byte4/10;                                           // Pull out memory address
+						rand2=CurrentWord.bytes.byte4%10;
+						for (i=0;i<10;i++)
+						{
+							Value=ReadMemory(rand1,rand2+i,Source_PID);								// Copy Memory Values
+							WriteMemory(Value.word,rand1,rand2+i,Current_PCB->PID);					// Write over memory values
+						}
+						blockq(&(PCB_Array[Source_PID].PID),0);										// Remove from blocked queue
+						PCB_Array[Source_PID].Block=0;												// Unblock
+						readyq(&(PCB_Array[Source_PID].PID),1);										// Place in ready queue.
+				 }
+			}
+        }
+
         if (*((Current_PCB->MailBox_Start)+((rand1-48)*10)+(rand2-48))!=0xFF) //If something in mailbox from a the specific process
         {
         	Current_PCB->R=*((Current_PCB->MailBox_Start)+((rand1-48)*10)+rand2-48);  	// Get Message
+        	*(Current_PCB->MailBox_Start)+i=0xFF;										// Reset Mailbox
         	CurrentWord.word=Current_PCB->R;											// Store to a word
         	Source_PID=(CurrentWord.bytes.byte2);										// Pull out Source PID
 			rand1=CurrentWord.bytes.byte4/10;                                           // Pull out memory address
