@@ -11,9 +11,13 @@ BR11	#00	Branch to code start
 	#09
 	#10
 GD50	#11	Code starts
-SD01	#12
+SD05	#12
+RC05
+SD01	
 RC01
-
+SD05
+SD01
+H
 BRAIN09	#	cstick1		pid01
 BR11	#00	Branch to code start
 	#01	
@@ -53,6 +57,11 @@ BR11	#00	Branch to code start
 	#09
 	#10
 GD50	#11	Code starts
+SD05	#12
+RC05
+SD01	
+RC01
+H
 BRAIN09	#	fork/spoon/cstick2
 BR11	#00	Branch to code start
 	#01	
