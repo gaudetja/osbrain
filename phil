@@ -16,8 +16,8 @@ RC01
 
 BRAIN09	#	cstick1		pid01
 BR11	#00	Branch to code start
-0001	#01	const for clean
-0002	#02	const for dirty
+	#01	
+	#02	
 	#03
 	#04
 	#05
@@ -27,12 +27,20 @@ BR11	#00	Branch to code start
 	#09
 	#10
 GD50	#11	Get some data
-GD60	#12	Get dirty details
-RCXX	#13	Receive all
+GD60	#12	Get more data
+RC00	#13	Receive first message from 00
 SR61	#14	Store PID from received
+RC02	#15	Receive second message
+SR62	#16	Store PID from received
+LR50	#17	Get send data
+SD00	#18	Send back to first philosopher
+RC00	#19	Wait until philosopher is done eating
+LR50	#20	Get send data for other philosopher
+SD02	#21	Send to number two
+RC02	#22		
 
 
-BRAIN09	#	Philosoraptor 2
+BRAIN09	#	Philosoraptor 2 pid02
 BR11	#00	Branch to code start
 	#01	
 	#02	
@@ -86,8 +94,8 @@ BR11	#00	Branch to code start
 GD50	#11	Code starts
 
 DATA
+0160000000000000000000000000000000000000
 0001000000000000000000000000000000000000
-0002000000000000000000000000000000000000
 0000000000000000000000000000000000000000
 0000000000000000000000000000000000000000
 0000000000000000000000000000000000000000
