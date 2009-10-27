@@ -58,7 +58,7 @@ int blockq(u_int8_t * pPID, int io)		//address of PID and I/O
 		do
 		{
 			pid = curlyqueue_get_value_at_iterator(bq,e);
-	//		printf("Looking for one and found:  %x\n",pid);
+			if(*pid != *pPID) //printf("Looking for one and found:  %x\n",pid);
 			curlyqueue_iterator_step_backward(bq,e);
 		}while (*pid != *pPID);
 		curlyqueue_delete_value_at_iterator(bq,e);		//pop that element

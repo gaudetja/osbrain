@@ -64,7 +64,7 @@ int Exec_Brain(char NPID)
                 PCB_Array[i].WaitID=0xFF;
                 PCB_Array[i].TDMA=0;
                 readyq(&(PCB_Array[i].PID), 1);
-                }
+        }
 
         while(1)
         {
@@ -451,15 +451,16 @@ void Send(u_int8_t rand1,u_int8_t rand2)
                 *(PCB_Array[Dest_PID].MailBox_Start+Current_PCB->PID)   //Determine Value to send based on R and Address
                         =(Current_PCB->R+(Current_PCB->PID<<16));
 
-        if ((PCB_Array[Dest_PID].WaitID==Current_PCB->PID)||(PCB_Array[Dest_PID].WaitID==0xEE))         //If Other process is waiting for this message
-        {
-                blockq(&(PCB_Array[Dest_PID].PID),0);                           //Take of block queue
-                PCB_Array[Dest_PID].Block=0;                                            //Unblock it
-                readyq(&(PCB_Array[Dest_PID].PID),1);                           //Put in ready queue
-        }
-        blockq(&(Current_PCB->PID),1);                                                  //Block the sender
-                Current_PCB->Block=1;                                                                   //Block
-                Current_PCB->TDMA=10;                                                                   //Do no more instructions until message confirmation.
+				if ((PCB_Array[Dest_PID].WaitID==Current_PCB->PID)||(PCB_Array[Dest_PID].WaitID==0xEE))         //If Other process is waiting for this message
+				{
+						blockq(&(PCB_Array[Dest_PID].PID),0);                           //Take of block queue
+						PCB_Array[Dest_PID].Block=0;                                    //Unblock it
+						readyq(&(PCB_Array[Dest_PID].PID),1);                           //Put in ready queue
+				}
+				blockq(&(Current_PCB->PID),1);                                          //Block the sender
+				Current_PCB->Block=1;													//Block
+				Current_PCB->WaitID=Dest_PID;
+				Current_PCB->TDMA=10;                                     //Do no more instructions until message confirmation.
 
 
 }
@@ -508,11 +509,11 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         }
         if (flag!=0xFF)
         {
-                Current_PCB->R=*((Current_PCB->MailBox_Start)+flag);                                                    // Get Message
-                *((Current_PCB->MailBox_Start)+flag)=0xFF;                                                                              // Reset Mailbox
-                CurrentWord.word=Current_PCB->R;                                                                                        // Store to a word
-                Source_PID=(CurrentWord.bytes.byte2);                                                                           // Pull out Source PID
-                        rand1=CurrentWord.bytes.byte4/10;                                           // Pull out memory address
+                Current_PCB->R=*((Current_PCB->MailBox_Start)+flag);      // Get Message
+                *((Current_PCB->MailBox_Start)+flag)=0xFF;                // Reset Mailbox
+                CurrentWord.word=Current_PCB->R;                          // Store to a word
+                Source_PID=(CurrentWord.bytes.byte2);                     // Pull out Source PID
+                        rand1=CurrentWord.bytes.byte4/10;                  // Pull out memory address
                         rand2=CurrentWord.bytes.byte4%10;
                         for (i=0;i<10;i++)
                         {
@@ -524,14 +525,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
                         Current_PCB->WaitID=0xFF;
 
         }
-        else
-        {
-                blockq(&(Current_PCB->PID),1);                  //Block
-                Current_PCB->Block=1;                                   //Block
-                Current_PCB->TDMA=10;                                   //Do not run any more processes
-                Current_PCB->WaitID=0xEE; // Set whom process is waiting for
-                Current_PCB->IC--;
-        }
+
 }
 void GetPID()
 {
