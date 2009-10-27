@@ -25,7 +25,7 @@
 #include "Exec_Brain.h"
 #include "sched.h"
 
-
+#define TDMA_Setting 50
 
 PCB* Current_PCB;                                            //Current Process control block
 PCB* PCB_Array;
@@ -33,6 +33,7 @@ WORDBYTES CurrentWord;                          //Current 4 byte word read from 
 OPERATOR operator;                      //Operator to be chosen from the list
 WORDBYTES MemoryContents;                       //4 byte word read from memory
 u_int32_t* MailBox_Start;
+u_int32_t ContextSwitchCount=0;
 
 /*
  *Invokes the main loop which reads, executes the operations and writes back to memory
@@ -69,8 +70,10 @@ int Exec_Brain(char NPID)
         while(1)
         {
                 PID=readyq(&(Current_PCB->PID),0);   //Get next process from ready queue.
+                ContextSwitchCount++;
+                printf("%d\n",ContextSwitchCount);
                 Current_PCB=&PCB_Array[(int)PID];
-                while(Current_PCB->TDMA<10)
+                while(Current_PCB->TDMA<TDMA_Setting)
                 {
                         CurrentWord=GetInstruction(Current_PCB->IC,Current_PCB->PID);                                                                                    //gets instruction
                         operator.bytes.byte1=CurrentWord.bytes.byte1;                                                                           //give operator 1 a value
@@ -123,8 +126,8 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
                         case ISTR_MS:  MultStack();                     break;  // Multiply Stack (MS)
                         case ISTR_DS:  DivStack();                      break;  // Divide Stack (DS)
                         case ISTR_NP:                                   break;  // No-op (NP)
-                        case ISTR_H:   Current_PCB->Block=1;Current_PCB->TDMA=10; break;                      // Halt (H)
-                        case ISTR_HN:  Current_PCB->Block=1;Current_PCB->TDMA=10; break;                      // Halt (H)
+                        case ISTR_H:   Current_PCB->Block=1;Current_PCB->TDMA=TDMA_Setting; break;                      // Halt (H)
+                        case ISTR_HN:  Current_PCB->Block=1;Current_PCB->TDMA=TDMA_Setting; break;                      // Halt (H)
                         case ISTR_SD:  Send(rand1,rand2);               break;  // Send (SD)
                         case ISTR_RC:  Rec(rand1,rand2);                break;  // Receive (RC)
                         case ISTR_GP:  GetPID();			break;  // Return Process ID to reg
@@ -461,7 +464,7 @@ void Send(u_int8_t rand1,u_int8_t rand2)
 				blockq(&(Current_PCB->PID),1);                                          //Block the sender
 				Current_PCB->Block=1;													//Block
 				Current_PCB->WaitID=Dest_PID;
-				Current_PCB->TDMA=10;                                     //Do no more instructions until message confirmation.
+				Current_PCB->TDMA=TDMA_Setting;                                     //Do no more instructions until message confirmation.
 
 
 }
@@ -503,7 +506,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
         {
                 blockq(&(Current_PCB->PID),1);                  //Block
                 Current_PCB->Block=1;                                   //Block
-                Current_PCB->TDMA=10;                                   //Do not run any more processes
+                Current_PCB->TDMA=TDMA_Setting;                                   //Do not run any more processes
                 Current_PCB->WaitID=((rand1-48)*10)+rand2-48; // Set whom process is waiting for
                 Current_PCB->IC--;                                              //Decrement Counter -- If unblocked by appropriate sender will repeat this instruct.
 
