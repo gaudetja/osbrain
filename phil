@@ -1,35 +1,35 @@
 BRAIN09	#	Philosoraptor 1 pid00
 BR11	#00	Branch to code start
-	#01	
-	#02	
-	#03
-	#04
-	#05
-	#06
-	#07
-	#08
-	#09
-	#10
-GD50	#11	Code starts
-SD05	#12
-RC05
-SD01	
-RC01
-SD05
-SD01
+0000	#01	
+0000	#02	
+0000	#03
+0000	#04
+0000	#05
+0000	#06
+0000	#07
+0000	#08
+0000	#09
+0000	#10
+GD50	#11	Get Data
+SD05	#12	Send to 5
+RC05	#13	Receive from 5
+SD01	#14	Send to 1
+RC01	#15	Receive from 1
+SD05	#16	Send to 5
+SD01	#17	Send to 1
 H
 BRAIN09	#	cstick1		pid01
 BR11	#00	Branch to code start
-	#01	
-	#02	
-	#03
-	#04
-	#05
-	#06
-	#07
-	#08
-	#09
-	#10
+0000	#01	
+0000	#02	
+0000	#03
+0000	#04
+0000	#05
+0000	#06
+0000	#07
+0000	#08
+0000	#09
+0000	#10
 GD50	#11	Get some data
 GD60	#12	Get more data
 RC00	#13	Receive first message from 00
@@ -46,16 +46,16 @@ RC02	#22
 
 BRAIN09	#	Philosoraptor 2 pid02
 BR11	#00	Branch to code start
-	#01	
-	#02	
-	#03
-	#04
-	#05
-	#06
-	#07
-	#08
-	#09
-	#10
+0000	#01	
+0000	#02	
+0000	#03
+0000	#04
+0000	#05
+0000	#06
+0000	#07
+0000	#08
+0000	#09
+0000	#10
 GD50	#11	Code starts
 SD05	#12
 RC05
@@ -64,42 +64,42 @@ RC01
 H
 BRAIN09	#	fork/spoon/cstick2
 BR11	#00	Branch to code start
-	#01	
-	#02	
-	#03
-	#04
-	#05
-	#06
-	#07
-	#08
-	#09
-	#10
+0000	#01	
+0000	#02	
+0000	#03
+0000	#04
+0000	#05
+0000	#06
+0000	#07
+0000	#08
+0000	#09
+0000	#10
 GD50	#11	Code starts
 BRAIN09	#	Philosoraptor 3
 BR11	#00	Branch to code start
-	#01	
-	#02	
-	#03
-	#04
-	#05
-	#06
-	#07
-	#08
-	#09
-	#10
+0000	#01	
+0000	#02	
+0000	#03
+0000	#04
+0000	#05
+0000	#06
+0000	#07
+0000	#08
+0000	#09
+0000	#10
 GD50	#11	Code starts
 BRAIN09	#	fork/spoon/cstick3
 BR11	#00	Branch to code start
-	#01	
-	#02	
-	#03
-	#04
-	#05
-	#06
-	#07
-	#08
-	#09
-	#10
+0000	#01	
+0000	#02	
+0000	#03
+0000	#04
+0000	#05
+0000	#06
+0000	#07
+0000	#08
+0000	#09
+0000	#10
 GD50	#11	Code starts
 
 DATA
