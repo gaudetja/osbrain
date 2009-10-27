@@ -517,16 +517,17 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
                 *((Current_PCB->MailBox_Start)+flag)=0xFF;                // Reset Mailbox
                 CurrentWord.word=Current_PCB->R;                          // Store to a word
                 Source_PID=(CurrentWord.bytes.byte2);                     // Pull out Source PID
-                        rand1=CurrentWord.bytes.byte4/10;                  // Pull out memory address
-                        rand2=CurrentWord.bytes.byte4%10;
-                        for (i=0;i<10;i++)
-                        {
-                                CopyMemory(rand1,rand2+i,Current_PCB->PID,Source_PID);                  // Write over memory values
-                        }
-                        blockq(&(PCB_Array[Source_PID].PID),0);                                                                         // Remove from blocked queue
-                        PCB_Array[Source_PID].Block=0;                                                                                          // Unblock
-                        readyq(&(PCB_Array[Source_PID].PID),1);                                                                         // Place in ready queue.
-                        Current_PCB->WaitID=0xFF;
+				rand1=CurrentWord.bytes.byte4/10;                  // Pull out memory address
+				rand2=CurrentWord.bytes.byte4%10;
+				Current_PCB->R=(u_int32_t)CurrentWord.bytes.byte4;
+				for (i=0;i<10;i++)
+				{
+						CopyMemory(rand1,rand2+i,Current_PCB->PID,Source_PID);                  // Write over memory values
+				}
+				blockq(&(PCB_Array[Source_PID].PID),0);                                                                         // Remove from blocked queue
+				PCB_Array[Source_PID].Block=0;                                                                                          // Unblock
+				readyq(&(PCB_Array[Source_PID].PID),1);                                                                         // Place in ready queue.
+				Current_PCB->WaitID=0xFF;
 
         }
 
