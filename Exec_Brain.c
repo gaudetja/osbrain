@@ -454,7 +454,8 @@ void Send(u_int8_t rand1,u_int8_t rand2)
 				if ((PCB_Array[Dest_PID].WaitID==Current_PCB->PID)||(PCB_Array[Dest_PID].WaitID==0xEE))         //If Other process is waiting for this message
 				{
 						blockq(&(PCB_Array[Dest_PID].PID),0);                           //Take of block queue
-						PCB_Array[Dest_PID].Block=0;                                    //Unblock it
+						PCB_Array[Dest_PID].Block=0;									//Unblock it
+						PCB_Array[Dest_PID].WaitID=0xFF;
 						readyq(&(PCB_Array[Dest_PID].PID),1);                           //Put in ready queue
 				}
 				blockq(&(Current_PCB->PID),1);                                          //Block the sender
