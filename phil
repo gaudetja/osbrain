@@ -11,13 +11,21 @@ BR11	#00	Branch to code start
 0000	#09
 0000	#10
 GD50	#11	Get Data
-SD05	#12	Send to 5
-RC05	#13	Receive from 5
-SD01	#14	Send to 1
-RC01	#15	Receive from 1
-SD05	#16	Send to 5
-SD01	#17	Send to 1
+LR50	#12	Get data to send
+SD05	#13	Send to chopstick 3
+RC05	#14	Receive from chopstick 3
+LR50	#15	Get data to send
+SD01	#16	Send to chopstick 1
+RC01	#17	Receive from chopstick 1
+NP	#18	Philosopher's meal time
+NP	#19	om
+NP	#20	nom
+NP	#21	nom
+NP	#22	nom
+SD05	#23	Send to 5
+SD01	#24	Send to 1
 H
+
 BRAIN09	#	cstick1		pid01
 BR11	#00	Branch to code start
 0000	#01	
@@ -31,17 +39,15 @@ BR11	#00	Branch to code start
 0000	#09
 0000	#10
 GD50	#11	Get some data
-GD60	#12	Get more data
-RC00	#13	Receive first message from 00
-SR61	#14	Store PID from received
-RC02	#15	Receive second message
-SR62	#16	Store PID from received
+RC00	#12	Receive first message from philosopher 1
+RC02	#13	Receive second message from phil 2
+LR50	#14	Get send data
+SD00	#15	Send back to first philosopher
+RC00	#16	Wait until philosopher is done eating
 LR50	#17	Get send data
-SD00	#18	Send back to first philosopher
-RC00	#19	Wait until philosopher is done eating
-LR50	#20	Get send data for other philosopher
-SD02	#21	Send to number two
-RC02	#22		
+SD02	#18	Send to philosopher 2
+RC02	#19	Wait until philosopher 2 is done eating
+H	
 
 
 BRAIN09	#	Philosoraptor 2 pid02
@@ -103,9 +109,5 @@ BR11	#00	Branch to code start
 GD50	#11	Code starts
 
 DATA
-0160000000000000000000000000000000000000
-0001000000000000000000000000000000000000
-0000000000000000000000000000000000000000
-0000000000000000000000000000000000000000
-0000000000000000000000000000000000000000
+0060000000000000000000000000000000000000
 
