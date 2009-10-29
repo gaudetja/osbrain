@@ -1,5 +1,5 @@
-BRAIN09	#	Philosoraptor 1 pid000
-BU11	#00	BUanch to code start
+BRAIN09	#	Philosoraptor 1 pid00
+BU11	#00	Branch to code start
 0000	#01	
 0000	#02	
 0000	#03
@@ -14,7 +14,7 @@ GD50	#11	Get Data
 LR50	#12	Get data to send
 SD05	#13	Send to chopstick 3
 RC05	#14	Receive from chopstick 3
-LR50	#15	Get data to send
+LR50	#15	Get send data
 SD01	#16	Send to chopstick 1
 RC01	#17	Receive from chopstick 1
 NP	#18	Philosopher's meal time
@@ -25,9 +25,8 @@ NP	#22	nom
 SD05	#23	Send to chopstick 3
 SD01	#24	Send to chopstick 1
 H
-
 BRAIN09	#	cstick1		pid01
-BU11	#00	BUanch to code start
+BU11	#00	Branch to code start
 0000	#01	
 0000	#02	
 0000	#03
@@ -40,17 +39,16 @@ BU11	#00	BUanch to code start
 0000	#10
 GD50	#11	Get some data
 RC00	#12	Receive first message from philosopher 1
-RC02	#13	Receive second message from phil 2
+SD00	#13	Send back to philosopher 1
+RC00		Wait until philosopher 1 is done eating
 LR50	#14	Get send data
 SD00	#15	Send back to philosopher 1
-RC00	#16	Wait until philosopher 1 is done eating
 LR50	#17	Get send data
 SD02	#18	Send to philosopher 2
 RC02	#19	Wait until philosopher 2 is done eating
 H	
-
 BRAIN09	#	Philosoraptor 2 pid02
-BU11	#00	BUanch to code start
+BU11	#00	Branch to code start
 0000	#01	
 0000	#02	
 0000	#03
@@ -76,9 +74,8 @@ NP	#22	nom
 SD01	#23	Send to chopstick 1
 SD03	#24	Send to chopstick 2
 H
-
 BRAIN09	#	cstick2		pid03
-BU11	#00	BUanch to code start
+BU11	#00	Branch to code start
 0000	#01	
 0000	#02	
 0000	#03
@@ -99,9 +96,8 @@ LR50	#17	Get send data
 SD04	#18	Send to philosopher 3
 RC04	#19	Wait until philosopher 3 is done eating
 H
-
 BRAIN09	#	Philosoraptor 3 pid04
-BU11	#00	BUanch to code start
+BU11	#00	Branch to code start
 0000	#01	
 0000	#02	
 0000	#03
@@ -127,7 +123,6 @@ NP	#22	nom
 SD03	#23	Send to chopstick 2
 SD05	#24	Send to chopstick 3
 H
-
 BRAIN09	#	cstick3		pid05
 BU11	#00	Branch to code start
 0000	#01	
@@ -141,15 +136,18 @@ BU11	#00	Branch to code start
 0000	#09
 0000	#10
 GD50	#11	Get some data
-RC04	#12	Receive first message from philosopher 3
-RC00	#13	Receive second message from phil 1
+RC00	#12	Receive first message from philosopher 1
+LR50	#13	Get send data
+SD00	#13	Send to philosopher 1
 LR50	#14	Get send data
-SD04	#15	Send back to philosopher 3
-RC04	#16	Wait until philosopher 3 is done eating
+SD04	#15	Send back to philosopher 2
+RC00	#16	Wait until philosopher 1 is done eating
 LR50	#17	Get send data
-SD00	#18	Send to philosopher 1
-RC00	#19	Wait until philosopher 1 is done eating
+SD04	#18	Send to philosopher 3
+RC04	#19	Wait until philosopher 3 is done eating
 H
 DATA
 0060000000000000000000000000000000000000
-
+0060000000000000000000000000000000000000
+0060000000000000000000000000000000000000
+END
