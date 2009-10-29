@@ -40,9 +40,9 @@ BU11	#00	Branch to code start
 GD50	#11	Get some data
 RC00	#12	Receive first message from philosopher 1
 SD00	#13	Send back to philosopher 1
-RC00		Wait until philosopher 1 is done eating
-LR50	#14	Get send data
-SD00	#15	Send back to philosopher 1
+RC00	#14	Wait until philosopher 1 is done eating
+LR50	#15	Get send data
+SD00	#16	Send back to philosopher 1
 LR50	#17	Get send data
 SD02	#18	Send to philosopher 2
 RC02	#19	Wait until philosopher 2 is done eating
