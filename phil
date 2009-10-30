@@ -1,18 +1,18 @@
 BRAIN09	#	Philosoraptor 1 pid00
-GD50	#11	Get Data
-LR50	#12	Get data to send
-SD05	#13	Send to chopstick 3
-RC05	#14	Receive from chopstick 3
-LR50	#15	Get send data
-SD01	#16	Send to chopstick 1
-RC01	#17	Receive from chopstick 1
-NP	#18	Philosopher's meal time
-NP	#19	om
-NP	#20	nom
-NP	#21	nom
-NP	#22	nom
-SD05	#23	Send to chopstick 3
-SD01	#24	Send to chopstick 1
+GD50	#00	Get Data
+LR50	#01	Get data to send
+SD05	#02	Send to chopstick 3
+RC05	#03	Receive from chopstick 3
+LR50	#04	Get send data
+SD01	#05	Send to chopstick 1
+RC01	#06	Receive from chopstick 1
+NP	#07	Philosopher's meal time
+NP	#08	om
+NP	#09	nom
+NP	#10	nom
+NP	#11	nom
+SD05	#12	Send to chopstick 3
+SD01	#13	Send to chopstick 1
 H
 BRAIN09	#	cstick1		pid01
 GD50	#11	Get some data

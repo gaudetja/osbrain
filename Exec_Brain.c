@@ -507,6 +507,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 			CurrentWord.bytes.byte1=0;
 			CurrentWord.bytes.byte2=0;
 			Current_PCB->R=CurrentWord.word;
+			PCB_Array[Source_PID].WaitID = 0xFF;
         }
         else                                                                            //If no message from desired process
         {
