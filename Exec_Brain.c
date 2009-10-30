@@ -500,7 +500,12 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 
                         blockq(&(PCB_Array[Source_PID].PID),0);                                                                         // Remove from blocked queue
                         PCB_Array[Source_PID].Block=0;                                                                                          // Unblock
-                        readyq(&(PCB_Array[Source_PID].PID),1);                                                                         // Place in ready queue.
+                        readyq(&(PCB_Array[Source_PID].PID),1);                                                         // Place in ready queue.
+
+			CurrentWord.word=Current_PCB->R;
+			CurrentWord.bytes.byte1=0;
+			CurrentWord.bytes.byte2=0;
+			Current_PCB->R=CurrentWord.word;
         }
         else                                                                            //If no message from desired process
         {
