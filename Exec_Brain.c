@@ -461,9 +461,10 @@ void Send(u_int8_t rand1,u_int8_t rand2)
 						PCB_Array[Dest_PID].WaitID=0xFF;
 						readyq(&(PCB_Array[Dest_PID].PID),1);                           //Put in ready queue
 				}
+				else Current_PCB->WaitID=Dest_PID;
+
 				blockq(&(Current_PCB->PID),1);                                          //Block the sender
 				Current_PCB->Block=1;													//Block
-				Current_PCB->WaitID=Dest_PID;
 				Current_PCB->TDMA=TDMA_Setting;                                     //Do no more instructions until message confirmation.
 
 
