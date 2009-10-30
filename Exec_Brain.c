@@ -25,7 +25,7 @@
 #include "Exec_Brain.h"
 #include "sched.h"
 
-#define TDMA_Setting 50
+#define TDMA_Setting 15
 
 PCB* Current_PCB;                                            //Current Process control block
 PCB* PCB_Array;
