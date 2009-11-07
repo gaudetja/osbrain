@@ -27,6 +27,7 @@
 //Memory Allocated
 static u_int32_t* Memory_Start;
 static u_int32_t* Memory_End;
+static u_int16_t Memory_Num = 0;
 
 
 /*
@@ -69,15 +70,16 @@ int ProgramWrite(char* argv)
                         tempbuff[1]=buff[2];
                         tempbuff[0]=buff[3];
 
-                        Memory_Start[(PID)*100+i]=*((u_int32_t*)tempbuff);
+                        Memory_Start[Memory_Num]=*((u_int32_t*)tempbuff);
                         i++;
-                                if(i>RAM/4)
-                                {
-                                        printf("Program Too large");
-                                        exit(1);
-                                }
+                        Memory_Num++;
+			if(Memory_Num>RAM/4)
+			{
+				printf("Insufficient Memory");
+				exit(1);
+			}
                 }
-                Memory_End=&Memory_Start[(PID)*100+i];
+                Memory_End=&Memory_Start[Memory_Num];
                 for (i=0;i<(Memory_End-Memory_Start);i++) //For Debugging
                 {
                         CurrentWord.word=Memory_Start[i];
