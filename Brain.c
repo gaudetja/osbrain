@@ -57,11 +57,11 @@ int main(int argc, char* argv[])
 int LoadProgram(char* argv)
 {
         int fildes=open(argv,O_RDONLY);
-                if (fildes==-1)
-                {
-                        fprintf(stderr,"Program not loaded properly, check to see if input file exists");
-                        exit(1);
-                }
+	if (fildes==-1)
+	{
+		fprintf(stderr,"Program not loaded properly, check to see if input file exists");
+		exit(1);
+	}
         close(fileno(stdin));
         dup(fildes);
         int NPID=ProgramWrite(argv);
