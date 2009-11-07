@@ -40,8 +40,9 @@ static u_int16_t Memory_Num = 0;
 int ProgramWrite(char* argv)
 {
         int i=0;
-        int PID=0;
-        int FileComplete=0;;
+        static int PID=0;
+        int FileComplete=0;
+        u_int16_t Program_Length;
         Memory_Start=malloc(RAM);
         char buff[64]={0};
         char tempbuff[4];
@@ -50,10 +51,18 @@ int ProgramWrite(char* argv)
         fgets(buff,64,stdin);
         if(strncmp(buff,"BRAIN09",7)==0)
         {
-                while(1)
-                {
+                while (strncmp(buff,"DATA",4) != 0) {
+                	fgets(buff,64,stdin);
+                	Program_Length++;
+                	if (Program_Length > (RAM / 4 - Memory_Num)) {
+                		printf("Insufficient Memory");
+                		return -1;
+                	}
+                }
+        	while (1)
+        	{
 
-                        fgets(buff,64,stdin);
+			fgets(buff,64,stdin);
                         if(strncmp(buff,"DATA",4)==0)
                         {
                                 FileComplete=1;
@@ -76,7 +85,7 @@ int ProgramWrite(char* argv)
 			if(Memory_Num>RAM/4)
 			{
 				printf("Insufficient Memory");
-				exit(1);
+				return -1;
 			}
                 }
                 Memory_End=&Memory_Start[Memory_Num];
