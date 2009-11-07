@@ -239,6 +239,10 @@ void printstatus();
 #define ISTR_SD COMBINE('S','D')
 #define ISTR_RC COMBINE('R','C')
 #define ISTR_GP COMBINE('G','P')
+#define ISTR_PE COMBINE('P','E')
+#define ISTR_VE COMBINE('V','E')
+#define ISTR_SI COMBINE('S','I')
+
 
 
 #endif
