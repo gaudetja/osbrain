@@ -27,24 +27,25 @@
 
 #define TDMA_Setting 15
 
-PCB* Current_PCB;                                            //Current Process control block
-PCB* PCB_Array;
+PCB* Current_PCB;                               //Current Process control block
+PCB PCB_Array[200];
 WORDBYTES CurrentWord;                          //Current 4 byte word read from memory
-OPERATOR operator;                      //Operator to be chosen from the list
+OPERATOR operator;                      	//Operator to be chosen from the list
 WORDBYTES MemoryContents;                       //4 byte word read from memory
 u_int32_t* MailBox_Start;
 u_int32_t ContextSwitchCount=0;
+extern u_int16_t Memory_Num;
 
 /*
  *Invokes the main loop which reads, executes the operations and writes back to memory
  */
-int Exec_Brain(char NPID)
+int Exec_Brain(char NPID , u_int16_t Program_Length)
 {
         //initialize all the PCB variables to 0
                 NPID++;
 
         char PID=0xFF;
-        PCB_Array=calloc(NPID,sizeof(PCB));
+        //PCB_Array=calloc(NPID,sizeof(PCB));
         u_int32_t* PostOffice=calloc(NPID*NPID,4);
         int i=0;
         for(i=0;i<NPID*NPID;i++)
@@ -57,8 +58,8 @@ int Exec_Brain(char NPID)
                 PCB_Array[i].C='F';
                 PCB_Array[i].IC=0;
                 PCB_Array[i].PID=i;
-                PCB_Array[i].LR=(i+1)*100-1;
-                PCB_Array[i].BR=0;
+                PCB_Array[i].LR=Program_Length;
+                PCB_Array[i].BR=Memory_Num;
                 PCB_Array[i].Block=0;
                 PCB_Array[i].MailBox_Start=PostOffice+(i*NPID);
                 PCB_Array[i].MailBox_End=PostOffice+((i+1)*NPID-1);
@@ -550,5 +551,24 @@ void GetPID()
 }
 void Fork(void)
 {
+	u_int16_t i;
+	if (Current_PCB->LR > (RAM/4 - Memory_Num)) {
+		Current_PCB->R = 0;
+	}
+	else {
+		PCB_Array[numPID].BR = Memory_Num;
+		PCB_Array[numPID].Block = Current_PCB->Block;
+		PCB_Array[numPID].C = Current_PCB->C;
+		PCB_Array[numPID].IC = Current_PCB->IC;
+		PCB_Array[numPID].LR = Current_PCB->LR;
+		PCB_Array[numPID].PID = numPID;
+		PCB_Array[numPID].R = Current_PCB->PID;
+		//PCB_Array[numPID]. Ask Gary about other members
 
+		Current_PCB->R = PCB_Array[numPID].PID;
+
+		for (i=0 ; i < Current_PCB->LR ; i++) {
+			Memory_Start[Memory_Num++] = Memory_Start[Current_PCB->BR + i];
+		}
+	}
 }
