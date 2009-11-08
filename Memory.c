@@ -25,9 +25,9 @@
 #define L2 4*100
 
 //Memory Allocated
-static u_int32_t* Memory_Start;
-static u_int32_t* Memory_End;
-static u_int16_t Memory_Num = 0;
+static u_int32_t* Memory_Start;					//Start of memory block
+static u_int32_t* Memory_End;					//End of memory block
+static u_int16_t Memory_Num = 0;				//number of elements in memory block
 
 
 /*
@@ -37,9 +37,9 @@ static u_int16_t Memory_Num = 0;
  *
  *return 0; (always)
  */
-int ProgramWrite(char* argv)
+int ProgramWrite(u_int16_t* Program_Length)
 {
-        int i;
+        u_int16_t i = Memory_Num;					//store old Memory_Num for later
         static int PID=0;
         int FileComplete=0;
         Memory_Start=malloc(RAM);
@@ -47,39 +47,40 @@ int ProgramWrite(char* argv)
         char tempbuff[4];
         WORDBYTES CurrentWord;
 
-        fgets(buff,64,stdin);
-        if(strncmp(buff,"BRAIN09",7)==0)
+        fgets(buff,64,stdin);					//get first line
+        if(strncmp(buff,"BRAIN09",7)==0)			//make sure it's legit
         {
         	while (1)
         	{
 
-			fgets(buff,64,stdin);
-                        if(strncmp(buff,"DATA",4)==0)
+			fgets(buff,64,stdin);			//get next line
+                        if(strncmp(buff,"DATA",4)==0)		//End of Program Instructions?
                         {
                                 FileComplete=1;
                                 break;
                         }
-                        if(strncmp(buff,"BRAIN09",7)==0)
+                        if(strncmp(buff,"BRAIN09",7)==0)	//Look for New Program
                         {
                                 PID++;
                                 i=0;
                                 fgets(buff,64,stdin);
                         }
-                        tempbuff[3]=buff[0];
+                        tempbuff[3]=buff[0];			//Switch the bytes around
                         tempbuff[2]=buff[1];
                         tempbuff[1]=buff[2];
                         tempbuff[0]=buff[3];
 
-                        Memory_Start[Memory_Num]=*((u_int32_t*)tempbuff);
-                        Memory_Num++;
-			if(Memory_Num>RAM/4)
+                        Memory_Start[Memory_Num]=*((u_int32_t*)tempbuff);	//put instr in memory
+                        Memory_Num++;				//increment # bytes written
+			if(Memory_Num>RAM/4)			//check against end of memory
 			{
 				printf("Insufficient Memory");
 				return -1;
 			}
                 }
+        	*Program_Length = Memory_Num - i;	//get program length from old Memory_Num val
                 Memory_End=&Memory_Start[Memory_Num];
-                for (i=0;i<(Memory_End-Memory_Start);i++) //For Debugging
+                for (i=0;i<(Memory_End-Memory_Start);i++) 	//For Debugging
                 {
                         CurrentWord.word=Memory_Start[i];
                         printf("%x\n",CurrentWord.word);
