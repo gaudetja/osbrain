@@ -54,16 +54,19 @@ int ProgramWrite(u_int16_t* Program_Length)
         	{
 
 			fgets(buff,64,stdin);			//get next line
-                        if(strncmp(buff,"DATA",4)==0)		//End of Program Instructions?
+                        if(strncmp(buff,"DATA",4)==0)		//End of Program Instructions
                         {
                                 FileComplete=1;
                                 break;
                         }
                         if(strncmp(buff,"BRAIN09",7)==0)	//Look for New Program
                         {
-                                PID++;
-                                i=0;
-                                fgets(buff,64,stdin);
+                                //PID++;
+                                //i=0;
+                                //fgets(buff,64,stdin);
+                                
+                                fprintf(stderr,"Brain09 Syntax Error\n");
+                                break;
                         }
                         tempbuff[3]=buff[0];			//Switch the bytes around
                         tempbuff[2]=buff[1];
@@ -85,10 +88,12 @@ int ProgramWrite(u_int16_t* Program_Length)
                         CurrentWord.word=Memory_Start[i];
                         printf("%x\n",CurrentWord.word);
                 }
+                return 0;
         }
-        else
+        else	{
                 fprintf(stderr,"Brain09 Syntax Error\n");
-        return PID;
+                return -1;
+        }
 }
 
 
