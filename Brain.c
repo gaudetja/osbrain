@@ -27,7 +27,7 @@
 #include "sched.h"
 
 
-int numPID;
+int numPID = 0;
 int LoadProgram(char* argv);
 
 /*
@@ -41,10 +41,9 @@ int main(int argc, char* argv[])
 {
 	u_int16_t* pProgram_Length;
         //Loads Initial Program
-        int NPID=LoadProgram(argv[1] , pProgram_Length);
-        numPID = NPID;
+        LoadProgram(argv[1] , pProgram_Length);
         //Run the program
-        Exec_Brain(NPID , *pProgram_Length);
+        Exec_Brain(numPID , *pProgram_Length);
 
         return 0;
 }
@@ -61,12 +60,10 @@ int LoadProgram(char* argv , u_int16_t* pProgram_Length)
 	if (fildes==-1)
 	{
 		fprintf(stderr,"Program not loaded properly, check to see if input file exists");
-		exit(1);
+		return -1;
 	}
         close(fileno(stdin));
         dup(fildes);
-        int NPID=ProgramWrite(pProgram_Length);
-        return NPID;
+        ProgramWrite(pProgram_Length);
+        return 0;
 }
-
-
