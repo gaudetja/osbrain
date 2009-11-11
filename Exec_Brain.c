@@ -27,28 +27,32 @@
 
 #define TDMA_Setting 15
 #define NPID 200
+#define RAM 4*10000
 
 PCB* Current_PCB;			       //Current Process control block
-PCB PCB_Array;
+PCB* PCB_Array;
 WORDBYTES CurrentWord;			  //Current 4 byte word read from memory
 OPERATOR operator;		      	//Operator to be chosen from the list
 WORDBYTES MemoryContents;		       //4 byte word read from memory
 u_int32_t* MailBox_Start;
 u_int32_t ContextSwitchCount=0;
 extern u_int16_t Memory_Num;
+extern int numPID;
+extern u_int32_t* Memory_Start;
+
 
 /*
  *Invokes the main loop which reads, executes the operations and writes back to memory
  */
-int Exec_Brain(char NPID , u_int16_t Program_Length)
+int Exec_Brain(int nPID , u_int16_t Program_Length)
 {
 	//initialize all the PCB variables to 0
 
 	char PID=0xFF;
-	PCB_Array=calloc(NPID,sizeof(PCB));
-	u_int32_t* PostOffice=calloc(NPID*NPID,4);
+	PCB_Array=calloc(nPID,sizeof(PCB));
+	u_int32_t* PostOffice=calloc(nPID*nPID,4);
 	int i;
-	for(i=0;i<NPID*NPID;i++) *(PostOffice+i)=0xFF;
+	for(i=0;i<nPID*nPID;i++) *(PostOffice+i)=0xFF;
 	buildq();
 
 	PCB_Array[numPID].R = 0;
@@ -59,8 +63,8 @@ int Exec_Brain(char NPID , u_int16_t Program_Length)
 	PCB_Array[numPID].LR = Program_Length;
 	PCB_Array[numPID].BR = Memory_Num - Program_Length;
 	PCB_Array[numPID].Block = 0;
-	PCB_Array[numPID].MailBox_Start = PostOffice+(i*NPID);
-	PCB_Array[numPID].MailBox_End = PostOffice+((i+1)*NPID-1);
+	PCB_Array[numPID].MailBox_Start = PostOffice+(i*nPID);
+	PCB_Array[numPID].MailBox_End = PostOffice+((i+1)*nPID-1);
 	PCB_Array[numPID].WaitID = 0xFF;
 	PCB_Array[numPID].TDMA = 0;
 	
@@ -132,7 +136,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_RC:  Rec(rand1,rand2);					break;  // Receive (RC)
 			case ISTR_GP:  GetPID();						break;  // Return Process ID to reg
 			case ISTR_FK:  Fork(); 							break;	// Fork a new process
-			case ISTR_EX:  Exec();u_int8_t rand1,u_int8_t rand2 							break;	// Execute a new process
+			case ISTR_EX:  Exec(rand1,rand2);					break;	// Execute a new process
 			case ISTR_PE:  PE(); 							break;
 			case ISTR_VE:  VE(); 							break;
 			case ISTR_SI:  SI(); 							break;
@@ -580,6 +584,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	
 	u_int16_t MemStart = Current_PCB->BR;			//start new program mem here
 	u_int16_t MemLoc = MemStart;
+	u_int16_t* Program_Length;
 	//static int PID
 	
 	int FileComplete=0;					//flag
@@ -589,7 +594,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	WORDBYTES CurrentWord;
 	int fildes=open(filename,O_RDONLY);			//open that file ... do dah doo doo
 	
-	if (filedes == -1) {					//error checking for open()
+	if (fildes == -1) {					//error checking for open()
 		fprintf(stderr,"Program not loaded properly, check to see if input file exists");
 		return -1;
 	}
