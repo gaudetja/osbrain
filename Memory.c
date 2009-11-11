@@ -25,10 +25,9 @@
 #define L2 4*100
 
 //Memory Allocated
-static u_int32_t* Memory_Start = malloc(RAM);			//Start of memory block
+static u_int32_t* Memory_Start;			//Start of memory block
 static u_int32_t* Memory_End;					//End of memory block
 static u_int16_t Memory_Num = 0;				//number of elements in memory block
-
 
 /*
  *Executes memory allocation from stdin.
@@ -45,6 +44,8 @@ int ProgramWrite(u_int16_t* Program_Length)
 	char buff[64]={0};
 	char tempbuff[4];
 	WORDBYTES CurrentWord;
+	
+	Memory_Start = malloc(RAM);
 
 	fgets(buff,64,stdin);					//get first line
 	if(strncmp(buff,"BRAIN09",7) == 0)			//make sure it's legit

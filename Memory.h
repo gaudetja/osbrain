@@ -24,7 +24,7 @@ typedef union wordbytes
  *
  *return 0; (always)
  */
-int ProgramWrite(char* argv);
+int ProgramWrite(u_int16_t* pProgram_Length);
 
 /*
  *Reads from a specified memory location(rand1 concatinated with rand2)

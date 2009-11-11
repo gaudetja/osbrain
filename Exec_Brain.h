@@ -48,7 +48,7 @@ typedef union inttobytes
 /*control
  *Invokes the main loop which reads, executes the operations and writes back to memory
  */
-int Exec_Brain(char NPID);
+int Exec_Brain(int NPID , u_int16_t Program_Length);
 
 /*
  *Takes a 8 byte operator standing for two ANSI letter:
@@ -205,7 +205,11 @@ void Rec(u_int8_t rand1,u_int8_t rand2);
 void GetPID();
 //gets the process ID and loads it into the register
 
+void Fork(void);
+//create a new process that is a clone of the calling process
 
+int Exec(u_int8_t rand1, u_int8_t rand2);
+//runs a process in the calling process' program memory
 
 void printstatus();
 
@@ -242,6 +246,8 @@ void printstatus();
 #define ISTR_PE COMBINE('P','E')
 #define ISTR_VE COMBINE('V','E')
 #define ISTR_SI COMBINE('S','I')
+#define ISTR_FK	COMBINE('F','K')
+#define ISTR_EX COMBINE('E','X')
 
 
 

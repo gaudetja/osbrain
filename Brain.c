@@ -28,7 +28,7 @@
 
 
 int numPID = 0;
-int LoadProgram(char* argv);
+int LoadProgram(char* argv,  u_int16_t* pProgram_Length );
 
 /*
  *Main program that runs LoadProgram and Exec_Brain
