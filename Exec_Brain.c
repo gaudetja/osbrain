@@ -132,7 +132,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_RC:  Rec(rand1,rand2);					break;  // Receive (RC)
 			case ISTR_GP:  GetPID();						break;  // Return Process ID to reg
 			case ISTR_FK:  Fork(); 							break;	// Fork a new process
-			case ISTR_EX:  Exec(); 							break;	// Execute a new process
+			case ISTR_EX:  Exec();u_int8_t rand1,u_int8_t rand2 							break;	// Execute a new process
 			case ISTR_PE:  PE(); 							break;
 			case ISTR_VE:  VE(); 							break;
 			case ISTR_SI:  SI(); 							break;
@@ -534,11 +534,11 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 				Current_PCB->R=(u_int32_t)CurrentWord.bytes.byte4;
 				for (i=0;i<10;i++)
 				{
-						CopyMemory(rand1,rand2+i,Current_PCB->PID,Source_PID);		  // Write over memory values
+						CopyMemory(rand1,rand2+i,Current_PCB->PID,Source_PID);		// Write over memory values
 				}
-				blockq(&(PCB_Array[Source_PID].PID),0);									 // Remove from blocked queue
-				PCB_Array[Source_PID].Block=0;											  // Unblock
-				readyq(&(PCB_Array[Source_PID].PID),1);									 // Place in ready queue.
+				blockq(&(PCB_Array[Source_PID].PID),0);						// Remove from blocked queue
+				PCB_Array[Source_PID].Block=0;							// Unblock
+				readyq(&(PCB_Array[Source_PID].PID),1);						// Place in ready queue.
 				Current_PCB->WaitID=0xFF;
 
 	}
@@ -552,22 +552,94 @@ void Fork(void)
 {
 	u_int16_t i;
 	if (Current_PCB->LR > (RAM/4 - Memory_Num)) {
-		Current_PCB->R = 0;
+		Current_PCB->R = 0;						//insufficient memory
 	}
 	else {
-		PCB_Array[numPID].BR = Memory_Num;
-		PCB_Array[numPID].Block = Current_PCB->Block;
-		PCB_Array[numPID].C = Current_PCB->C;
-		PCB_Array[numPID].IC = Current_PCB->IC;
-		PCB_Array[numPID].LR = Current_PCB->LR;
-		PCB_Array[numPID].PID = numPID;
-		PCB_Array[numPID].R = Current_PCB->PID;
+		PCB_Array[numPID].BR = Memory_Num;				//Base register starts at end of last process
+		PCB_Array[numPID].Block = Current_PCB->Block;			//
+		PCB_Array[numPID].C = Current_PCB->C;				//Same truth value
+		PCB_Array[numPID].IC = Current_PCB->IC;				//Same instruction counter
+		PCB_Array[numPID].LR = Current_PCB->LR;				//Same program size
+		PCB_Array[numPID].PID = numPID;					//new PID
+		PCB_Array[numPID].R = Current_PCB->PID;				//other PID in new R
 		//PCB_Array[numPID]. Ask Gary about other members
 
-		Current_PCB->R = PCB_Array[numPID].PID;
+		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
 
-		for (i=0 ; i < Current_PCB->LR ; i++) {
+		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over
 			Memory_Start[Memory_Num++] = Memory_Start[Current_PCB->BR + i];
 		}
+		numPID++;							//increment number of processes
 	}
+}
+int Exec(u_int8_t rand1,u_int8_t rand2)
+{
+	u_int8_t filename[2];
+	filename[0] = rand1;
+	filename[1] = rand2;
+	
+	u_int16_t MemStart = Current_PCB->BR;			//start new program mem here
+	u_int16_t MemLoc = MemStart;
+	//static int PID
+	
+	int FileComplete=0;					//flag
+	char buff[64]={0};					//storage for each line of code
+	char tempbuff[4];					//more storage
+	
+	WORDBYTES CurrentWord;
+	int fildes=open(filename,O_RDONLY);			//open that file ... do dah doo doo
+	
+	if (filedes == -1) {					//error checking for open()
+		fprintf(stderr,"Program not loaded properly, check to see if input file exists");
+		return -1;
+	}
+	close(fileno(stdin));					//put our file in place of stdin
+	dup(fildes);
+	
+	// ProgramWrite with a few mods
+
+	fgets(buff,64,stdin);					//get first line
+	if(strncmp(buff,"BRAIN09",7) == 0)			//make sure it's legit
+	{
+		while (1)
+		{
+			fgets(buff,64,stdin);			//get next line
+			if(strncmp(buff,"DATA",4)==0)		//End of Program Instructions
+			{
+				FileComplete=1;
+				break;
+			}
+			if(strncmp(buff,"BRAIN09",7)==0)	//Look for New Program
+			{
+				//PID++;
+				//i=0;
+				//fgets(buff,64,stdin);
+				
+				FileComplete = 1;
+				break;
+			}
+			
+			tempbuff[3]=buff[0];			//Switch the bytes around
+			tempbuff[2]=buff[1];
+			tempbuff[1]=buff[2];
+			tempbuff[0]=buff[3];
+
+			Memory_Start[MemLoc]=*((u_int32_t*)tempbuff);	//put instr in memory
+			MemLoc++;				//increment # bytes written
+			if(MemLoc > MemStart + Current_PCB->LR)	//check against end of memory
+			{
+				printf("Insufficient Memory");
+				return -1;
+			}
+		}
+		*Program_Length = MemLoc - MemStart;	//get program length from old MemLoc val
+		
+		return 0;
+	}
+	else	{
+		fprintf(stderr,"Brain09 Syntax Error\n");
+		return -1;
+	}
+	
+	// End of ProgramWrite with a few mods
 }
