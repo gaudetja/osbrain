@@ -25,9 +25,9 @@
 #define L2 4*100
 
 //Memory Allocated
-static u_int32_t* Memory_Start;					//Start of memory block
-static u_int32_t* Memory_End;					//End of memory block
-static u_int16_t Memory_Num = 0;				//number of elements in memory block
+u_int32_t* Memory_Start;					//Start of memory block
+u_int32_t* Memory_End;					//End of memory block
+u_int16_t Memory_Num = 0;				//number of elements in memory block
 
 /*
  *Executes memory allocation from stdin.
