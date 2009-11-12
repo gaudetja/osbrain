@@ -1,14 +1,6 @@
 BRAIN09
-BU10  # 00 branch to start Program
-0000  # 01 constant 0
-0001  # 02 constant 1
-0002  # 03 constant 2
-0000  # 04 null
-0000  # 05 null
-0000  # 06 null
-0000  # 07 null
-0000  # 08 null
 1024  # 09 constant 1024
+FK  
 GD50  # 10 read the data line
 LR50  # 11 load input value in register
 SR51  # 12 store reg to n
@@ -24,30 +16,10 @@ GD60
 LR59
 SD01
 H     # halt
-BRAIN09
-GD90   ;Load Data
-GD80   ;Load Data
-LR89  ;Initialize Stack Point
-SP    	
-PP    ;Pop First Value
-SR80  :Store First Value
-LR88  ;Load Counter (started at 10)
-SU87  ;Dec Counter
-SR88  ;Store Counter
-PP    ;Pop Next Value	
-MU80  ;Multiply Next Value and Stored Value
-SR80  ;Store Result
-LR88  ;Load Counter
-CE87  ;Compare Counter to 0;
-BT16  ;If True Exit
-BU07  ;False Loop to Dec Counter
-GD70
-LR86
-RCXX
-H     ;Program Done.
 DATA
 0002000000000000000000000000000000000050
 0001000200030004000500060007000800090010
 0000000000000000000000000080000100100099
 1234567891234567891234567891234567891234
 1234567891234567891234567891234567891234
+END

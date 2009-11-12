@@ -24,7 +24,7 @@
 #include "Exec_Brain.h"
 #include "curlyqueue.h"
 #include "sched.h"
-
+#include "SharedMem.h"
 
 int numPID = 0;
 int LoadProgram(char* argv,  u_int16_t* pProgram_Length );
@@ -36,9 +36,10 @@ int LoadProgram(char* argv,  u_int16_t* pProgram_Length );
  *
  *return 0; (always)
  */
+u_int16_t* pProgram_Length;
 int main(int argc, char* argv[])
 {
-	u_int16_t* pProgram_Length;
+	pProgram_Length=malloc(4);
         //Loads Initial Program
         LoadProgram(argv[1] , pProgram_Length);
         //Run the program

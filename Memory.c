@@ -103,10 +103,10 @@ int ProgramWrite(u_int16_t* Program_Length)
  *
  *return CurrentWord; (16byte word)
  */
-WORDBYTES GetInstruction(u_int16_t IC,u_int8_t PID)
+WORDBYTES GetInstruction(u_int16_t IC,u_int8_t BR)
 {
 	WORDBYTES CurrentWord;
-	CurrentWord.word=Memory_Start[IC+PID*100];
+	CurrentWord.word=Memory_Start[IC+BR];
 	return CurrentWord;
 }
 
@@ -187,7 +187,6 @@ void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t PID)
 		Memory_Start[(rand1-48)*10+i+PID*100]=*((u_int32_t*)tempbuff);
 		printf("Memory After Get Data (%d), %x\n",rand1-48,Memory_Start[rand1*10+rand2+i+PID*100]);
 	}
-
 }
 
 /*
