@@ -118,12 +118,12 @@ WORDBYTES GetInstruction(u_int16_t IC,u_int8_t BR)
 			printf("%x\n",CurrentWord.word);
  *return ReadWord; (16byte word)
  */
-WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t PID)
+WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t BR)
 {
 	int location;
 	WORDBYTES ReadWord;
 
-	location=(rand1)*10 + (rand2)+ PID*100;
+	location=(rand1)*10 + (rand2)+ BR;
 	ReadWord.word=Memory_Start[location];
 	if (ReadWord.word==0)
 	{
@@ -141,13 +141,13 @@ WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t PID)
 	return ReadWord;
 
 }
-void CopyMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t PID1,u_int8_t PID2)
+void CopyMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
 {
 //      int temp1=rand1*10+rand2+PID1*100;
 //      int temp2=rand1*10+rand2+PID2*100;
 //      printf("Memory Address %d :%d\n ",temp1,Memory_Start[rand1*10+rand2+PID1*100]);
 //      printf("Memory Address %d :%d\n ",temp2,Memory_Start[rand1*10+rand2+PID2*100]);
-	Memory_Start[rand1*10+rand2+PID1*100]=Memory_Start[rand1*10+rand2+PID2*100];
+	Memory_Start[rand1*10+rand2+BR1]=Memory_Start[rand1*10+rand2+BR2];
 //      printf("Memory Address %d :%d\n ",temp1,Memory_Start[rand1*10+rand2+PID1*100]);
 //      printf("Memory Address %d :%d\n ",temp2,Memory_Start[rand1*10+rand2+PID2*100]);
 }
@@ -157,9 +157,9 @@ void CopyMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t PID1,u_int8_t PID2)
  *@param rand1
  *@param rand2
  */
-void WriteMemory(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
+void WriteMemory(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t BR)
 {
-	u_int16_t location=(rand1)*10 + (rand2)+PID*100;
+	u_int16_t location=(rand1)*10+(rand2)+BR;
 	Memory_Start[location]=Value;
 	return;
 
@@ -169,7 +169,7 @@ void WriteMemory(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
  *Gets memory from data location
  *@param rand1
  */
-void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t PID)
+void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t BR)
 {
 	char buff[1024]={0};
 	char tempbuff[4];
@@ -184,18 +184,18 @@ void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t PID)
 		tempbuff[2]=buff[i*4+1];
 		tempbuff[1]=buff[i*4+2];
 		tempbuff[0]=buff[i*4+3];
-		Memory_Start[(rand1-48)*10+i+PID*100]=*((u_int32_t*)tempbuff);
-		printf("Memory After Get Data (%d), %x\n",rand1-48,Memory_Start[rand1*10+rand2+i+PID*100]);
+		Memory_Start[(rand1-48)*10+i+BR]=*((u_int32_t*)tempbuff);
+		printf("Memory After Get Data (%d), %x\n",rand1-48,Memory_Start[rand1*10+rand2+i+BR]);
 	}
 }
 
 /*
  *Prints all 100 bytes of memory on in blocks of 10
  */
-void MemoryDump(u_int16_t PID)
+void MemoryDump(u_int16_t BR)
 {
 	int i;
 	for (i=0;i<10;i++)
-		printf("Memory %02d:%02d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",i*10+PID*100,i*10+9+PID*100, Memory_Start[i*10+0+PID*100],Memory_Start[i*10+1+PID*100],Memory_Start[i*10+2+PID*100],Memory_Start[i*10+3+PID*100],Memory_Start[i*10+4+PID*100],Memory_Start[i*10+5+PID*100],Memory_Start[i*10+6+PID*100],Memory_Start[i*10+7+PID*100],Memory_Start[i*10+8+PID*100],Memory_Start[i*10+9+PID*100]);
+		printf("Memory %03d:%03d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",BR+i*10,BR+10+i*10, Memory_Start[BR+0+i*10],Memory_Start[BR+1+i*10],Memory_Start[i*10+2+BR],Memory_Start[i*10+3+BR],Memory_Start[i*10+4+BR],Memory_Start[i*10+5+BR],Memory_Start[i*10+6+BR],Memory_Start[i*10+7+BR],Memory_Start[i*10+8+BR],Memory_Start[i*10+9+BR]);
 }
 

@@ -118,7 +118,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_CL:  CompareLess(rand1,rand2);        break;  // Compare Less (CL)
 			case ISTR_BT:  BranchTrue(rand1,rand2);         break;  // Branch Conditional (BT)
 			case ISTR_BU:  BranchUnc(rand1,rand2);          break;  // Branch Unconditional (BU)
-			case ISTR_GD:  GetData(rand1,rand2,Current_PCB->PID);            break;  // Get Data (GD)
+			case ISTR_GD:  GetData(rand1,rand2,Current_PCB->BR);            break;  // Get Data (GD)
 			case ISTR_PD:  PutData(rand1);                  break;  // Put Data (PD)
 			case ISTR_AD:  AddToReg(rand1,rand2);           break;  // Add (AD)
 			case ISTR_SU:  RegSubtract(rand1,rand2);        break;  // Subtra101ct (SU)
@@ -158,7 +158,7 @@ void RegToStack()
 	MemoryContents.bytes.byte3=((Current_PCB->R/10)%10)+48;
 	MemoryContents.bytes.byte2=((Current_PCB->R/100)%10)+48;
 	MemoryContents.bytes.byte1=((Current_PCB->R/1000)%10)+48;
-	WriteMemory(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	WriteMemory(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 }
 
 /*
@@ -166,34 +166,21 @@ void RegToStack()
  */
 void StackToReg()
 {
-	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 	Current_PCB->R=MemoryContents.word;
 	Current_PCB->SP--;
 }
 
-/*101
- *Load a place in memory to the register
- *@param rand1
- *
- *@param rand2
- *
- */
+
 void LoadRegister(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->PID);
+	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
 	Current_PCB->R=MemoryContents.word;
 }
 
-/*
- *If the number in the register is equal to the number specified by the parameters, then set toggle to true, else set to false
- *@param rand1ffff2fb0
- *
- *@param rand2
- *101
- */
 void CompareEqual(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->PID);
+	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
 	if(Current_PCB->R==MemoryContents.word)
 	{
 		Current_PCB->C = 'T';
@@ -212,7 +199,7 @@ void CompareEqual(u_int8_t rand1,u_int8_t rand2)
  */
 void CompareLess(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->PID);
+	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
 	if(Current_PCB->R<MemoryContents.word)
 	{
 		Current_PCB->C = 'T';
@@ -244,7 +231,7 @@ void BranchTrue(u_int8_t rand1,u_int8_t rand2)
  */
 void BranchUnc(u_int8_t rand1,u_int8_t rand2)
 {
-	Current_PCB->IC = (10*(rand1-48)+(rand2-48))-1;
+	Current_PCB->IC = (10*(rand1-48)+(rand2-48)+Current_PCB->BR)-1;
 }
 
 /*
@@ -255,7 +242,7 @@ void BranchUnc(u_int8_t rand1,u_int8_t rand2)
  */
 void AddToReg(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadMemory(rand1,rand2,Current_PCB->PID);
+	MemoryContents=ReadMemory(rand1,rand2,Current_PCB->BR);
 	Current_PCB->R=Current_PCB->R+MemoryContents.word;
 }
 
@@ -267,7 +254,7 @@ void AddToReg(u_int8_t rand1,u_int8_t rand2)
  */
 void RegDivide(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadMemory (rand1-48,rand2-48,Current_PCB->PID);
+	MemoryContents=ReadMemory (rand1-48,rand2-48,Current_PCB->BR);
 	Current_PCB->R = (Current_PCB->R) / MemoryContents.word;
 }
 
@@ -279,7 +266,7 @@ void RegDivide(u_int8_t rand1,u_int8_t rand2)
  */
 void RegSubtract(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadMemory (rand1-48,rand2-48,Current_PCB->PID);
+	MemoryContents=ReadMemory (rand1-48,rand2-48,Current_PCB->BR);
 	Current_PCB->R = (Current_PCB->R) - MemoryContents.word;
 }
 
@@ -291,7 +278,7 @@ void RegSubtract(u_int8_t rand1,u_int8_t rand2)
  */
 void RegMultiply(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->PID);
+	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
 	Current_PCB->R = (Current_PCB->R) * MemoryContents.word;
 }
 
@@ -307,7 +294,7 @@ void StoreReg(u_int8_t rand1,u_int8_t rand2)
 	MemoryContents.bytes.byte3=((Current_PCB->R/10)%10)+48;
 	MemoryContents.bytes.byte2=((Current_PCB->R/100)%10)+48;
 	MemoryContents.bytes.byte1=((Current_PCB->R/1000)%10)+48;
-	WriteMemory(MemoryContents.word,rand1-48,rand2-48,Current_PCB->PID);
+	WriteMemory(MemoryContents.word,rand1-48,rand2-48,Current_PCB->BR);
 }
 
 /*
@@ -335,7 +322,7 @@ void PutData(u_int8_t rand1)
 {
 	int i;
 	for(i=0; i<10; i++){
-		MemoryContents=ReadMemory(rand1-48, i,Current_PCB->PID);
+		MemoryContents=ReadMemory(rand1-48, i,Current_PCB->BR);
 		printf("%d ",MemoryContents.word);
 	}
 	printf("\n");
@@ -347,10 +334,10 @@ void PutData(u_int8_t rand1)
  */
 void SubStack()
 {
-	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 	u_int32_t Temp=MemoryContents.word;
 	Current_PCB->SP-=1;
-	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 	MemoryContents.word=MemoryContents.word-Temp;
 	u_int8_t Tempbyte4=MemoryContents.word%10+48;
 	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
@@ -360,7 +347,7 @@ void SubStack()
 	MemoryContents.bytes.byte2=Tempbyte2;
 	MemoryContents.bytes.byte3=Tempbyte3;
 	MemoryContents.bytes.byte4=Tempbyte4;
-	WriteMemory(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	WriteMemory(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 
 }
 
@@ -369,10 +356,10 @@ void SubStack()
  */
 void MultStack()
 {
-	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 	u_int32_t Temp=MemoryContents.word;
 	Current_PCB->SP-=1;
-	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 	MemoryContents.word=MemoryContents.word*Temp;
 	u_int8_t Tempbyte4=MemoryContents.word%10+48;
 	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
@@ -382,7 +369,7 @@ void MultStack()
 	MemoryContents.bytes.byte2=Tempbyte2;
 	MemoryContents.bytes.byte3=Tempbyte3;
 	MemoryContents.bytes.byte4=Tempbyte4;
-	WriteMemory(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	WriteMemory(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 
 }
 
@@ -391,10 +378,10 @@ void MultStack()
  */
 void DivStack()
 {
-	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 	u_int32_t Temp=MemoryContents.word;
 	Current_PCB->SP-=1;
-	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 	MemoryContents.word=MemoryContents.word/Temp;
 	u_int8_t Tempbyte4=MemoryContents.word%10+48;
 	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
@@ -404,7 +391,7 @@ void DivStack()
 	MemoryContents.bytes.byte2=Tempbyte2;
 	MemoryContents.bytes.byte3=Tempbyte3;
 	MemoryContents.bytes.byte4=Tempbyte4;
-	WriteMemory(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	WriteMemory(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 
 }
 
@@ -414,10 +401,10 @@ void DivStack()
  */
 void AddStack()
 {
-	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 	u_int32_t Temp=MemoryContents.word;
 	Current_PCB->SP-=1;
-	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	MemoryContents=ReadMemory((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 	MemoryContents.word=MemoryContents.word+Temp;
 	u_int8_t Tempbyte4=MemoryContents.word%10+48;
 	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
@@ -427,7 +414,7 @@ void AddStack()
 	MemoryContents.bytes.byte2=Tempbyte2;
 	MemoryContents.bytes.byte3=Tempbyte3;
 	MemoryContents.bytes.byte4=Tempbyte4;
-	WriteMemory(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
+	WriteMemory(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
 
 
 }
@@ -439,21 +426,21 @@ void printstatus()
 {
 	printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 	printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
-	MemoryDump(Current_PCB->PID);
+	MemoryDump(Current_PCB->BR);
 
 
 }
 
 void LoadHigh(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->PID);
+	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
 	Current_PCB->R=(Current_PCB->R & 0x00FF);
 	Current_PCB->R=(MemoryContents.word|0xFF00)&Current_PCB->R;
 }
 
 void LoadLow(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->PID);
+	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
 	Current_PCB->R=(Current_PCB->R & 0xFF00);
 	Current_PCB->R=(MemoryContents.word|0x00FF) & Current_PCB->R;
 }
@@ -507,7 +494,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 			rand2=CurrentWord.bytes.byte4%10;
 			for (i=0;i<10;i++)
 			{
-				CopyMemory(rand1,rand2+i,Current_PCB->PID,Source_PID);  // Copy Memory Values
+				CopyMemory(rand1,rand2+i,Current_PCB->BR,PCB_Array[Source_PID].BR);  // Copy Memory Values
 			}
 
 			blockq(&(PCB_Array[Source_PID].PID),0);									 // Remove from blocked queue
@@ -601,7 +588,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	char buff[64]={0};					//storage for each line of code
 	char tempbuff[4];					//more storage
 
-	WORDBYTES CurrentWord;
+
 	int fildes=open(filename,O_RDONLY);			//open that file ... do dah doo doo
 
 	if (fildes == -1) {					//error checking for open()

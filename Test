@@ -9,8 +9,6 @@ MU03  # 14 multiply n by constant (2)
 SR51  # 15 store n * constant (2) to n
 LR51  # 16 load n to register
 CE09  # 17 compare n with 1024
-BT20  # 18 if n = 1024, go to 20
-BU13  # 19 if n != 1024 go to line 13
 PD50  # 50 print data
 GD60
 LR59
