@@ -23,6 +23,7 @@
 #include "Memory.h"
 #include "Exec_Brain.h"
 #include "sched.h"
+#include "SharedMem.h"
 
 #define TDMA_Setting 15
 #define NPID 200
@@ -35,14 +36,8 @@ OPERATOR operator;		      	//Operator to be chosen from the list
 WORDBYTES MemoryContents;		       //4 byte word read from memory
 u_int32_t* MailBox_Start;
 u_int32_t ContextSwitchCount=0;
-//extern u_int16_t Memory_Num;
-extern int numPID;
-//extern u_int32_t* Memory_Start;
-//extern u_int32_t * Memory_Start;			//Start of memory block
-//extern u_int32_t * Memory_End;			//End of memory block
-//extern u_int16_t Memory_Num;			//number of elements in memory block
 
-
+u_int32_t* PostOffice;
 
 /*
  *Invokes the main loop which reads, executes the operations and writes back to memory
@@ -52,8 +47,8 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	//initialize all the PCB variables to 0
 
 	char PID=0xFF;
-	PCB_Array=calloc(nPID,sizeof(PCB));
-	u_int32_t* PostOffice=calloc(nPID*nPID,4);
+	PCB_Array=calloc(1,sizeof(PCB));
+	PostOffice=calloc(100*100,4);
 	int i;
 	for(i=0;i<nPID*nPID;i++) *(PostOffice+i)=0xFF;
 	buildq();
@@ -83,12 +78,13 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 		Current_PCB=&PCB_Array[(int)PID];
 		while(Current_PCB->TDMA<TDMA_Setting)
 		{
-			CurrentWord=GetInstruction(Current_PCB->IC,Current_PCB->PID);		//gets instruction
+			CurrentWord=GetInstruction(Current_PCB->IC,Current_PCB->BR);		//gets instruction
+			Current_PCB->IC++;
 			operator.bytes.byte1=CurrentWord.bytes.byte1;				//give operator 1 a value
 			operator.bytes.byte2=CurrentWord.bytes.byte2;						//give operator 1 a value
 			Instruction(operator.twobytes, CurrentWord.bytes.byte3, CurrentWord.bytes.byte4);	//Calls Instruction function
 			Current_PCB->TDMA++;
-			Current_PCB->IC++;
+
 		}
 		Current_PCB->TDMA=0;
 		if (Current_PCB->Block==0) readyq(&(Current_PCB->PID),1);
@@ -145,6 +141,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_SI:  SI(rand1,rand2); 				break;
 			case ISTR_LS:  LS(rand1,rand2); 				break;
 			case ISTR_ST:  ST(rand1,rand2); 				break;
+
 			default:								break;
 		}
 		printstatus();
@@ -565,20 +562,28 @@ void Fork(void)
 	}
 	else {
 		PCB_Array[numPID].BR = Memory_Num;				//Base register starts at end of last process
-		PCB_Array[numPID].Block = Current_PCB->Block;			//
+		PCB_Array[numPID].Block = 0;			//
 		PCB_Array[numPID].C = Current_PCB->C;				//Same truth value
 		PCB_Array[numPID].IC = Current_PCB->IC;				//Same instruction counter
 		PCB_Array[numPID].LR = Current_PCB->LR;				//Same program size
 		PCB_Array[numPID].PID = numPID;					//new PID
 		PCB_Array[numPID].R = Current_PCB->PID;				//other PID in new R
-		//PCB_Array[numPID]. Ask Gary about other members
+
+		PCB_Array[numPID].MailBox_Start = PostOffice+(100*numPID);
+		PCB_Array[numPID].MailBox_End = PostOffice+((numPID+1)*100-1);
+		PCB_Array[numPID].WaitID = 0xFF;
+		PCB_Array[numPID].TDMA = 0;
+		readyq(&(PCB_Array[numPID].PID), 1);
 
 		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
 
 		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over
-			Memory_Start[Memory_Num++] = Memory_Start[Current_PCB->BR + i];
+			*(Memory_Start+Memory_Num)= *(Memory_Start+Current_PCB->BR+i);
+			Memory_Num++;
+
 		}
-		numPID++;							//increment number of processes
+		numPID++; 	//increment number of processes
+		Current_PCB->TDMA=TDMA_Setting;
 	}
 }
 int Exec(u_int8_t rand1,u_int8_t rand2)
