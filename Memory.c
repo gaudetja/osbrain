@@ -44,7 +44,7 @@ int ProgramWrite(u_int16_t* Program_Length)
 	char buff[64]={0};
 	char tempbuff[4];
 	WORDBYTES CurrentWord;
-	
+
 	Memory_Start = malloc(RAM);
 
 	fgets(buff,64,stdin);					//get first line
@@ -64,7 +64,7 @@ int ProgramWrite(u_int16_t* Program_Length)
 				//PID++;
 				//i=0;
 				//fgets(buff,64,stdin);
-				
+
 				fprintf(stderr,"Brain09 Syntax Error\n");
 				break;
 			}
