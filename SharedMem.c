@@ -11,10 +11,13 @@ void InitShared(void) {
 }
 int PE(u_int8_t rand1, u_int8_t rand2) {
 
+	return 0;
 }
 int VE(u_int8_t rand1, u_int8_t rand2) {
 
+	return 0;
 }
 int SI(u_int8_t rand1, u_int8_t rand2) {
 
+	return 0;
 }
