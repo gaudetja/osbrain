@@ -43,6 +43,7 @@ int ProgramWrite(u_int16_t* Program_Length)
 	int FileComplete=0;
 	char buff[64]={0};
 	char tempbuff[4];
+	int lengthbuff[4];
 	WORDBYTES CurrentWord;
 
 	Memory_Start = malloc(RAM);
@@ -50,10 +51,19 @@ int ProgramWrite(u_int16_t* Program_Length)
 	fgets(buff,64,stdin);					//get first line
 	if(strncmp(buff,"BRAIN09",7) == 0)			//make sure it's legit
 	{
+		fgets(buff,64,stdin);
+		lengthbuff[3]=(buff[0]-48)*1000;			//Switch the bytes around
+		lengthbuff[2]=(buff[1]-48)*100;
+		lengthbuff[1]=(buff[2]-48)*10;
+		lengthbuff[0]=(buff[3]-48)*1;
+
+		*Program_Length=lengthbuff[0]+lengthbuff[1]+lengthbuff[2]+lengthbuff[3];
+
 		while (1)
 		{
 
-			fgets(buff,64,stdin);			//get next line
+			fgets(buff,64,stdin);				//get next line
+
 			if(strncmp(buff,"DATA",4)==0)		//End of Program Instructions
 			{
 				FileComplete=1;
