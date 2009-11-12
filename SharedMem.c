@@ -1,9 +1,9 @@
-#include "SharedMem.h"
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "SharedMem.h"
 u_int32_t * Shared;
 
 void InitShared(void) {
