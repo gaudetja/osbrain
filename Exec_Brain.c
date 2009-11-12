@@ -231,7 +231,7 @@ void BranchTrue(u_int8_t rand1,u_int8_t rand2)
  */
 void BranchUnc(u_int8_t rand1,u_int8_t rand2)
 {
-	Current_PCB->IC = (10*(rand1-48)+(rand2-48)+Current_PCB->BR)-1;
+	Current_PCB->IC = (10*(rand1-48)+(rand2-48)+Current_PCB->BR);
 }
 
 /*
