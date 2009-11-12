@@ -211,6 +211,9 @@ void Fork(void);
 int Exec(u_int8_t rand1, u_int8_t rand2);
 //runs a process in the calling process' program memory
 
+int PE(void);
+int VE(void);
+int SI(void);
 void printstatus();
 
 
