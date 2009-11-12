@@ -28,7 +28,7 @@ typedef struct ProcessControl
 
 
 
-extern PCB* PCB_Array;
+
 
 typedef struct bytes2
 {
@@ -37,7 +37,7 @@ typedef struct bytes2
 } BYTES2;
 
 /*
- *Has one 16 bit word and two 8 bit words using bytes. These are used to "split the instruction up.
+ *Has one 16 bit word and two 8 bit words using	i++; bytes. These are used to "split the instruction up.
  */
 typedef union inttobytes
 {
