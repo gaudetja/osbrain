@@ -254,6 +254,7 @@ void printstatus();
 extern u_int32_t * Memory_Start;			//Start of memory block
 extern u_int32_t * Memory_End;			//End of memory block
 extern u_int16_t Memory_Num;			//number of elements in memory block
+extern int numPID;
 
 
 #endif
