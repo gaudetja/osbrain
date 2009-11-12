@@ -23,9 +23,6 @@
 #include "Memory.h"
 #include "Exec_Brain.h"
 #include "sched.h"
-void InitShared(void) {
-	Shared=calloc(100,4);
-}
 
 #define TDMA_Setting 15
 #define NPID 200
@@ -35,19 +32,17 @@ PCB* Current_PCB;			       //Current Process control block
 PCB* PCB_Array;
 WORDBYTES CurrentWord;			  //Current 4 byte word read from memory
 OPERATOR operator;		      	//Operator to be chosen from the list
-WORDBYTES MemoryContents;		       //4 byte word read froint PE(void) {
-
-}
-int VE(void) {
-
-}
-int SI(void) {
-
-}
-m memory
+WORDBYTES MemoryContents;		       //4 byte word read from memory
 u_int32_t* MailBox_Start;
 u_int32_t ContextSwitchCount=0;
-u_int32_t* PostOffice;
+//extern u_int16_t Memory_Num;
+extern int numPID;
+//extern u_int32_t* Memory_Start;
+//extern u_int32_t * Memory_Start;			//Start of memory block
+//extern u_int32_t * Memory_End;			//End of memory block
+//extern u_int16_t Memory_Num;			//number of elements in memory block
+
+
 
 /*
  *Invokes the main loop which reads, executes the operations and writes back to memory
@@ -57,25 +52,27 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	//initialize all the PCB variables to 0
 
 	char PID=0xFF;
-	PCB_Array=calloc(100,sizeof(PCB));
-	u_int32_t* PostOffice=calloc(100*100,4);
+	PCB_Array=calloc(nPID,sizeof(PCB));
+	u_int32_t* PostOffice=calloc(nPID*nPID,4);
 	int i;
-	for(i=0;i<100*100;i++) *(PostOffice+i)=0xFF;
-
+	for(i=0;i<nPID*nPID;i++) *(PostOffice+i)=0xFF;
 	buildq();
-	PCB_Array[0].R = 0;
-	PCB_Array[0].SP = 0;
-	PCB_Array[0].C = 'F';
-	PCB_Array[0].IC = 0;
-	PCB_Array[0].PID = numPID;
-	PCB_Array[0].LR = Program_Length;
-	PCB_Array[0].BR = Memory_Num - Program_Length;
-	PCB_Array[0].Block = 0;
-	PCB_Array[0].MailBox_Start = PostOffice+(i*nPID);
-	PCB_Array[0].MailBox_End = PostOffice+((i+1)*nPID-1);
-	PCB_Array[0].WaitID = 0xFF;
-	PCB_Array[0].TDMA = 0;
-	readyq(&(PCB_Array[0].PID), 1);
+
+	PCB_Array[numPID].R = 0;
+	PCB_Array[numPID].SP = 0;
+	PCB_Array[numPID].C = 'F';
+	PCB_Array[numPID].IC = 0;
+	PCB_Array[numPID].PID = numPID;
+	PCB_Array[numPID].LR = Program_Length;
+	PCB_Array[numPID].BR = Memory_Num - Program_Length;
+	PCB_Array[numPID].Block = 0;
+	PCB_Array[numPID].MailBox_Start = PostOffice+(i*nPID);
+	PCB_Array[numPID].MailBox_End = PostOffice+((i+1)*nPID-1);
+	PCB_Array[numPID].WaitID = 0xFF;
+	PCB_Array[numPID].TDMA = 0;
+
+	readyq(&(PCB_Array[numPID].PID), 1);
+
 	numPID++;
 
 	while(1)
@@ -116,10 +113,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 		//instruction set
 		switch (rator)
 		{
-			case ISTR_void InitShared(void) {
-				Shared=calloc(100,4);
-			}
-LR:  LoadRegister(rand1, rand2);      break;  // Load Register (LR)
+			case ISTR_LR:  LoadRegister(rand1, rand2);      break;  // Load Register (LR)
 			case ISTR_LL:  LoadLow(rand1, rand2);           break;  // Load Low (LL)
 			case ISTR_LH:  LoadHigh(rand1, rand2);          break;  // Load High (LH)
 			case ISTR_SR:  StoreReg(rand1,rand2);           break;  // Stack Register (SR)
@@ -150,8 +144,8 @@ LR:  LoadRegister(rand1, rand2);      break;  // Load Register (LR)
 			case ISTR_FK:  Fork(); 							break;	// Fork a new process
 			case ISTR_EX:  Exec(rand1,rand2);				break;	// Execute a new process
 			case ISTR_PE:  PE(rand1,rand2); 							break;
-			case ISTR_VE:  VE(rand1,rand2); 							break;
-			case ISTR_SI:  SI(rand1,rand2); 							break;
+			case ISTR_VE:  VE(); 							break;
+			case ISTR_SI:  SI(); 							break;
 			default:								break;
 		}
 		printstatus();
@@ -571,27 +565,21 @@ void Fork(void)
 		Current_PCB->R = 0;						//insufficient memory
 	}
 	else {
-		PCB_Array[numPID].BR = Memory_Num;					//Base register starts at end of last process
-		PCB_Array[numPID].Block = Current_PCB->Block;		//
+		PCB_Array[numPID].BR = Memory_Num;				//Base register starts at end of last process
+		PCB_Array[numPID].Block = Current_PCB->Block;			//
 		PCB_Array[numPID].C = Current_PCB->C;				//Same truth value
 		PCB_Array[numPID].IC = Current_PCB->IC;				//Same instruction counter
 		PCB_Array[numPID].LR = Current_PCB->LR;				//Same program size
-		PCB_Array[numPID].PID = numPID;						//new PID
+		PCB_Array[numPID].PID = numPID;					//new PID
 		PCB_Array[numPID].R = Current_PCB->PID;				//other PID in new R
-		PCB_Array[numPID].MailBox_Start = PostOffice+(numPID*100);
-		PCB_Array[numPID].MailBox_End = PostOffice+((numPID+1)*100-1);
-		PCB_Array[numPID].SP = Current_PCB->SP;
-		PCB_Array[numPID].WaitID = 0xFF;
-		PCB_Array[numPID].TDMA = 0;
+		//PCB_Array[numPID]. Ask Gary about other members
 
 		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
 
 		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over
 			Memory_Start[Memory_Num++] = Memory_Start[Current_PCB->BR + i];
 		}
-		readyq(&(PCB_Array[numPID].PID), 1);				//increment number of processes
-		numPID++;
-
+		numPID++;							//increment number of processes
 	}
 }
 int Exec(u_int8_t rand1,u_int8_t rand2)
@@ -610,7 +598,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	char tempbuff[4];					//more storage
 
 	WORDBYTES CurrentWord;
-	int fildes=open(filename,O_RDONLY);	//open that file ... do dah doo doo
+	int fildes=open(filename,O_RDONLY);			//open that file ... do dah doo doo
 
 	if (fildes == -1) {					//error checking for open()
 		fprintf(stderr,"Program not loaded properly, check to see if input file exists");
