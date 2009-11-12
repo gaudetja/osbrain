@@ -47,7 +47,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	//initialize all the PCB variables to 0
 
 	char PID=0xFF;
-	PCB_Array=calloc(1,sizeof(PCB));
+	PCB_Array=calloc(100,sizeof(PCB));
 	PostOffice=calloc(100*100,4);
 	int i;
 	for(i=0;i<nPID*nPID;i++) *(PostOffice+i)=0xFF;
