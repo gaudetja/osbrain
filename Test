@@ -1,15 +1,17 @@
 BRAIN09
-1024  # 09 constant 1024
-FK  
-GD50  # 10 read the data line
-LR50  # 11 load input value in register
-SR51  # 12 store reg to n
-LR51  # 13 load n to register
-MU03  # 14 multiply n by constant (2)
-SR51  # 15 store n * constant (2) to n
-LR51  # 16 load n to register
-CE09  # 17 compare n with 1024
-PD50  # 50 print data
+1024	# 00 constant 1024
+GD50	# 01 read the data line
+FK  	# 02
+CE00	# 03 compare to PID0
+BT	# 04
+LR50	# 05 load input value in register
+SR51	# 06 store reg to n
+LR51	# 07 load n to register
+MU03	# 08 multiply n by constant (2)
+SR51	# 09 store n * constant (2) to n
+LR51	# 10 load n to register
+CE09	# 11 compare n with 1024
+PD50	# 12 print data
 GD60
 LR59
 SD01
