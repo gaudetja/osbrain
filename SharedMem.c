@@ -29,6 +29,10 @@ void InitShared(void) {
 
 void PE(u_int8_t rand1, u_int8_t rand2) {
 	int i = 10*(rand1-48)+(rand2-48);
+	if(i>99) {
+		printf("There are only 0-99 available semaphores! you tried to access %d",i);
+		exit(0);
+	}
 	if(semaphore[i].value) {
 	 	semaphore[i].value=0;
 		semaphore[i].PID=Current_PCB->PID;
@@ -38,6 +42,10 @@ void PE(u_int8_t rand1, u_int8_t rand2) {
 
 void VE(u_int8_t rand1, u_int8_t rand2) {
 	int i = 10*(rand1-48)+(rand2-48);
+	if(i>99) {
+		printf("There are only 0-99 available semaphores! you tried to access %d",i);
+		exit(0);
+	}
 	if(semaphore[i].value && (semaphore[i].PID==Current_PCB->PID)) {
 	 	semaphore[i].value=1;
 		semaphore[i].PID=-1;
@@ -46,15 +54,27 @@ void VE(u_int8_t rand1, u_int8_t rand2) {
 
 void SI(u_int8_t rand1, u_int8_t rand2) {
 	int i = 10*(rand1-48)+(rand2-48);
+	if(i>99) {
+		printf("There are only 0-99 available semaphores! you tried to access %d",i);
+		exit(0);
+	}
 	semaphore[i].value=Current_PCB->R;
 }
 
 void LS(u_int8_t rand1, u_int8_t rand2) {
 	int i = 10*(rand1-48)+(rand2-48);
+	if(i>99) {
+		printf("You should not try to access shared memory outside of limits!");
+		exit(0);
+	}
 	Current_PCB->R = shared[i];
 }
 
 void ST(u_int8_t rand1, u_int8_t rand2) {
 	int i = 10*(rand1-48)+(rand2-48);
+	if(i>99) {
+		printf("You should not try to access shared memory outside of limits!");
+		exit(0);
+	}
 	shared[i] = Current_PCB->R;
 }
