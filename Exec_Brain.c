@@ -35,14 +35,6 @@ OPERATOR operator;		      	//Operator to be chosen from the list
 WORDBYTES MemoryContents;		       //4 byte word read from memory
 u_int32_t* MailBox_Start;
 u_int32_t ContextSwitchCount=0;
-//extern u_int16_t Memory_Num;
-extern int numPID;
-//extern u_int32_t* Memory_Start;
-//extern u_int32_t * Memory_Start;			//Start of memory block
-//extern u_int32_t * Memory_End;			//End of memory block
-//extern u_int16_t Memory_Num;			//number of elements in memory block
-
-
 
 /*
  *Invokes the main loop which reads, executes the operations and writes back to memory
