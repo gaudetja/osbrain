@@ -4,19 +4,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "SharedMem.h"
-u_int32_t * Shared;
+
+#define numshared 100
+u_int32_t * shared;
 
 void InitShared(void) {
-	Shared=calloc(100,4);
+	int i;
+	shared=calloc(numshared,4);
+	for(i=0;i<numshared;i++) {
+		shared[i]=1;
+	}
 }
+
 void PE(u_int8_t rand1, u_int8_t rand2) {
 
 
 }
+
 void VE(u_int8_t rand1, u_int8_t rand2) {
 
 
 }
+
 void SI(u_int8_t rand1, u_int8_t rand2) {
 
 
