@@ -35,6 +35,14 @@ OPERATOR operator;		      	//Operator to be chosen from the list
 WORDBYTES MemoryContents;		       //4 byte word read from memory
 u_int32_t* MailBox_Start;
 u_int32_t ContextSwitchCount=0;
+//extern u_int16_t Memory_Num;
+extern int numPID;
+//extern u_int32_t* Memory_Start;
+//extern u_int32_t * Memory_Start;			//Start of memory block
+//extern u_int32_t * Memory_End;			//End of memory block
+//extern u_int16_t Memory_Num;			//number of elements in memory block
+
+
 
 /*
  *Invokes the main loop which reads, executes the operations and writes back to memory
@@ -91,9 +99,6 @@ return 0;
 /*
  *Takes two 1 byte operators standing for ASCII letters:
  *@param rator
- *void InitShared(void) {
-	Shared=calloc(100,4);
-}
  *
  *Also takes two words as the operands:
  *@param rand1
@@ -135,9 +140,11 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_GP:  GetPID();						break;  // Return Process ID to reg
 			case ISTR_FK:  Fork(); 							break;	// Fork a new process
 			case ISTR_EX:  Exec(rand1,rand2);				break;	// Execute a new process
-			case ISTR_PE:  PE(rand1,rand2); 							break;
-			case ISTR_VE:  VE(); 							break;
-			case ISTR_SI:  SI(); 							break;
+			case ISTR_PE:  PE(rand1,rand2); 				break;
+			case ISTR_VE:  VE(rand1,rand2); 				break;
+			case ISTR_SI:  SI(rand1,rand2); 				break;
+			case ISTR_LS:  LS(rand1,rand2); 				break;
+			case ISTR_ST:  ST(rand1,rand2); 				break;
 			default:								break;
 		}
 		printstatus();

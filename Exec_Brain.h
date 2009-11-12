@@ -249,6 +249,8 @@ void printstatus();
 #define ISTR_SI COMBINE('S','I')
 #define ISTR_FK	COMBINE('F','K')
 #define ISTR_EX COMBINE('E','X')
+#define ISTR_LS COMBINE('L','S')
+#define ISTR_ST COMBINE('S','T')
 
 
 extern u_int32_t * Memory_Start;			//Start of memory block
