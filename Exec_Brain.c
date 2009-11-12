@@ -67,9 +67,9 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	PCB_Array[numPID].MailBox_End = PostOffice+((i+1)*nPID-1);
 	PCB_Array[numPID].WaitID = 0xFF;
 	PCB_Array[numPID].TDMA = 0;
-	
+
 	readyq(&(PCB_Array[numPID].PID), 1);
-	
+
 	numPID++;
 
 	while(1)
@@ -107,36 +107,36 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 		//instruction set
 		switch (rator)
 		{
-			case ISTR_LR:  LoadRegister(rand1, rand2);      			break;  // Load Register (LR)
-			case ISTR_LL:  LoadLow(rand1, rand2);	 				break;  // Load Low (LL)
-			case ISTR_LH:  LoadHigh(rand1, rand2);	 				break;  // Load High (LH)
-			case ISTR_SR:  StoreReg(rand1,rand2);	   				break;  // Stack Register (SR)
-			case ISTR_SP:  RegToSP();		       				break;  // Copies the register to the Stack Pointer (SP)
-			case ISTR_PS:  SPToReg();		       				break;  // Copies the Stack Pointer to the register (PS)
-			case ISTR_PH:  RegToStack();		    				break;  // Push (PH)
-			case ISTR_PP:  StackToReg(Current_PCB->SP);     			break;  // Pop (PP)
-			case ISTR_CE:  CompareEqual(rand1,rand2);       			break;  // Compare Equal (CE)
-			case ISTR_CL:  CompareLess(rand1,rand2);				break;  // Compare Less (CL)
-			case ISTR_BT:  BranchTrue(rand1,rand2);	 				break;  // Branch Conditional (BT)
-			case ISTR_BU:  BranchUnc(rand1,rand2);	  				break;  // Branch Unconditional (BU)
-			case ISTR_GD:  GetData(rand1,rand2,Current_PCB->PID);	    		break;  // Get Data (GD)
-			case ISTR_PD:  PutData(rand1);		  				break;  // Put Data (PD)
-			case ISTR_AD:  AddToReg(rand1,rand2);	  				break;  // Add (AD)
-			case ISTR_SU:  RegSubtract(rand1,rand2);				break;  // Subtra101ct (SU)
-			case ISTR_MU:  RegMultiply(rand1,rand2);				break;  // Multiply (MU)
-			case ISTR_DI:  RegDivide(rand1,rand2);	  				break;  // Divide (DI)
-			case ISTR_AS:  AddStack();		      				break;  // Add Stack (AS)
-			case ISTR_SS:  SubStack();		      				break;  // Subtract Stack (SS)
-			case ISTR_MS:  MultStack(); 						break;  // Multiply Stack (MS)
-			case ISTR_DS:  DivStack();						break;  // Divide Stack (DS)
-			case ISTR_NP:  								break;  // No-op (NP)
-			case ISTR_H:   Current_PCB->Block=1;Current_PCB->TDMA=TDMA_Setting;	break;	// Halt (H)
-			case ISTR_HN:  Current_PCB->Block=1;Current_PCB->TDMA=TDMA_Setting;	break;	// Halt (H)
-			case ISTR_SD:  Send(rand1,rand2);					break;  // Send (SD)
-			case ISTR_RC:  Rec(rand1,rand2);					break;  // Receive (RC)
+			case ISTR_LR:  LoadRegister(rand1, rand2);      break;  // Load Register (LR)
+			case ISTR_LL:  LoadLow(rand1, rand2);           break;  // Load Low (LL)
+			case ISTR_LH:  LoadHigh(rand1, rand2);          break;  // Load High (LH)
+			case ISTR_SR:  StoreReg(rand1,rand2);           break;  // Stack Register (SR)
+			case ISTR_SP:  RegToSP();                       break;  // Copies the register to the Stack Pointer (SP)
+			case ISTR_PS:  SPToReg();                       break;  // Copies the Stack Pointer to the register (PS)
+			case ISTR_PH:  RegToStack();                    break;  // Push (PH)
+			case ISTR_PP:  StackToReg(Current_PCB->SP);     break;      // Pop (PP)
+			case ISTR_CE:  CompareEqual(rand1,rand2);       break;  // Compare Equal (CE)
+			case ISTR_CL:  CompareLess(rand1,rand2);        break;  // Compare Less (CL)
+			case ISTR_BT:  BranchTrue(rand1,rand2);         break;  // Branch Conditional (BT)
+			case ISTR_BU:  BranchUnc(rand1,rand2);          break;  // Branch Unconditional (BU)
+			case ISTR_GD:  GetData(rand1,rand2,Current_PCB->PID);            break;  // Get Data (GD)
+			case ISTR_PD:  PutData(rand1);                  break;  // Put Data (PD)
+			case ISTR_AD:  AddToReg(rand1,rand2);           break;  // Add (AD)
+			case ISTR_SU:  RegSubtract(rand1,rand2);        break;  // Subtra101ct (SU)
+			case ISTR_MU:  RegMultiply(rand1,rand2);        break;  // Multiply (MU)
+			case ISTR_DI:  RegDivide(rand1,rand2);          break;  // Divide (DI)
+			case ISTR_AS:  AddStack();                      break;  // Add Stack (AS)
+			case ISTR_SS:  SubStack();                      break;  // Subtract Stack (SS)
+			case ISTR_MS:  MultStack();                     break;  // Multiply Stack (MS)
+			case ISTR_DS:  DivStack();                      break;  // Divide Stack (DS)
+			case ISTR_NP:                                   break;  // No-op (NP)
+			case ISTR_H:   Current_PCB->Block=1;Current_PCB->TDMA=TDMA_Setting; break;                      // Halt (H)
+			case ISTR_HN:  Current_PCB->Block=1;Current_PCB->TDMA=TDMA_Setting; break;                      // Halt (H)
+			case ISTR_SD:  Send(rand1,rand2);               break;  // Send (SD)
+			case ISTR_RC:  Rec(rand1,rand2);                break;  // Receive (RC)
 			case ISTR_GP:  GetPID();						break;  // Return Process ID to reg
 			case ISTR_FK:  Fork(); 							break;	// Fork a new process
-			case ISTR_EX:  Exec(rand1,rand2);					break;	// Execute a new process
+			case ISTR_EX:  Exec(rand1,rand2);				break;	// Execute a new process
 			case ISTR_PE:  PE(); 							break;
 			case ISTR_VE:  VE(); 							break;
 			case ISTR_SI:  SI(); 							break;
@@ -581,26 +581,26 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	u_int8_t filename[2];
 	filename[0] = rand1;
 	filename[1] = rand2;
-	
+
 	u_int16_t MemStart = Current_PCB->BR;			//start new program mem here
 	u_int16_t MemLoc = MemStart;
 	u_int16_t* Program_Length;
 	//static int PID
-	
+
 	int FileComplete=0;					//flag
 	char buff[64]={0};					//storage for each line of code
 	char tempbuff[4];					//more storage
-	
+
 	WORDBYTES CurrentWord;
 	int fildes=open(filename,O_RDONLY);			//open that file ... do dah doo doo
-	
+
 	if (fildes == -1) {					//error checking for open()
 		fprintf(stderr,"Program not loaded properly, check to see if input file exists");
 		return -1;
 	}
 	close(fileno(stdin));					//put our file in place of stdin
 	dup(fildes);
-	
+
 	// ProgramWrite with a few mods
 
 	fgets(buff,64,stdin);					//get first line
@@ -619,11 +619,11 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 				//PID++;
 				//i=0;
 				//fgets(buff,64,stdin);
-				
+
 				FileComplete = 1;
 				break;
 			}
-			
+
 			tempbuff[3]=buff[0];			//Switch the bytes around
 			tempbuff[2]=buff[1];
 			tempbuff[1]=buff[2];
@@ -638,13 +638,13 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 			}
 		}
 		*Program_Length = MemLoc - MemStart;	//get program length from old MemLoc val
-		
+
 		return 0;
 	}
 	else	{
 		fprintf(stderr,"Brain09 Syntax Error\n");
 		return -1;
 	}
-	
+
 	// End of ProgramWrite with a few mods
 }
