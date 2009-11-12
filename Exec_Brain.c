@@ -39,8 +39,8 @@ u_int32_t ContextSwitchCount=0;
 //extern u_int16_t Memory_Num;
 extern int numPID;
 //extern u_int32_t* Memory_Start;
-extern u_int32_t Memory_Start;			//Start of memory block
-extern u_int32_t Memory_End;			//End of memory block
+extern u_int32_t * Memory_Start;			//Start of memory block
+extern u_int32_t * Memory_End;			//End of memory block
 extern u_int16_t Memory_Num = 0;			//number of elements in memory block
 
 
@@ -594,7 +594,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	char buff[64]={0};					//storage for each line of code
 	char tempbuff[4];					//more storage
 
-	WORDBYTES CurrentWord;
+	WORDBYTES Memory_Start[MemLoc]=*((u_int32_t*)tempbuff);	//put instr in memoryCurrentWord;
 	int fildes=open(filename,O_RDONLY);			//open that file ... do dah doo doo
 
 	if (fildes == -1) {					//error checking for open()
@@ -606,7 +606,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 
 	// ProgramWrite with a few mods
 
-	fgets(buff,64,stdin);					//get first line
+	fgets(buff,64,stdin);					 //get first line
 	if(strncmp(buff,"BRAIN09",7) == 0)			//make sure it's legit
 	{
 		while (1)
