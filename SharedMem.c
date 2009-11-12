@@ -1,4 +1,4 @@
-#include "Memory.h"
+/*#include "Memory.h"
 
 #define sharedMEM 4*100
 
@@ -10,3 +10,4 @@ void InitShared(int numshared) {
 	SharedMemory_Start=malloc(RAM);
 
 }
+*/
