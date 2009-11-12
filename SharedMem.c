@@ -1,13 +1,20 @@
-/*#include "Memory.h"
+#include "SharedMem.h"
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#define sharedMEM 4*100
+u_int32_t * Shared;
 
-static u_int32_t* SharedMemory_Start;					//Start of shared memory block
-static u_int32_t* SharedMemory_End;					//End of shared memory block
-static u_int16_t SharedMemory_Num = 0;				//number of elements in shared memory block
-
-void InitShared(int numshared) {
-	SharedMemory_Start=malloc(RAM);
+void InitShared(void) {
+	Shared=calloc(100,4);
+}
+int PE(void) {
 
 }
-*/
+int VE(void) {
+
+}
+int SI(void) {
+
+}

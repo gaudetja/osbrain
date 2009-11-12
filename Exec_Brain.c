@@ -1,8 +1,7 @@
 /*
  *	  File: exec_BRAIN.c
  *	Author: Gary S. Jordan
- *		Eric Payne
- *		Jered Philippon
+ *		Joe Gaudet
  * Last Modified:
  *	 Topic:
  * ----------------------------------------------------------------
@@ -24,6 +23,9 @@
 #include "Memory.h"
 #include "Exec_Brain.h"
 #include "sched.h"
+void InitShared(void) {
+	Shared=calloc(100,4);
+}
 
 #define TDMA_Setting 15
 #define NPID 200
@@ -33,7 +35,16 @@ PCB* Current_PCB;			       //Current Process control block
 PCB* PCB_Array;
 WORDBYTES CurrentWord;			  //Current 4 byte word read from memory
 OPERATOR operator;		      	//Operator to be chosen from the list
-WORDBYTES MemoryContents;		       //4 byte word read from memory
+WORDBYTES MemoryContents;		       //4 byte word read froint PE(void) {
+
+}
+int VE(void) {
+
+}
+int SI(void) {
+
+}
+m memory
 u_int32_t* MailBox_Start;
 u_int32_t ContextSwitchCount=0;
 //extern u_int16_t Memory_Num;
@@ -100,6 +111,9 @@ return 0;
 /*
  *Takes two 1 byte operators standing for ASCII letters:
  *@param rator
+ *void InitShared(void) {
+	Shared=calloc(100,4);
+}
  *
  *Also takes two words as the operands:
  *@param rand1
@@ -111,7 +125,10 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 		//instruction set
 		switch (rator)
 		{
-			case ISTR_LR:  LoadRegister(rand1, rand2);      break;  // Load Register (LR)
+			case ISTR_void InitShared(void) {
+				Shared=calloc(100,4);
+			}
+LR:  LoadRegister(rand1, rand2);      break;  // Load Register (LR)
 			case ISTR_LL:  LoadLow(rand1, rand2);           break;  // Load Low (LL)
 			case ISTR_LH:  LoadHigh(rand1, rand2);          break;  // Load High (LH)
 			case ISTR_SR:  StoreReg(rand1,rand2);           break;  // Stack Register (SR)
@@ -141,9 +158,9 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_GP:  GetPID();						break;  // Return Process ID to reg
 			case ISTR_FK:  Fork(); 							break;	// Fork a new process
 			case ISTR_EX:  Exec(rand1,rand2);				break;	// Execute a new process
-			case ISTR_PE:  PE(); 							break;
-			case ISTR_VE:  VE(); 							break;
-			case ISTR_SI:  SI(); 							break;
+			case ISTR_PE:  PE(rand1,rand2); 							break;
+			case ISTR_VE:  VE(rand1,rand2); 							break;
+			case ISTR_SI:  SI(rand1,rand2); 							break;
 			default:								break;
 		}
 		printstatus();
@@ -651,13 +668,4 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	}
 
 	// End of ProgramWrite with a few mods
-}
-int PE(void) {
-
-}
-int VE(void) {
-
-}
-int SI(void) {
-
 }
