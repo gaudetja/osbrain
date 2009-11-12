@@ -549,15 +549,14 @@ void Fork(void)
 	}
 	else {
 		PCB_Array[numPID].BR = Memory_Num;				//Base register starts at end of last process
-		PCB_Array[numPID].Block = 0;			//
+		PCB_Array[numPID].Block = 0;					//
 		PCB_Array[numPID].C = Current_PCB->C;				//Same truth value
 		PCB_Array[numPID].IC = Current_PCB->IC;				//Same instruction counter
 		PCB_Array[numPID].LR = Current_PCB->LR;				//Same program size
 		PCB_Array[numPID].PID = numPID;					//new PID
 		PCB_Array[numPID].R = Current_PCB->PID;				//other PID in new R
-
-		PCB_Array[numPID].MailBox_Start = PostOffice+(100*numPID);
-		PCB_Array[numPID].MailBox_End = PostOffice+((numPID+1)*100-1);
+		PCB_Array[numPID].MailBox_Start = PostOffice+(100*numPID);	//Mailbox Start assuming 100 processes
+		PCB_Array[numPID].MailBox_End = PostOffice+((numPID+1)*100-1);	//Mailbox End assuming 100 processes
 		PCB_Array[numPID].WaitID = 0xFF;
 		PCB_Array[numPID].TDMA = 0;
 		readyq(&(PCB_Array[numPID].PID), 1);
@@ -589,7 +588,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	char tempbuff[4];					//more storage
 
 
-	int fildes=open(filename,O_RDONLY);			//open that file ... do dah doo doo
+	int fildes=open((const char *)filename,O_RDONLY);			//open that file ... do dah doo doo
 
 	if (fildes == -1) {					//error checking for open()
 		fprintf(stderr,"Program not loaded properly, check to see if input file exists");
