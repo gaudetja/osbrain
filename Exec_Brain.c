@@ -231,7 +231,7 @@ void BranchTrue(u_int8_t rand1,u_int8_t rand2)
  */
 void BranchUnc(u_int8_t rand1,u_int8_t rand2)
 {
-	Current_PCB->IC = (10*(rand1-48)+(rand2-48)+Current_PCB->BR);
+	Current_PCB->IC = (10*(rand1-48)+(rand2-48));
 }
 
 /*
@@ -570,7 +570,7 @@ void Fork(void)
 		#endif
 
 		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over
-			*(Memory_Start+Memory_Num)= *(Memory_Start+Current_PCB->BR+i);
+			*(Memory_Start+PCB_Array[numPID].BR+i)= *(Memory_Start+Current_PCB->BR+i);
 			Memory_Num++;
 
 		}
