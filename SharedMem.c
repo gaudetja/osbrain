@@ -18,12 +18,14 @@ void InitShared(void) {
 	int i;
 
 	shared=calloc(numshared,4);
-	semaphore = calloc(numshared,8);
+	semaphore = calloc(numshared,sizeof(semaphore));
 
 	//semaphore =tmp;
 	for(i=0;i<numshared;i++) {
 		semaphore[i].PID=-1;
 		semaphore[i].value=1;
+		semaphore[i].head = semaphore[i].waiting;
+		semaphore[i].tail = semaphore[i].waiting;
 	}
 }
 
@@ -50,6 +52,7 @@ void VE(u_int8_t rand1, u_int8_t rand2) {
 	 	semaphore[i].value=1;
 		semaphore[i].PID=-1;
 	}
+//	else()
 }
 
 void SI(u_int8_t rand1, u_int8_t rand2) {
@@ -78,3 +81,18 @@ void ST(u_int8_t rand1, u_int8_t rand2) {
 	}
 	shared[i] = Current_PCB->R;
 }
+void enqwait(int whichsem) {
+	if (semaphore[whichsem].tail==(semaphore[whichsem].waiting+99) && semaphore[whichsem].head!=semaphore[whichsem].waiting) {
+		semaphore[whichsem].tail=0;
+	}
+	if (semaphore[whichsem].tail==(semaphore[whichsem].waiting+99) && semaphore[whichsem].head==semaphore[whichsem].waiting) {
+		 printf("somehow you managed to fill up the wait queue for this semaphore");
+		 exit(0);
+	}
+	else semaphore[whichsem].tail++;
+}
+int deqwait(int whichsem) {
+
+	return 0;
+}
+
