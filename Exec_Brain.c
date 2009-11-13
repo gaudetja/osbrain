@@ -541,12 +541,13 @@ void GetPID()
 }
 void Fork(void)
 {
+	u_int16_t BaseReg = RequestMemory(Current_PCB->LR);
 	u_int16_t i;
 	if (Current_PCB->LR > (RAM/4 - Memory_Num)) {
 		Current_PCB->R = 0;						//insufficient memory
 	}
 	else {
-
+		PCB_Array[numPID].BR = BaseReg;				//Base register starts at end of last process
 		PCB_Array[numPID].Block = 0;					//
 		PCB_Array[numPID].C = Current_PCB->C;				//Same truth value
 		PCB_Array[numPID].IC = Current_PCB->IC;				//Same instruction counter
