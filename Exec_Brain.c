@@ -219,7 +219,7 @@ void CompareLess(u_int8_t rand1,u_int8_t rand2)
 void BranchTrue(u_int8_t rand1,u_int8_t rand2)
 {
 	if (Current_PCB->C == 'T')
-		Current_PCB->IC = (10*(rand1-48)+(rand2-48))-1;
+		Current_PCB->IC = (10*(rand1-48)+(rand2-48));
 }
 
 
@@ -541,13 +541,20 @@ void GetPID()
 }
 void Fork(void)
 {
-	u_int16_t BaseReg = RequestMemory(Current_PCB->LR);
+
+	#if BESTFIT
+	PCB_Array[numPID].BR = RequestMemory(Current_PCB->LR,1);
+	#elif NEXTFIT
+	PCB_Array[numPID].BR = RequestMemory(Current_PCB->LR,0);
+	#endif
+
+//	u_int16_t BaseReg = RequestMemory(Current_PCB->LR);
 	u_int16_t i;
 	if (Current_PCB->LR > (RAM/4 - Memory_Num)) {
 		Current_PCB->R = 0;						//insufficient memory
 	}
 	else {
-		PCB_Array[numPID].BR = BaseReg;				//Base register starts at end of last process
+//		PCB_Array[numPID].BR = BaseReg;				//Base register starts at end of last process
 		PCB_Array[numPID].Block = 0;					//
 		PCB_Array[numPID].C = Current_PCB->C;				//Same truth value
 		PCB_Array[numPID].IC = Current_PCB->IC;				//Same instruction counter
@@ -564,11 +571,6 @@ void Fork(void)
 
 
 
-		#if BESTFIT
-		PCB_Array[numPID].BR = RequestMemory(Current_PCB->LR,1);
-		#elif NEXTFIT
-		PCB_Array[numPID].BR = RequestMemory(Current_PCB->LR,0);
-		#endif
 
 		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over
 			*(Memory_Start+PCB_Array[numPID].BR+i)= *(Memory_Start+Current_PCB->BR+i);
