@@ -59,7 +59,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	PCB_Array[numPID].IC = 0;
 	PCB_Array[numPID].PID = numPID;
 	PCB_Array[numPID].LR = Program_Length;
-	PCB_Array[numPID].BR = Memory_Num - Program_Length;
+	PCB_Array[numPID].BR = 0;
 	PCB_Array[numPID].Block = 0;
 	PCB_Array[numPID].MailBox_Start = PostOffice+(i*nPID);
 	PCB_Array[numPID].MailBox_End = PostOffice+((i+1)*nPID-1);
@@ -427,8 +427,6 @@ void printstatus()
 	printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 	printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
 	MemoryDump(Current_PCB->BR);
-
-
 }
 
 void LoadHigh(u_int8_t rand1,u_int8_t rand2)
@@ -548,7 +546,7 @@ void Fork(void)
 		Current_PCB->R = 0;						//insufficient memory
 	}
 	else {
-		PCB_Array[numPID].BR = Memory_Num;				//Base register starts at end of last process
+
 		PCB_Array[numPID].Block = 0;					//
 		PCB_Array[numPID].C = Current_PCB->C;				//Same truth value
 		PCB_Array[numPID].IC = Current_PCB->IC;				//Same instruction counter
@@ -562,6 +560,14 @@ void Fork(void)
 		readyq(&(PCB_Array[numPID].PID), 1);
 
 		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
+
+
+
+		#if BESTFIT
+		PCB_Array[numPID].BR = RequestMemory(Current_PCB->LR,1);
+		#elif NEXTFIT
+		PCB_Array[numPID].BR = RequestMemory(Current_PCB->LR,0);
+		#endif
 
 		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over
 			*(Memory_Start+Memory_Num)= *(Memory_Start+Current_PCB->BR+i);
