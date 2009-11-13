@@ -28,6 +28,9 @@
 u_int32_t* Memory_Start;					//Start of memory block
 u_int32_t* Memory_End;					//End of memory block
 u_int16_t Memory_Num = 0;				//number of elements in memory block
+u_int8_t* Memory_Avail_Current;
+u_int8_t* Memory_Avail_Start;
+u_int8_t* Memory_Avail_End;
 
 /*
  *Executes memory allocation from stdin.
@@ -47,6 +50,9 @@ int ProgramWrite(u_int16_t* Program_Length)
 	WORDBYTES CurrentWord;
 
 	Memory_Start = malloc(RAM);
+	Memory_Avail_Start = malloc(RAM/4);
+	Memory_Avail_End =	Memory_Avail_Start+RAM/4;
+	Memory_Avail_Current = Memory_Avail_Start;
 
 	fgets(buff,64,stdin);					//get first line
 	if(strncmp(buff,"BRAIN09",7) == 0)			//make sure it's legit
@@ -58,6 +64,9 @@ int ProgramWrite(u_int16_t* Program_Length)
 		lengthbuff[0]=(buff[3]-48)*1;
 
 		*Program_Length=lengthbuff[0]+lengthbuff[1]+lengthbuff[2]+lengthbuff[3];
+		for (i=0;i<*Program_Length;i++)
+			Memory_Avail_Start[i]=1;
+		Memory_Avail_Current=Memory_Avail_Start+i;
 
 		while (1)
 		{
@@ -91,7 +100,7 @@ int ProgramWrite(u_int16_t* Program_Length)
 				return -1;
 			}
 		}
-		*Program_Length = Memory_Num - i;	//get program length from old Memory_Num val
+		//*Program_Length = Memory_Num - i;	//get program length from old Memory_Num val
 		Memory_End=&Memory_Start[Memory_Num];
 		for (i=0;i<(Memory_End-Memory_Start);i++) 	//For Debugging
 		{
@@ -198,6 +207,74 @@ void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t BR)
 		printf("Memory After Get Data (%d), %x\n",rand1-48,Memory_Start[rand1*10+rand2+i+BR]);
 	}
 }
+
+u_int32_t RequestMemory(u_int16_t Req_Length,u_int8_t Mode)
+{
+	if (Mode==0)
+	{
+		u_int16_t Space_A=0;
+		int i=0;
+		while(!Space_A)
+		{
+			if (*Memory_Avail_Current==0)
+			{
+				Space_A=1;
+				for (i=0;i<Req_Length;i++)
+				{
+					if (*(Memory_Avail_Current+i)==1)
+						Space_A=0;
+				}
+				if (Space_A==0)
+					Memory_Avail_Current+=Req_Length;
+			}
+			else
+				Memory_Avail_Current++;
+
+		}
+		for (i=0;i<Req_Length;i++)
+			*(Memory_Avail_Current+i)=1;
+
+		Space_A=Memory_Avail_Current-Memory_Avail_Start;
+		Memory_Avail_Current=Memory_Avail_Current+Req_Length;
+		return Space_A;
+	}
+	else
+	{
+		u_int16_t Space_A=0;
+		int i=0;
+		while(!Space_A)
+		{
+			if (*Memory_Avail_Current==0)
+			{
+				Space_A=1;
+				for (i=0;i<Req_Length;i++)
+				{
+					if (*Memory_Avail_Current+i==1)
+						Space_A=0;
+				}
+				if (Space_A==0)
+					Memory_Avail_Current+=Req_Length;
+			}
+			else
+				Memory_Avail_Current++;
+
+		}
+		for (i=0;i<Req_Length;i++)
+			*(Memory_Avail_Current+i)=1;
+
+		Space_A=Memory_Avail_Current-Memory_Avail_Start;
+		Memory_Avail_Current=Memory_Avail_Current+Req_Length;
+		return Space_A;
+	}
+
+
+
+}
+void ReleaseMemory(void)
+{
+
+}
+
 
 /*
  *Prints all 100 bytes of memory on in blocks of 10
