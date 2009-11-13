@@ -17,6 +17,15 @@ typedef union wordbytes
 	BYTES4 bytes;
 } WORDBYTES;
 
+
+typedef struct Space
+{
+	u_int8_t Size;
+	u_int8_t Location;
+
+} MemBlock;
+
+
 /*
  *Executes memory allocation from stdin.
  *This stores all input in memory.
@@ -66,6 +75,6 @@ void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t PID);
 void MemoryDump(u_int16_t PID);
 
 u_int32_t RequestMemory(u_int16_t Req_Length, u_int8_t Mode);
-void ReleaseMemory(void);
+void ReleaseMemory(u_int32_t BaseReg,u_int16_t LimitReg);
 
 #endif

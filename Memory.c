@@ -31,6 +31,11 @@ u_int16_t Memory_Num = 0;				//number of elements in memory block
 u_int8_t* Memory_Avail_Current;
 u_int8_t* Memory_Avail_Start;
 u_int8_t* Memory_Avail_End;
+MemBlock* Spaces;
+u_int8_t Holes=0;
+
+
+
 
 /*
  *Executes memory allocation from stdin.
@@ -51,8 +56,14 @@ int ProgramWrite(u_int16_t* Program_Length)
 
 	Memory_Start = malloc(RAM);
 	Memory_Avail_Start = malloc(RAM/4);
+	Spaces=malloc(100*2);
+
+
+
 	Memory_Avail_End =	Memory_Avail_Start+RAM/4;
 	Memory_Avail_Current = Memory_Avail_Start;
+	for (i=0;i<RAM/4;i++)
+		Memory_Avail_Start[i]=1;
 
 	fgets(buff,64,stdin);					//get first line
 	if(strncmp(buff,"BRAIN09",7) == 0)			//make sure it's legit
@@ -65,8 +76,8 @@ int ProgramWrite(u_int16_t* Program_Length)
 
 		*Program_Length=lengthbuff[0]+lengthbuff[1]+lengthbuff[2]+lengthbuff[3];
 		for (i=0;i<*Program_Length;i++)
-			Memory_Avail_Start[i]=1;
-		Memory_Avail_Current=Memory_Avail_Start+i;
+			Memory_Avail_Start[i]=0;
+		Memory_Avail_Current=Memory_Avail_Start+*Program_Length;
 
 		while (1)
 		{
@@ -210,18 +221,19 @@ void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t BR)
 
 u_int32_t RequestMemory(u_int16_t Req_Length,u_int8_t Mode)
 {
+	int i=0;
 	if (Mode==0)
 	{
 		u_int16_t Space_A=0;
 		int i=0;
 		while(!Space_A)
 		{
-			if (*Memory_Avail_Current==0)
+			if (*Memory_Avail_Current==1)
 			{
 				Space_A=1;
 				for (i=0;i<Req_Length;i++)
 				{
-					if (*(Memory_Avail_Current+i)==1)
+					if (*(Memory_Avail_Current+i)==0)
 						Space_A=0;
 				}
 				if (Space_A==0)
@@ -232,7 +244,7 @@ u_int32_t RequestMemory(u_int16_t Req_Length,u_int8_t Mode)
 
 		}
 		for (i=0;i<Req_Length;i++)
-			*(Memory_Avail_Current+i)=1;
+			*(Memory_Avail_Current+i)=0;
 
 		Space_A=Memory_Avail_Current-Memory_Avail_Start;
 		Memory_Avail_Current=Memory_Avail_Current+Req_Length;
@@ -241,37 +253,37 @@ u_int32_t RequestMemory(u_int16_t Req_Length,u_int8_t Mode)
 	else
 	{
 		u_int16_t Space_A=0;
-		int i=0;
-		while(!Space_A)
+		if (Holes==0)
 		{
-			if (*Memory_Avail_Current==0)
-			{
-				Space_A=1;
-				for (i=0;i<Req_Length;i++)
-				{
-					if (*Memory_Avail_Current+i==1)
-						Space_A=0;
-				}
-				if (Space_A==0)
-					Memory_Avail_Current+=Req_Length;
-			}
-			else
-				Memory_Avail_Current++;
-
+			for (i=0;i<Req_Length;i++)
+				*(Memory_Avail_Current+i)=0;
+			Space_A=Memory_Avail_Current-Memory_Avail_Start;
+			Memory_Avail_Current=Memory_Avail_Current+Req_Length;
 		}
-		for (i=0;i<Req_Length;i++)
-			*(Memory_Avail_Current+i)=1;
+		else
+			for (i=0;i<Req_Length;i++)
+			{
+				if (Spaces[Holes].Size-Req_Length==0)
+					break;
 
-		Space_A=Memory_Avail_Current-Memory_Avail_Start;
-		Memory_Avail_Current=Memory_Avail_Current+Req_Length;
+			}
+
 		return Space_A;
 	}
 
 
 
 }
-void ReleaseMemory(void)
+void ReleaseMemory(u_int32_t BaseReg,u_int16_t LimitReg)
 {
+	int i;
+	for (i=0;i<LimitReg;i++)
+	*(Memory_Avail_Start+BaseReg+i)=1;
+
+	Spaces[Holes].Size=LimitReg;
+	Spaces[Holes].Location=BaseReg;
+	Holes++;
+
 
 }
 
