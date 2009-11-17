@@ -57,7 +57,7 @@ int Exec_Brain(int NPID , u_int16_t Program_Length);
  *
  *Also takes two words as the operands:
  *@param rand1
- *@param rand2
+ *@param rand
  */
 void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2);
 
