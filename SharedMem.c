@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Exec_Brain.h"
-#include "sched.h"
+//#include "sched.h"
 #include "SharedMem.h"
 
 
@@ -31,7 +31,7 @@ void InitShared(void) {
 	}
 }
 
-void PE(u_int8_t rand1, u_int8_t rand2) {
+/*void PE(u_int8_t rand1, u_int8_t rand2) {
 	int i = 10*(rand1-48)+(rand2-48);
 	if(i>99) {
 		printf("There are only 0-99 available semaphores! you tried to  %d",i);
@@ -72,7 +72,7 @@ void VE(u_int8_t rand1, u_int8_t rand2) {
 		exit(0);
 	}
 }
-
+*/
 void SI(u_int8_t rand1, u_int8_t rand2) {
 	int i = 10*(rand1-48)+(rand2-48);
 	if(i>99) {

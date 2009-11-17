@@ -135,8 +135,8 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_GP:  GetPID();						break;  // Return Process ID to reg
 			case ISTR_FK:  Fork(); 							break;	// Fork a new process
 			case ISTR_EX:  Exec(rand1,rand2);				break;	// Execute a new process
-			case ISTR_PE:  PE(rand1,rand2); 				break;
-			case ISTR_VE:  VE(rand1,rand2); 				break;
+//			case ISTR_PE:  PE(rand1,rand2); 				break;
+//			case ISTR_VE:  VE(rand1,rand2); 				break;
 			case ISTR_SI:  SI(rand1,rand2); 				break;
 			case ISTR_LS:  LS(rand1,rand2); 				break;
 			case ISTR_ST:  ST(rand1,rand2); 				break;
