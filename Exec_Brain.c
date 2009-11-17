@@ -595,7 +595,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	int fildes=open((const char *)filename,O_RDONLY);	//open that file ... do dah doo doo
 
 	if (fildes == -1) {					//error checking for open()
-		fprintf(stderr,"Program not loaded properly, check to see if input file exists");
+		fprintf(stderr,"Program not loaded properly, check to see if input file exists\n");
 		return -1;
 	}
 	close(fileno(stdin));					//put our file in place of stdin
@@ -646,13 +646,16 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 			if(MemLoc > MemStart + Current_PCB->LR)	//check against end of memory
 			{
 				printf("Insufficient Memory");
+				close(fildes);
 				return -1;
 			}
 		}
+		close(fildes);
 		return 0;
 	}
 	else	{
 		fprintf(stderr,"Brain09 Syntax Error\n");
+		close(fildes);
 		return -1;
 	}
 	// End of ProgramWrite with a few mods
