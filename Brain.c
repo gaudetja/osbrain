@@ -39,9 +39,11 @@ int LoadProgram(char* argv,  u_int16_t* pProgram_Length );
 u_int16_t* pProgram_Length;
 int main(int argc, char* argv[])
 {
-	pProgram_Length=malloc(4);
+		pProgram_Length=malloc(4);
         //Loads Initial Program
         LoadProgram(argv[1] , pProgram_Length);
+        //initialize shared memory
+        InitShared();
         //Run the program
         Exec_Brain(numPID , *pProgram_Length);
 

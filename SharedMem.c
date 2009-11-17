@@ -16,7 +16,11 @@
 u_int32_t * shared;
 seman * semaphore;
 
-
+/*void test(void);
+void test(void)
+{
+	semaphore
+}*/
 void InitShared(void) {
 	int i;
 
@@ -38,15 +42,16 @@ void PE(u_int8_t rand1, u_int8_t rand2) {
 		printf("There are only 0-99 available semaphores! you tried to  %d",i);
 		exit(0);
 	}
-	if(semaphore[i].value) {
+	if (semaphore[i].value==1) {
 	 	semaphore[i].value=0;
 		semaphore[i].PID=Current_PCB->PID;
 	}
-	else {
+	if (semaphore[i].value==0) {
 		enqwait(i,&(Current_PCB->PID)); //add to wait list for semaphore
 		readyq(&(Current_PCB->PID),0);  //take off the ready q
 		blockq(&(Current_PCB->PID),1);  //add to block q
 	}
+	else printf("This semaphore has a value other than 1 or 0");
 }
 
 void VE(u_int8_t rand1, u_int8_t rand2) {
@@ -56,7 +61,17 @@ void VE(u_int8_t rand1, u_int8_t rand2) {
 		printf("There are only 0-99 available semaphores! you tried to release %d",i);
 		exit(0);
 	}
-	if((semaphore[i].value ==1) && (semaphore[i].PID==Current_PCB->PID)) {
+	printf("semaphore[i].value = %d\n", semaphore[i].value);
+	printf("semaphore[i].PID = %d\n",semaphore[i].PID);
+	printf("Current_PCB->PID = %d\n",Current_PCB->PID);
+	if(semaphore[i].value == 1) {
+		printf("This semaphore is not currently held by anyone.");
+		exit(0);
+	}
+	else if (semaphore[i].PID ==-1) {
+		printf("this semaphore has not been checked out by a PID but the value is 1");
+	}
+	else if (semaphore[i].PID == Current_PCB->PID) {
 		if (semaphore[i].head!=semaphore[i].tail) {
 			PID = deqwait(i);
 			blockq(PID,0);  //take off the block q
@@ -69,7 +84,7 @@ void VE(u_int8_t rand1, u_int8_t rand2) {
 		}
 	}
 	else {
-		printf("This semaphore is not currently held by anyone.");
+		printf("This semaphore is held by someone else");
 		exit(0);
 	}
 }
