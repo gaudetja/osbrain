@@ -579,9 +579,10 @@ void Fork(void)
 }
 int Exec(u_int8_t rand1,u_int8_t rand2)
 {
-	u_int8_t filename[2];
+	u_int8_t filename[3];
 	filename[0] = rand1;
 	filename[1] = rand2;
+	filename[2] = '\0';
 
 	u_int16_t MemStart = Current_PCB->BR;			//start new program mem here
 	u_int16_t MemLoc = MemStart;
