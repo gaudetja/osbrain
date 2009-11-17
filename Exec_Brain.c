@@ -45,7 +45,6 @@ u_int32_t* PostOffice;
 int Exec_Brain(int nPID , u_int16_t Program_Length)
 {
 	//initialize all the PCB variables to 0
-
 	char PID=0xFF;
 	PCB_Array=calloc(100,sizeof(PCB));
 	PostOffice=calloc(100*100,4);
@@ -597,7 +596,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	char tempbuff[4];					//more storage
 
 
-	int fildes=open((const char *)filename,O_RDONLY);			//open that file ... do dah doo doo
+	int fildes=open((const char *)filename,O_RDONLY);			//open
 
 	if (fildes == -1) {					//error checking for open()
 		fprintf(stderr,"Program not loaded properly, check to see if input file exists");

@@ -20,9 +20,15 @@
 #include <time.h>
 #include <string.h>
 
+#include "curlyqueue.h"
 #include "Memory.h"
+#include "Exec_Brain.h"
+#include "sched.h"
+
 #define RAM 4*10000
 #define L2 4*100
+
+extern curlyqueue_t * hq;
 
 //Memory Allocated
 u_int32_t* Memory_Start;					//Start of memory block
@@ -33,6 +39,7 @@ u_int8_t* Memory_Avail_Start;
 u_int8_t* Memory_Avail_End;
 MemBlock* Spaces;
 u_int8_t Holes=0;
+
 
 
 
@@ -221,39 +228,45 @@ void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t BR)
 
 u_int32_t RequestMemory(u_int16_t Req_Length,u_int8_t Mode)
 {
-	int i=0;
+	int i=0;				//Initialize Temp Variables
+	int SpaceFound=0;
+	MemBlock TempMemBlock;
+	MemBlock TempMemBlock1;
+	u_int32_t Space_A=0;
 	if (Mode==0)
 	{
-		u_int16_t Space_A=0;
-		int i=0;
-		while(!Space_A)
+		while(!Space_A)		//While Space Not Available
 		{
-			if (*Memory_Avail_Current==1)
+			if (*Memory_Avail_Current==1) //Check Where Current Memory Index is pointing.
 			{
-				Space_A=1;
+				Space_A=1;				//If Memory Available, Check to see if Req_Length is available
 				for (i=0;i<Req_Length;i++)
 				{
 					if (*(Memory_Avail_Current+i)==0)
-						Space_A=0;
+					{
+						Space_A=0;						//If any memory location unavailable, entire block unavailable.
+						break;							//Break if a memory slot is not available
+					}
 				}
-				if (Space_A==0)
-					Memory_Avail_Current+=Req_Length;
 			}
 			else
-				Memory_Avail_Current++;
-
+				Memory_Avail_Current++;					//If Current Available pointer is un-unuseable, increment
+			if (Memory_Avail_Current>Memory_Avail_End)
+				Memory_Avail_Current=Memory_Avail_Start;//If Current Avail Exceeds Memory Go to Start
 		}
-		for (i=0;i<Req_Length;i++)
-			*(Memory_Avail_Current+i)=0;
-
-		Space_A=Memory_Avail_Current-Memory_Avail_Start;
-		Memory_Avail_Current=Memory_Avail_Current+Req_Length;
+//		Memory_Avail_Current+=i;
+		Space_A=Memory_Avail_Current-Memory_Avail_Start;// Convert Virtual Memory to Disk Memory
+		for (i=0;i<Req_Length;i++)						//Once Memory Avail Found - Block it off
+		{
+			*Memory_Avail_Current=0;
+			Memory_Avail_Current++;
+		}
 		return Space_A;
 	}
 	else
 	{
 		u_int16_t Space_A=0;
-		if (Holes==0)
+		if (curlyqueue_is_empty(hq))
 		{
 			for (i=0;i<Req_Length;i++)
 				*(Memory_Avail_Current+i)=0;
@@ -261,13 +274,51 @@ u_int32_t RequestMemory(u_int16_t Req_Length,u_int8_t Mode)
 			Memory_Avail_Current=Memory_Avail_Current+Req_Length;
 		}
 		else
-			for (i=0;i<Req_Length;i++)
+		{
+			for (i=0;i<=Holes;i++)
 			{
-				if (Spaces[Holes].Size-Req_Length==0)
-					break;
+				TempMemBlock=holesq(&Spaces[Holes], 0);
+				if (TempMemBlock.Size>=Req_Length)
+				{
+
+					holesq(&TempMemBlock, 1);
+				}
+				else
+				{
+					sizeq(&TempMemBlock, 1);
+					SpaceFound=1;
+				}
+			}
+			if (SpaceFound==1)
+			{
+				sizeq(&TempMemBlock, 0);
+				while(!curlyqueue_is_empty(hq))
+				{
+					sizeq(&TempMemBlock1, 0);
+					if (TempMemBlock1.Size<TempMemBlock.Size)
+					{
+						holesq(&TempMemBlock, 1);
+						TempMemBlock=TempMemBlock1;
+					}
+				}
+				Space_A=TempMemBlock.Location;
+				if (TempMemBlock.Size!=Req_Length)
+				{
+					TempMemBlock.Size=TempMemBlock.Size-Req_Length;
+					TempMemBlock.Location=TempMemBlock.Location+Req_Length;
+				}
+
 
 			}
 
+			else
+			{
+				for (i=0;i<Req_Length;i++)
+					*(Memory_Avail_Current+i)=0;
+				Space_A=Memory_Avail_Current-Memory_Avail_Start;
+				Memory_Avail_Current=Memory_Avail_Current+Req_Length;
+			}
+		}
 		return Space_A;
 	}
 
@@ -282,9 +333,9 @@ void ReleaseMemory(u_int32_t BaseReg,u_int16_t LimitReg)
 
 	Spaces[Holes].Size=LimitReg;
 	Spaces[Holes].Location=BaseReg;
+	Spaces[Holes].Num=Holes;
+	holesq(&Spaces[Holes], 1);
 	Holes++;
-
-
 }
 
 
