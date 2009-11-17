@@ -4,8 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Exec_Brain.h"
-//#include "sched.h"
 #include "SharedMem.h"
+#include "Memory.h"
+#include "sched.h"
 
 
 
@@ -31,7 +32,7 @@ void InitShared(void) {
 	}
 }
 
-/*void PE(u_int8_t rand1, u_int8_t rand2) {
+void PE(u_int8_t rand1, u_int8_t rand2) {
 	int i = 10*(rand1-48)+(rand2-48);
 	if(i>99) {
 		printf("There are only 0-99 available semaphores! you tried to  %d",i);
@@ -55,7 +56,7 @@ void VE(u_int8_t rand1, u_int8_t rand2) {
 		printf("There are only 0-99 available semaphores! you tried to release %d",i);
 		exit(0);
 	}
-	if(semaphore[i].value && (semaphore[i].PID==Current_PCB->PID)) {
+	if((semaphore[i].value ==1) && (semaphore[i].PID==Current_PCB->PID)) {
 		if (semaphore[i].head!=semaphore[i].tail) {
 			PID = deqwait(i);
 			blockq(PID,0);  //take off the block q
@@ -72,7 +73,7 @@ void VE(u_int8_t rand1, u_int8_t rand2) {
 		exit(0);
 	}
 }
-*/
+
 void SI(u_int8_t rand1, u_int8_t rand2) {
 	int i = 10*(rand1-48)+(rand2-48);
 	if(i>99) {
