@@ -28,12 +28,16 @@
 
 static curlyqueue_t * rq;			//variables for ready queue
 static curlyqueue_t * bq;			//blocked queue
+curlyqueue_t * hq;			//blocked queue
+curlyqueue_t * sq;			//blocked queue
 static except_t e;				//exceptions for curlyqueue
 
 void buildq(void)
 {
 	rq = curlyqueue_create_queue();		//create queues
 	bq = curlyqueue_create_queue();
+	hq = curlyqueue_create_queue();
+	sq = curlyqueue_create_queue();
 }
 
 int readyq(u_int8_t* pPID, char io)		//address of PID and I/O
@@ -52,8 +56,8 @@ int readyq(u_int8_t* pPID, char io)		//address of PID and I/O
 }
 
 int blockq(u_int8_t * pPID, int io)		//address of PID and I/O
-{						//input to io: 1 = push
-	u_int8_t * pid;				//	       0 = pop
+{										// input to io: 1 = push
+	u_int8_t * pid;						// 0 = pop
 	if (io == 0) {
 		curlyqueue_iterator_jump_to_front(bq);
 		do
@@ -66,8 +70,32 @@ int blockq(u_int8_t * pPID, int io)		//address of PID and I/O
 	}
 	else {
 		curlyqueue_enqueue(bq, pPID);
-	//	printf("Put onto block: %x\n",pPID);
+
 	}
 	return -1;
+}
+MemBlock holesq(MemBlock * pSpace, int io)		//address of PID and I/O
+{						//input to io: 1 = push
+	MemBlock * Space;				//	       0 = pop
+	if (io == 0) {
+		Space = curlyqueue_dequeue(hq,&e);
+		return *Space;
+	}
+	else {
+		curlyqueue_enqueue(hq, pSpace);
+	}
+
+}
+MemBlock sizeq(MemBlock * pSize, int io)		//address of PID and I/O
+{						//input to io: 1 = push
+	MemBlock * Size;				//	       0 = pop
+	if (io == 0) {
+		Size = curlyqueue_dequeue(sq,&e);
+		return *Size;
+	}
+	else {
+		curlyqueue_enqueue(hq, pSize);
+	}
+
 }
 
