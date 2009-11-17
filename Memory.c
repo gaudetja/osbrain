@@ -105,6 +105,10 @@ int ProgramWrite(u_int16_t* Program_Length)
 				fprintf(stderr,"Brain09 Syntax Error\n");
 				break;
 			}
+			if (strncmp(buff,"END",3) == 0) {
+				FileComplete = 1;
+				break;
+			}
 			tempbuff[3]=buff[0];			//Switch the bytes around
 			tempbuff[2]=buff[1];
 			tempbuff[1]=buff[2];

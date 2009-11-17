@@ -568,9 +568,6 @@ void Fork(void)
 
 		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
 
-
-
-
 		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over
 			*(Memory_Start+PCB_Array[numPID].BR+i)= *(Memory_Start+Current_PCB->BR+i);
 			Memory_Num++;
@@ -588,15 +585,14 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 
 	u_int16_t MemStart = Current_PCB->BR;			//start new program mem here
 	u_int16_t MemLoc = MemStart;
-	u_int16_t* Program_Length;
 	//static int PID
 
 	int FileComplete=0;					//flag
 	char buff[64]={0};					//storage for each line of code
 	char tempbuff[4];					//more storage
+	int lengthbuff[4];					//get program length
 
-
-	int fildes=open((const char *)filename,O_RDONLY);			//open
+	int fildes=open((const char *)filename,O_RDONLY);	//open that file ... do dah doo doo
 
 	if (fildes == -1) {					//error checking for open()
 		fprintf(stderr,"Program not loaded properly, check to see if input file exists");
@@ -610,6 +606,15 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	fgets(buff,64,stdin);					//get first line
 	if(strncmp(buff,"BRAIN09",7) == 0)			//make sure it's legit
 	{
+		fgets(buff,64,stdin);
+		lengthbuff[3]=(buff[0]-48)*1000;		//get program size from second line of file
+		lengthbuff[2]=(buff[1]-48)*100;
+		lengthbuff[1]=(buff[2]-48)*10;
+		lengthbuff[0]=(buff[3]-48)*1;
+
+		Current_PCB->LR = lengthbuff[0]+lengthbuff[1]+lengthbuff[2]+lengthbuff[3];
+		Current_PCB->IC = 0;
+
 		while (1)
 		{
 			fgets(buff,64,stdin);			//get next line
@@ -618,12 +623,15 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 				FileComplete=1;
 				break;
 			}
-			if(strncmp(buff,"BRAIN09",7)==0)	//Look for New Program
-			{
+			if(strncmp(buff,"BRAIN09",7)==0) {	//Look for New Program
 				//PID++;
 				//i=0;
 				//fgets(buff,64,stdin);
 
+				FileComplete = 1;
+				break;
+			}
+			if(strncmp(buff,"END",3) == 0) {
 				FileComplete = 1;
 				break;
 			}
@@ -641,14 +649,11 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 				return -1;
 			}
 		}
-		*Program_Length = MemLoc - MemStart;	//get program length from old MemLoc val
-
 		return 0;
 	}
 	else	{
 		fprintf(stderr,"Brain09 Syntax Error\n");
 		return -1;
 	}
-
 	// End of ProgramWrite with a few mods
 }
