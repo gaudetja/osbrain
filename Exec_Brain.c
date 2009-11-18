@@ -432,7 +432,7 @@ void LoadHigh(u_int8_t rand1,u_int8_t rand2)
 {
 	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
 	Current_PCB->R=(Current_PCB->R & 0x00FF);
-	Current_PCB->R=(MemoryContents.word|0xFF00)&Current_PCB->R;
+	Current_PCB->R=(MemoryCo4ntents.word|0xFF00)&Current_PCB->R;
 }
 
 void LoadLow(u_int8_t rand1,u_int8_t rand2)
@@ -612,6 +612,14 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 		lengthbuff[2]=(buff[1]-48)*100;
 		lengthbuff[1]=(buff[2]-48)*10;
 		lengthbuff[0]=(buff[3]-48)*1;
+
+		ReleaseMemory(Current_PCB->BR,Current_PCB->LR);
+
+		#if BESTFIT
+		PCB_Array[numPID].BR = RequestMemory(atoi(lengthbuff),1);
+		#elif NEXTFIT
+		PCB_Array[numPID].BR = RequestMemory(atoi(lengthbuff),0);
+		#endif
 
 		Current_PCB->LR = lengthbuff[0]+lengthbuff[1]+lengthbuff[2]+lengthbuff[3];
 		Current_PCB->IC = 0;
