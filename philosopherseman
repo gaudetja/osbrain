@@ -1,0 +1,18 @@
+BRAIN09
+100
+GD60	#00
+FK	#01	Fork that child
+CE61	#02	Compare PID to 1
+BT05	#03	If 1, then child, do child stuff
+BU01	#04	Otherwise back to 01, fork
+GP	#05	Get PID
+SR60	#06	Save PID
+DI62	#07	Divide by 2
+MU62	#08	Multiply by 2
+CE60	#09	If 0, then PID is div by 2: Chopstick
+BT10	#10
+EXCS	#11	Exec Chopstick
+EXPH	#12	Exec Philosopher
+H
+DATA
+0000000100020003000400050006000700080009
