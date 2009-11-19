@@ -25,7 +25,7 @@
 #include "sched.h"
 #include "SharedMem.h"
 
-#define TDMA_Setting 1
+#define TDMA_Setting 15
 #define NPID 200
 #define RAM 4*10000
 
