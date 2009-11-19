@@ -50,7 +50,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	PostOffice=calloc(100*100,4);
 	int i;
 	for(i=0;i<nPID*nPID;i++) *(PostOffice+i)=0xFF;
-	buildq();
+
 
 	PCB_Array[numPID].R = 0;
 	PCB_Array[numPID].SP = 0;
@@ -593,7 +593,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	char tempbuff[4];					//more storage
 	int lengthbuff[4];					//get program length
 
-	int fildes=open((const char *)filename,O_RDONLY);	//open that file ... do dah doo doo
+	int fildes=open((char *)filename,O_RDONLY);	//open that file ... do dah doo doo
 
 	if (fildes == -1) {					//error checking for open()
 		fprintf(stderr,"Program not loaded properly, check to see if input file exists\n");
