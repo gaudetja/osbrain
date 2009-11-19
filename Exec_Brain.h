@@ -1,6 +1,8 @@
 #ifndef _EXECBRAIN_H
 #define _EXECBRAIN_H
 
+#define TDMA_Setting 1
+
 #define  BESTFIT 1
 /*
  *Process control block(P    //request to send

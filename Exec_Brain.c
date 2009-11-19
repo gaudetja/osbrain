@@ -25,7 +25,9 @@
 #include "sched.h"
 #include "SharedMem.h"
 
-#define TDMA_Setting 15
+//IMPORTANT, MOVED TIME SLICE DEFINE INTO THE .H FILE
+
+
 #define NPID 200
 #define RAM 4*10000
 

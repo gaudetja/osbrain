@@ -2,6 +2,7 @@
 #define _SHAREDMEM_H
 
 extern PCB * Current_PCB;
+extern PCB * PCB_Array;
 
 typedef struct sema {
 	int value;

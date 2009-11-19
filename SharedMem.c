@@ -46,10 +46,11 @@ void PE(u_int8_t rand1, u_int8_t rand2) {
 	 	semaphore[i].value=0;
 		semaphore[i].PID=Current_PCB->PID;
 	}
-	if (semaphore[i].value==0) {
+	else if (semaphore[i].value==0) {
 		enqwait(i,&(Current_PCB->PID)); //add to wait list for semaphore
-		readyq(&(Current_PCB->PID),0);  //take off the ready q
 		blockq(&(Current_PCB->PID),1);  //add to block q
+		Current_PCB->Block=1;
+		Current_PCB->TDMA=TDMA_Setting;
 	}
 	else printf("This semaphore has a value other than 1 or 0");
 }
@@ -72,15 +73,16 @@ void VE(u_int8_t rand1, u_int8_t rand2) {
 		printf("this semaphore has not been checked out by a PID but the value is 1");
 	}
 	else if (semaphore[i].PID == Current_PCB->PID) {
+		if (semaphore[i].head==semaphore[i].tail){
+		 	semaphore[i].value=1;
+			semaphore[i].PID=-1;
+		}
 		if (semaphore[i].head!=semaphore[i].tail) {
 			PID = deqwait(i);
 			blockq(PID,0);  //take off the block q
 			readyq(PID,1);  //add to ready q
+			PCB_Array[*PID].Block=0;
 			semaphore[i].PID = *PID;
-		}
-		else {
-		 	semaphore[i].value=1;
-			semaphore[i].PID=-1;
 		}
 	}
 	else {
@@ -97,7 +99,6 @@ void SI(u_int8_t rand1, u_int8_t rand2) {
 	}
 	semaphore[i].value=Current_PCB->R;
 }
-
 void LS(u_int8_t rand1, u_int8_t rand2) {
 	int i = 10*(rand1-48)+(rand2-48);
 	if(i>99) {
