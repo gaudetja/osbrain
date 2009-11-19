@@ -50,6 +50,8 @@ void PE(u_int8_t rand1, u_int8_t rand2) {
 		enqwait(i,&(Current_PCB->PID)); //add to wait list for semaphore
 		readyq(&(Current_PCB->PID),0);  //take off the ready q
 		blockq(&(Current_PCB->PID),1);  //add to block q
+		//Current_PCB->Block=1;
+		//Current_PCB->TDMA=TDMA_Setting
 	}
 	else printf("This semaphore has a value other than 1 or 0");
 }
