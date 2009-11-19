@@ -432,7 +432,7 @@ void LoadHigh(u_int8_t rand1,u_int8_t rand2)
 {
 	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
 	Current_PCB->R=(Current_PCB->R & 0x00FF);
-	Current_PCB->R=(MemoryCo4ntents.word|0xFF00)&Current_PCB->R;
+	Current_PCB->R=(MemoryContents.word|0xFF00)&Current_PCB->R;
 }
 
 void LoadLow(u_int8_t rand1,u_int8_t rand2)
@@ -449,18 +449,18 @@ void Send(u_int8_t rand1,u_int8_t rand2)
 		*(PCB_Array[Dest_PID].MailBox_Start+Current_PCB->PID)   //Determine Value to send based on R and Address
 			=(Current_PCB->R+(Current_PCB->PID<<16));
 
-				if ((PCB_Array[Dest_PID].WaitID==Current_PCB->PID)||(PCB_Array[Dest_PID].WaitID==0xEE))	 //If Other process is waiting for this message
-				{
-						blockq(&(PCB_Array[Dest_PID].PID),0);			   //Take of block queue
-						PCB_Array[Dest_PID].Block=0;									//Unblock it
-						PCB_Array[Dest_PID].WaitID=0xFF;
-						readyq(&(PCB_Array[Dest_PID].PID),1);			   //Put in ready queue
-				}
-				else Current_PCB->WaitID=Dest_PID;
+		if ((PCB_Array[Dest_PID].WaitID==Current_PCB->PID)||(PCB_Array[Dest_PID].WaitID==0xEE))	 //If Other process is waiting for this message
+		{
+				blockq(&(PCB_Array[Dest_PID].PID),0);			   //Take of block queue
+				PCB_Array[Dest_PID].Block=0;									//Unblock it
+				PCB_Array[Dest_PID].WaitID=0xFF;
+				readyq(&(PCB_Array[Dest_PID].PID),1);			   //Put in ready queue
+		}
+		else Current_PCB->WaitID=Dest_PID;
 
-				blockq(&(Current_PCB->PID),1);					  //Block the sender
-				Current_PCB->Block=1;													//Block
-				Current_PCB->TDMA=TDMA_Setting;				     //Do no more instructions until message confirmation.
+		blockq(&(Current_PCB->PID),1);					  //Block the sender
+		Current_PCB->Block=1;													//Block
+		Current_PCB->TDMA=TDMA_Setting;				     //Do no more instructions until message confirmation.
 
 
 }
@@ -608,20 +608,20 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	if(strncmp(buff,"BRAIN09",7) == 0)			//make sure it's legit
 	{
 		fgets(buff,64,stdin);
-		lengthbuff[3]=(buff[0]-48)*1000;		//get program size from second line of file
-		lengthbuff[2]=(buff[1]-48)*100;
-		lengthbuff[1]=(buff[2]-48)*10;
-		lengthbuff[0]=(buff[3]-48)*1;
+		lengthbuff[0] = (buff[0] - 48) * 1000;		//get program size from second line of file
+		lengthbuff[1] = (buff[1] - 48) * 100;
+		lengthbuff[2] = (buff[2] - 48) * 10;
+		lengthbuff[3] = (buff[3] - 48) * 1;
 
 		ReleaseMemory(Current_PCB->BR,Current_PCB->LR);
 
 		#if BESTFIT
-		PCB_Array[numPID].BR = RequestMemory(atoi(lengthbuff),1);
+		PCB_Array[numPID].BR = RequestMemory(lengthbuff[0] + lengthbuff[1] + lengthbuff[2] + lengthbuff[3] , 1);
 		#elif NEXTFIT
-		PCB_Array[numPID].BR = RequestMemory(atoi(lengthbuff),0);
+		PCB_Array[numPID].BR = RequestMemory(lengthbuff[0] + lengthbuff[1] + lengthbuff[2] + lengthbuff[3] , 0);
 		#endif
 
-		Current_PCB->LR = lengthbuff[0]+lengthbuff[1]+lengthbuff[2]+lengthbuff[3];
+		Current_PCB->LR = lengthbuff[0] + lengthbuff[1] + lengthbuff[2] + lengthbuff[3];
 		Current_PCB->IC = 0;
 
 		while (1)
@@ -655,16 +655,13 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 			if(MemLoc > MemStart + Current_PCB->LR)	//check against end of memory
 			{
 				printf("Insufficient Memory");
-				close(fildes);
 				return -1;
 			}
 		}
-		close(fildes);
 		return 0;
 	}
 	else	{
 		fprintf(stderr,"Brain09 Syntax Error\n");
-		close(fildes);
 		return -1;
 	}
 	// End of ProgramWrite with a few mods
