@@ -84,7 +84,6 @@ MemBlock holesq(MemBlock * pSpace, int io)		//address of PID and I/O
 	else {
 		curlyqueue_enqueue(hq, pSpace);
 	}
-
 }
 MemBlock sizeq(MemBlock * pSize, int io)		//address of PID and I/O
 {						//input to io: 1 = push
@@ -96,6 +95,5 @@ MemBlock sizeq(MemBlock * pSize, int io)		//address of PID and I/O
 	else {
 		curlyqueue_enqueue(hq, pSize);
 	}
-
 }
 
