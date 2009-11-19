@@ -20,7 +20,7 @@ typedef union wordbytes
 
 typedef struct Space
 {
-	u_int8_t Size;
+	u_int16_t Size;
 	u_int32_t Location;
 	u_int8_t Num;
 

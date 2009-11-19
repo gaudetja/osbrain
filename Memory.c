@@ -29,6 +29,7 @@
 #define L2 4*100
 
 extern curlyqueue_t * hq;
+extern curlyqueue_t * sq;
 
 //Memory Allocated
 u_int32_t* Memory_Start;					//Start of memory block
@@ -63,8 +64,8 @@ int ProgramWrite(u_int16_t* Program_Length)
 
 	Memory_Start = malloc(RAM);
 	Memory_Avail_Start = malloc(RAM/4);
-	Spaces=malloc(100*2);
-
+	Spaces=malloc(100*7);
+	buildq();
 
 
 	Memory_Avail_End =	Memory_Avail_Start+RAM/4;
@@ -85,6 +86,13 @@ int ProgramWrite(u_int16_t* Program_Length)
 		for (i=0;i<*Program_Length;i++)
 			Memory_Avail_Start[i]=0;
 		Memory_Avail_Current=Memory_Avail_Start+*Program_Length;
+
+
+		Spaces[Holes].Size=RAM/4-*Program_Length;
+		Spaces[Holes].Location=*Program_Length;
+		Spaces[Holes].Num=Holes;
+		holesq(&Spaces[Holes], 1);
+		Holes++;
 
 		while (1)
 		{
@@ -258,69 +266,72 @@ u_int32_t RequestMemory(u_int16_t Req_Length,u_int8_t Mode)
 			if (Memory_Avail_Current>Memory_Avail_End)
 				Memory_Avail_Current=Memory_Avail_Start;//If Current Avail Exceeds Memory Go to Start
 		}
-//		Memory_Avail_Current+=i;
+
 		Space_A=Memory_Avail_Current-Memory_Avail_Start;// Convert Virtual Memory to Disk Memory
 		for (i=0;i<Req_Length;i++)						//Once Memory Avail Found - Block it off
 		{
-			*Memory_Avail_Current=0;
+			*Memory_Avail_Current=0;					//Set Memory as Unavailable
 			Memory_Avail_Current++;
 		}
-		return Space_A;
+		return Space_A;									//Return Memory Location
 	}
 	else
 	{
 		u_int16_t Space_A=0;
-		if (curlyqueue_is_empty(hq))
+		if (curlyqueue_is_empty(hq))					//Queue of Holes
 		{
-			for (i=0;i<Req_Length;i++)
-				*(Memory_Avail_Current+i)=0;
+			for (i=0;i<Req_Length;i++)					//If Holes List Empty, take from end of memory
+				*(Memory_Avail_Current+i)=0;			//Should not occur
 			Space_A=Memory_Avail_Current-Memory_Avail_Start;
 			Memory_Avail_Current=Memory_Avail_Current+Req_Length;
 		}
 		else
 		{
-			for (i=0;i<=Holes;i++)
+			for (i=1;i<=Holes;i++)  //Given amount of holes
 			{
-				TempMemBlock=holesq(&Spaces[Holes], 0);
-				if (TempMemBlock.Size>=Req_Length)
+				TempMemBlock=holesq(&Spaces[i-1], 0);  //Pull a hole off the queue
+				if (TempMemBlock.Size<Req_Length)		 //Check to see if it meets the req length
 				{
-
-					holesq(&TempMemBlock, 1);
+					Spaces[TempMemBlock.Num]=TempMemBlock;
+					holesq(&Spaces[TempMemBlock.Num], 1);			 //If it doesn't, put it back in the holes list
 				}
 				else
 				{
-					sizeq(&TempMemBlock, 1);
+					sizeq(&TempMemBlock, 1);			 //If it does, put it in size queue (which is used to find best fit)
 					SpaceFound=1;
 				}
 			}
-			if (SpaceFound==1)
+			if (SpaceFound==1)							//If a hole was found that works
 			{
-				sizeq(&TempMemBlock, 0);
-				while(!curlyqueue_is_empty(hq))
+				sizeq(&TempMemBlock, 0);				//Pull the hole
+				while(!curlyqueue_is_empty(sq))			//If holes list not empty
 				{
-					sizeq(&TempMemBlock1, 0);
-					if (TempMemBlock1.Size<TempMemBlock.Size)
+					sizeq(&TempMemBlock1, 0);			//Pull another hole
+					if (TempMemBlock1.Size<TempMemBlock.Size) // Compare the two and push the worst fit back.
 					{
-						holesq(&TempMemBlock, 1);
+						holesq(&TempMemBlock, 1);		//TempMemBlock1 is better fit, send back Temp and sort temp1 to temp
 						TempMemBlock=TempMemBlock1;
+					}
+					else
+					{
+						holesq(&TempMemBlock1, 1);		//TempMemBlock is better, send back temp1 and repeat
 					}
 				}
 				Space_A=TempMemBlock.Location;
-				if (TempMemBlock.Size!=Req_Length)
+				if (TempMemBlock.Size!=Req_Length)      //If not a perfect fit, use the remaining memory space to create a hole
 				{
 					TempMemBlock.Size=TempMemBlock.Size-Req_Length;
 					TempMemBlock.Location=TempMemBlock.Location+Req_Length;
+					Spaces[TempMemBlock.Num]=TempMemBlock;
+					holesq(&Spaces[TempMemBlock.Num], 1);
 				}
 
 
 			}
 
-			else
+			else  //If no memory space found
 			{
-				for (i=0;i<Req_Length;i++)
-					*(Memory_Avail_Current+i)=0;
-				Space_A=Memory_Avail_Current-Memory_Avail_Start;
-				Memory_Avail_Current=Memory_Avail_Current+Req_Length;
+				exit(1);
 			}
 		}
 		return Space_A;
