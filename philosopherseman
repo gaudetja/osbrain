@@ -1,0 +1,23 @@
+BRAIN09
+100
+GD60	#00
+LR69	#01	Load number of philosophers to be forked
+CE60	#03	Is it zero?
+BT19	#04	If so, we're done
+SU61	#05	Subtract one
+SR69	#06	Store this number back to number of phils to be forked
+FK	#07	Fork that child
+CE61	#08	Compare PID to 1
+BT05	#09	If 1, then child, do child stuff
+BU01	#10	Otherwise back to 01, fork
+GP	#11	Get PID
+SR60	#12	Save PID
+DI62	#13	Divide by 2
+MU62	#14	Multiply by 2
+CE60	#15	If 0, then PID is div by 2: Chopstick
+BT10	#16
+EXCS	#17	Exec Chopstick
+EXPH	#18	Exec Philosopher
+H	#19
+DATA
+0000000100020003000400050006000700080003
