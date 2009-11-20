@@ -597,15 +597,18 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	char buff[64]={0};					//storage for each line of code
 	char tempbuff[4];					//more storage
 	int lengthbuff[4];					//get program length
+	fflush(stdin);
+	int fildes1=open((char *)filename,O_RDONLY);	//open that file ... do dah doo doo
 
-	int fildes=open((char *)filename,O_RDONLY);	//open that file ... do dah doo doo
 
-	if (fildes == -1) {					//error checking for open()
+
+	if (fildes1 == -1) {					//error checking for open()
 		fprintf(stderr,"Program not loaded properly, check to see if input file exists\n");
 		return -1;
 	}
 	close(fileno(stdin));					//put our file in place of stdin
-	dup(fildes);
+	dup(fildes1);
+	close(fildes1);
 
 	// ProgramWrite with a few mods
 
@@ -635,6 +638,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 			if(strncmp(buff,"DATA",4)==0)		//End of Program Instructions
 			{
 				FileComplete=1;
+				//close(fileno(stdin));
 				break;
 			}
 			if(strncmp(buff,"BRAIN09",7)==0) {	//Look for New Program
@@ -643,10 +647,12 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 				//fgets(buff,64,stdin);
 
 				FileComplete = 1;
+				//close(fileno(stdin));
 				break;
 			}
 			if(strncmp(buff,"END",3) == 0) {
 				FileComplete = 1;
+				//close(fileno(stdin));
 				break;
 			}
 
