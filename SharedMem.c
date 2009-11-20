@@ -72,9 +72,6 @@ void VE(u_int8_t rand1, u_int8_t rand2) {
 		printf("There are only 0-99 available semaphores! you tried to release %d",i);
 		exit(0);
 	}
-	printf("semaphore[i].value = %d\n", semaphore[i].value);
-	printf("semaphore[i].PID = %d\n",semaphore[i].PID);
-	printf("Current_PCB->PID = %d\n",Current_PCB->PID);
 	if(semaphore[i].value == 1) {
 		printf("This semaphore is not currently held by anyone.");
 		exit(0);
@@ -90,7 +87,9 @@ void VE(u_int8_t rand1, u_int8_t rand2) {
 		if (semaphore[i].head!=semaphore[i].tail) {
 			PID = deqwait(i);
 			blockq(&(PCB_Array[*PID].PID),0);  //take off the block q
-			readyq(&(PCB_Array[*PID].PID),1);  //add to ready q
+			printf("semaphore[i].value = %d\n", semaphore[i].value);
+			printf("semaphore[i].PID = %d\n",semaphore[i].PID);
+			printf("Current_PCB->PID = %d\n",Current_PCB->PID);			readyq(&(PCB_Array[*PID].PID),1);  //add to ready q
 			PCB_Array[*PID].Block=0;
 			semaphore[i].PID = *PID;
 		}
@@ -127,6 +126,7 @@ void ST(u_int8_t rand1, u_int8_t rand2) {
 	shared[i] = Current_PCB->R;
 }
 void enqwait(int whichsem, u_int8_t * pPID) {
+	*(semaphore[whichsem].tail)= *pPID;
 	if (semaphore[whichsem].tail==(semaphore[whichsem].waiting+99) && semaphore[whichsem].head!=semaphore[whichsem].waiting) {
 		semaphore[whichsem].tail=0;
 	}
