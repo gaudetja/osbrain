@@ -46,7 +46,6 @@ int main(int argc, char* argv[])
         InitShared();
         //Run the program
         Exec_Brain(numPID , *pProgram_Length);
-
         return 0;
 }
 
