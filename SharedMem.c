@@ -89,8 +89,8 @@ void VE(u_int8_t rand1, u_int8_t rand2) {
 		}
 		if (semaphore[i].head!=semaphore[i].tail) {
 			PID = deqwait(i);
-			blockq(PID,0);  //take off the block q
-			readyq(PID,1);  //add to ready q
+			blockq(PCB_Array[*PID].PID,0);  //take off the block q
+			readyq(PCB_Array[*PID].PID,1);  //add to ready q
 			PCB_Array[*PID].Block=0;
 			semaphore[i].PID = *PID;
 		}
