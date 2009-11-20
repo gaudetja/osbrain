@@ -34,6 +34,16 @@ void InitShared(void) {
 		semaphore[i].head = semaphore[i].waiting;
 		semaphore[i].tail = semaphore[i].waiting;
 	}
+	PrintShared();
+}
+void PrintShared(void) {
+	int i,k;
+	for (i=0; i<(numshared/10); i++) {
+		for (k=0; k<10; k++) {
+			printf("%d\t", shared[10*i+k]);
+		}
+		printf("\n");
+	}
 }
 
 void PE(u_int8_t rand1, u_int8_t rand2) {
