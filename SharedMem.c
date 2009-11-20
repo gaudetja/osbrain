@@ -147,7 +147,10 @@ u_int8_t * deqwait(int whichsem) {
 		if(semaphore[whichsem].head==semaphore[whichsem].waiting+99) {
 			semaphore[whichsem].head=semaphore[whichsem].waiting;
 		}
-		else semaphore[whichsem].head++;
+		else {
+			*(semaphore[whichsem].head) = 0;
+			semaphore[whichsem].head++;
+		}
 	}
 
 	return returnval;
