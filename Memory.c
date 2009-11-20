@@ -126,7 +126,7 @@ int ProgramWrite(u_int16_t* Program_Length)
 			Memory_Num++;				//increment # bytes written
 			if(Memory_Num>RAM/4)			//check against end of memory
 			{
-				printf("Insufficient Memory");
+				printf("Insufficient Memory\n");
 				return -1;
 			}
 		}
