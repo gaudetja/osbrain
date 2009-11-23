@@ -28,7 +28,7 @@
 //IMPORTANT, MOVED TIME SLICE DEFINE INTO THE .H FILE
 
 
-#define NPID 200
+#define NPID 100
 #define RAM 4*10000
 
 PCB* Current_PCB;			       //Current Process control block
@@ -49,9 +49,9 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	//initialize all the PCB variables to 0
 	char PID=0xFF;
 	PCB_Array=calloc(100,sizeof(PCB));
-	PostOffice=calloc(100*100,4);
+	PostOffice=calloc(NPID * NPID,4);
 	int i;
-	for(i=0;i<nPID*nPID;i++) *(PostOffice+i)=0xFF;
+	for(i=0;i < NPID * NPID;i++) *(PostOffice + i) = 0xFF;
 
 
 	PCB_Array[numPID].R = 0;
@@ -291,10 +291,19 @@ void RegMultiply(u_int8_t rand1,u_int8_t rand2)
  */
 void StoreReg(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents.bytes.byte4=(Current_PCB->R%10)+48;
-	MemoryContents.bytes.byte3=((Current_PCB->R/10)%10)+48;
-	MemoryContents.bytes.byte2=((Current_PCB->R/100)%10)+48;
-	MemoryContents.bytes.byte1=((Current_PCB->R/1000)%10)+48;
+	if (Current_PCB->R <= 9999) {
+		MemoryContents.bytes.byte4=(Current_PCB->R%10)+48;
+		MemoryContents.bytes.byte3=((Current_PCB->R/10)%10)+48;
+		MemoryContents.bytes.byte2=((Current_PCB->R/100)%10)+48;
+		MemoryContents.bytes.byte1=((Current_PCB->R/1000)%10)+48;
+	}
+	/*else {
+		MemoryContents.bytes.byte4=(Current_PCB->R%16)+48;
+		MemoryContents.bytes.byte3=((Current_PCB->R/16)%16)+48;
+		MemoryContents.bytes.byte2=((Current_PCB->R/256)%16)+48;
+		MemoryContents.bytes.byte1=((Current_PCB->R/4096)%16)+48;
+	}*/
+
 	WriteMemory(MemoryContents.word,rand1-48,rand2-48,Current_PCB->BR);
 }
 
@@ -458,7 +467,7 @@ void LoadLow(u_int8_t rand1,u_int8_t rand2)
 
 	MemoryContents.bytes.byte3=Tempbyte3;
 	MemoryContents.bytes.byte4=Tempbyte4;
-	//hg sucks, and craig is wearing gloves
+
 	Current_PCB->R=(Current_PCB->R & 0xFFFFF0F0);
 	Current_PCB->R=(MemoryContents.word & 0x0000FFFF) | Current_PCB->R;
 	MemoryContents.word = Current_PCB->R;
@@ -529,9 +538,9 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 	}
 	else									    //If no message from desired process
 	{
-		blockq(&(Current_PCB->PID),1);		  //Block
-		Current_PCB->Block=1;				   //Block
-		Current_PCB->TDMA=TDMA_Setting;				   //Do not run any more processes
+		blockq(&(Current_PCB->PID),1);		  		//Block
+		Current_PCB->Block=1;				   	//Block
+		Current_PCB->TDMA=TDMA_Setting;				//Do not run any more processes
 		Current_PCB->WaitID=((rand1-48)*10)+rand2-48; // Set whom process is waiting for
 		Current_PCB->IC--;					      //Decrement Counter -- If unblocked by appropriate sender will repeat this instruct.
 
@@ -607,8 +616,8 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	filename[1] = rand2;
 	filename[2] = '\0';
 
-	u_int16_t MemStart = Current_PCB->BR;			//start new program mem here
-	u_int16_t MemLoc = MemStart;
+	u_int16_t MemStart;			//start new program mem here
+	u_int16_t MemLoc;
 	//static int PID
 
 	int FileComplete=0;					//flag
@@ -647,6 +656,8 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 		PCB_Array[numPID].BR = RequestMemory(lengthbuff[0] + lengthbuff[1] + lengthbuff[2] + lengthbuff[3] , 0);
 		#endif
 
+		MemStart = Current_PCB->BR;			//start new program mem here
+		MemLoc = MemStart;
 		Current_PCB->LR = lengthbuff[0] + lengthbuff[1] + lengthbuff[2] + lengthbuff[3];
 		Current_PCB->IC = 0;
 
@@ -679,13 +690,8 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 			tempbuff[1]=buff[2];
 			tempbuff[0]=buff[3];
 
-			Memory_Start[MemLoc]=*((u_int32_t*)tempbuff);	//put instr in memory
+			Memory_Start[MemLoc] = *((u_int32_t*)tempbuff);	//put instr in memory
 			MemLoc++;				//increment # bytes written
-			if(MemLoc > MemStart + Current_PCB->LR)	//check against end of memory
-			{
-				printf("Insufficient Memory");
-				return -1;
-			}
 		}
 		return 0;
 	}

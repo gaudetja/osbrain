@@ -55,9 +55,9 @@ int readyq(u_int8_t* pPID, char io)		//address of PID and I/O
 	return -1;
 }
 
-int blockq(u_int8_t * pPID, int io)		//address of PID and I/O
-{										// input to io: 1 = push
-	u_int8_t * pid;						// 0 = pop
+int blockq(u_int8_t * pPID, int io)					//address of PID and I/O
+{									// input to io: 1 = push
+	u_int8_t * pid;							// 0 = pop
 	if (io == 0) {
 		curlyqueue_iterator_jump_to_front(bq);
 		do
