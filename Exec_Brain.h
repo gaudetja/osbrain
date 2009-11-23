@@ -2,6 +2,7 @@
 #define _EXECBRAIN_H
 
 #define TDMA_Setting 1
+
 #define HoleStatus 0
 #define SharedStatus 0
 #define SystemStatus 1
