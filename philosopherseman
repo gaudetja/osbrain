@@ -1,23 +1,42 @@
 BRAIN09
-100
-GD60	#00
-LR69	#01	Load number of philosophers to be forked
-CE60	#03	Is it zero?
-BT19	#04	If so, we're done
-SU61	#05	Subtract one
-SR69	#06	Store this number back to number of phils to be forked
-FK	#07	Fork that child
-CE61	#08	Compare PID to 1
-BT05	#09	If 1, then child, do child stuff
-BU01	#10	Otherwise back to 01, fork
-GP	#11	Get PID
-SR60	#12	Save PID
-DI62	#13	Divide by 2
-MU62	#14	Multiply by 2
-CE60	#15	If 0, then PID is div by 2: Chopstick
-BT10	#16
-EXCS	#17	Exec Chopstick
-EXPH	#18	Exec Philosopher
-H	#19
+25
+BU11	#00
+0001	#
+0001	#	philosopher index
+0003	#	number of phils left to be forked
+0004	#	PID of process to send to
+0003	#5	number of philosophers
+0006	#
+0007	#
+0008	#
+0002	#	address of phil index
+0000	#10
+LR19	#	Set up which semaphore to initialize
+LL03	#	based on number of philosophers
+SR19	#
+LR03	#	Load number of philosophers to be forked
+CE10	#15	Is it zero?
+BT37	#	If so, we're done
+SU01	#	Otherwise subtract one
+SR03	#	Store this number back to number of phils to be forked
+SI00	#	Initialize the new semaphore
+FK	#20	Fork that child
+CE10	#	Compare PID to 0
+BT36	#	If 0, then child, go to exec philosopher
+SR04	#	Save PID of child
+LR29	#	Change Send to send to child
+LL04	#25
+SR29	#
+SR31	#
+LR09	#	get location of phil index
+SD00	#
+LR05	#30
+SD00	#
+LR02	#	get phil index
+AD01	#	increment
+SR02	#	save it
+BU11	#35	Back to set up semaphore
+EXPH	#	Exec Philosopher
+H	#37
 DATA
-0000000100020003000400050006000700080003
+END
