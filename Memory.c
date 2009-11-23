@@ -181,12 +181,15 @@ WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t BR)
 		ReadWord.bytes.byte3='0';
 		ReadWord.bytes.byte4='0';
 	}
+	if (ReadWord.bytes.byte1 <= 0x39) {
+		u_int32_t Temp1=(ReadWord.bytes.byte1-'0')*1000+
+				(ReadWord.bytes.byte2-'0')*100+
+				(ReadWord.bytes.byte3-'0')*10+
+				(ReadWord.bytes.byte4-'0');
+		ReadWord.word=Temp1;
+	}
 
-	u_int32_t Temp1=(ReadWord.bytes.byte1-'0')*1000+
-			(ReadWord.bytes.byte2-'0')*100+
-			(ReadWord.bytes.byte3-'0')*10+
-			(ReadWord.bytes.byte4-'0');
-	ReadWord.word=Temp1;
+
 	return ReadWord;
 
 }

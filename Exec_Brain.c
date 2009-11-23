@@ -291,10 +291,19 @@ void RegMultiply(u_int8_t rand1,u_int8_t rand2)
  */
 void StoreReg(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents.bytes.byte4=(Current_PCB->R%10)+48;
-	MemoryContents.bytes.byte3=((Current_PCB->R/10)%10)+48;
-	MemoryContents.bytes.byte2=((Current_PCB->R/100)%10)+48;
-	MemoryContents.bytes.byte1=((Current_PCB->R/1000)%10)+48;
+	if (Current_PCB->R <= 9999) {
+		MemoryContents.bytes.byte4=(Current_PCB->R%10)+48;
+		MemoryContents.bytes.byte3=((Current_PCB->R/10)%10)+48;
+		MemoryContents.bytes.byte2=((Current_PCB->R/100)%10)+48;
+		MemoryContents.bytes.byte1=((Current_PCB->R/1000)%10)+48;
+	}
+	/*else {
+		MemoryContents.bytes.byte4=(Current_PCB->R%16)+48;
+		MemoryContents.bytes.byte3=((Current_PCB->R/16)%16)+48;
+		MemoryContents.bytes.byte2=((Current_PCB->R/256)%16)+48;
+		MemoryContents.bytes.byte1=((Current_PCB->R/4096)%16)+48;
+	}*/
+
 	WriteMemory(MemoryContents.word,rand1-48,rand2-48,Current_PCB->BR);
 }
 
@@ -427,7 +436,7 @@ void printstatus()
 {
 	printf("Shared Memory\n");
 	PrintShared();
-	printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
+	printf("PCB Status:  R:%x  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 	printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
 	MemoryDump(Current_PCB->BR);
 
@@ -443,8 +452,16 @@ void LoadHigh(u_int8_t rand1,u_int8_t rand2)
 void LoadLow(u_int8_t rand1,u_int8_t rand2)
 {
 	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
-	Current_PCB->R=(Current_PCB->R & 0xFF00);
-	Current_PCB->R=(MemoryContents.word|0x00FF) & Current_PCB->R;
+
+	u_int8_t Tempbyte4=MemoryContents.word%10+48;
+	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
+
+	MemoryContents.bytes.byte3=Tempbyte3;
+	MemoryContents.bytes.byte4=Tempbyte4;
+
+	Current_PCB->R=(Current_PCB->R & 0xFFFFF0F0);
+	Current_PCB->R=(MemoryContents.word & 0x0000FFFF) | Current_PCB->R;
+	MemoryContents.word = Current_PCB->R;
 }
 void Send(u_int8_t rand1,u_int8_t rand2)
 {
@@ -558,7 +575,6 @@ void Fork(void)
 		Current_PCB->R = 0;						//insufficient memory
 	}
 	else {
-//		PCB_Array[numPID].BR = BaseReg;				//Base register starts at end of last process
 		PCB_Array[numPID].Block = 0;					//
 		PCB_Array[numPID].C = Current_PCB->C;				//Same truth value
 		PCB_Array[numPID].IC = Current_PCB->IC;				//Same instruction counter
