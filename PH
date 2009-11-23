@@ -1,0 +1,45 @@
+BRAIN09	#Philosopher
+0040
+BU11	#0
+0001	#
+0000	#	location of philosopher index
+0000	#	storage for x in x%y
+0000	#	storage for x*floor(x/y)
+0000	#5	number of philosophers
+0000	#	storage for x%y
+0000
+0000
+0000
+0000	#10
+RC00
+LR15
+LL02
+SR15
+PE00	#15
+LR02
+AD01
+SR03
+DI05
+MU03	#20
+SR04
+LR03
+SU04
+SR06
+LR28	#25
+LL06
+SR28
+PE00
+LR32
+LL03	#30
+SR32
+VE00
+LR36
+LL06
+SR36	#35
+VE00
+BU12
+H
+0000
+0000	#40
+DATA
+END
