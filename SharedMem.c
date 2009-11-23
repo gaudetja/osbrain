@@ -39,6 +39,7 @@ void InitShared(void) {
 void PrintShared(void) {
 	int i,k;
 	for (i=0; i<(numshared/10); i++) {
+		printf("Memory (%2d-%2d):\t", i*10,i*10+9);
 		for (k=0; k<10; k++) {
 			printf("%d\t", shared[10*i+k]);
 		}

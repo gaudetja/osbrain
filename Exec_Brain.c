@@ -87,10 +87,10 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 			Current_PCB->TDMA++;
 
 		}
-		Current_PCB->TDMA = 0;
-		if (Current_PCB->Block == 0) readyq(&(Current_PCB->PID),1);
+		Current_PCB->TDMA=0;
+		if (Current_PCB->Block==0) readyq(&(Current_PCB->PID),1);
 	}
-	return 0;
+return 0;
 }
 
 /*
@@ -182,7 +182,7 @@ void LoadRegister(u_int8_t rand1,u_int8_t rand2)
 void CompareEqual(u_int8_t rand1,u_int8_t rand2)
 {
 	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
-	if(Current_PCB->R == MemoryContents.word)
+	if(Current_PCB->R==MemoryContents.word)
 	{
 		Current_PCB->C = 'T';
 	}
@@ -243,7 +243,7 @@ void BranchUnc(u_int8_t rand1,u_int8_t rand2)
  */
 void AddToReg(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadMemory(rand1,rand2,Current_PCB->BR);
+	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
 	Current_PCB->R=Current_PCB->R+MemoryContents.word;
 }
 
@@ -291,19 +291,10 @@ void RegMultiply(u_int8_t rand1,u_int8_t rand2)
  */
 void StoreReg(u_int8_t rand1,u_int8_t rand2)
 {
-	if (Current_PCB->R <= 9999) {
-		MemoryContents.bytes.byte4=(Current_PCB->R%10)+48;
-		MemoryContents.bytes.byte3=((Current_PCB->R/10)%10)+48;
-		MemoryContents.bytes.byte2=((Current_PCB->R/100)%10)+48;
-		MemoryContents.bytes.byte1=((Current_PCB->R/1000)%10)+48;
-	}
-	/*else {
-		MemoryContents.bytes.byte4=(Current_PCB->R%16)+48;
-		MemoryContents.bytes.byte3=((Current_PCB->R/16)%16)+48;
-		MemoryContents.bytes.byte2=((Current_PCB->R/256)%16)+48;
-		MemoryContents.bytes.byte1=((Current_PCB->R/4096)%16)+48;
-	}*/
-
+	MemoryContents.bytes.byte4=(Current_PCB->R%10)+48;
+	MemoryContents.bytes.byte3=((Current_PCB->R/10)%10)+48;
+	MemoryContents.bytes.byte2=((Current_PCB->R/100)%10)+48;
+	MemoryContents.bytes.byte1=((Current_PCB->R/1000)%10)+48;
 	WriteMemory(MemoryContents.word,rand1-48,rand2-48,Current_PCB->BR);
 }
 
@@ -434,9 +425,9 @@ void AddStack()
  */
 void printstatus()
 {
-	printf("Shared Memory\n");
+	printf("Shared Memory Status: \n");
 	PrintShared();
-	printf("PCB Status:  R:%x  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
+	printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 	printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
 	MemoryDump(Current_PCB->BR);
 
@@ -452,16 +443,8 @@ void LoadHigh(u_int8_t rand1,u_int8_t rand2)
 void LoadLow(u_int8_t rand1,u_int8_t rand2)
 {
 	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
-
-	u_int8_t Tempbyte4=MemoryContents.word%10+48;
-	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
-
-	MemoryContents.bytes.byte3=Tempbyte3;
-	MemoryContents.bytes.byte4=Tempbyte4;
-
-	Current_PCB->R=(Current_PCB->R & 0xFFFFF0F0);
-	Current_PCB->R=(MemoryContents.word & 0x0000FFFF) | Current_PCB->R;
-	MemoryContents.word = Current_PCB->R;
+	Current_PCB->R=(Current_PCB->R & 0xFF00);
+	Current_PCB->R=(MemoryContents.word|0x00FF) & Current_PCB->R;
 }
 void Send(u_int8_t rand1,u_int8_t rand2)
 {
@@ -575,6 +558,7 @@ void Fork(void)
 		Current_PCB->R = 0;						//insufficient memory
 	}
 	else {
+//		PCB_Array[numPID].BR = BaseReg;				//Base register starts at end of last process
 		PCB_Array[numPID].Block = 0;					//
 		PCB_Array[numPID].C = Current_PCB->C;				//Same truth value
 		PCB_Array[numPID].IC = Current_PCB->IC;				//Same instruction counter
@@ -586,6 +570,7 @@ void Fork(void)
 		PCB_Array[numPID].WaitID = 0xFF;
 		PCB_Array[numPID].TDMA = 0;
 		readyq(&(PCB_Array[numPID].PID), 1);
+
 		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
 
 		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over
@@ -594,7 +579,6 @@ void Fork(void)
 
 		}
 		numPID++; 	//increment number of processes
-
 		Current_PCB->TDMA=TDMA_Setting;
 	}
 }
@@ -614,7 +598,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	char tempbuff[4];					//more storage
 	int lengthbuff[4];					//get program length
 	fflush(stdin);
-	int fildes1 = open((char *)filename,O_RDONLY);		//open that file ... do dah doo doo
+	int fildes1=open((char *)filename,O_RDONLY);	//open that file ... do dah doo doo
 
 
 
