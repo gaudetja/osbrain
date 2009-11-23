@@ -39,7 +39,7 @@ int LoadProgram(char* argv,  u_int16_t* pProgram_Length );
 u_int16_t* pProgram_Length;
 int main(int argc, char* argv[])
 {
-		pProgram_Length=malloc(4);
+	pProgram_Length=malloc(4);
         //Loads Initial Program
         LoadProgram(argv[1] , pProgram_Length);
         //initialize shared memory
@@ -57,7 +57,8 @@ int main(int argc, char* argv[])
  */
 int LoadProgram(char* argv , u_int16_t* pProgram_Length)
 {
-int fildes=open(argv,O_RDONLY);
+	int fildes=open(argv,O_RDONLY);
+
 	if (fildes==-1)
 	{
 		fprintf(stderr,"Program not loaded properly, check to see if input file exists");

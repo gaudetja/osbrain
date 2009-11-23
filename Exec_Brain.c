@@ -87,10 +87,10 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 			Current_PCB->TDMA++;
 
 		}
-		Current_PCB->TDMA=0;
-		if (Current_PCB->Block==0) readyq(&(Current_PCB->PID),1);
+		Current_PCB->TDMA = 0;
+		if (Current_PCB->Block == 0) readyq(&(Current_PCB->PID),1);
 	}
-return 0;
+	return 0;
 }
 
 /*
@@ -182,7 +182,7 @@ void LoadRegister(u_int8_t rand1,u_int8_t rand2)
 void CompareEqual(u_int8_t rand1,u_int8_t rand2)
 {
 	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
-	if(Current_PCB->R==MemoryContents.word)
+	if(Current_PCB->R == MemoryContents.word)
 	{
 		Current_PCB->C = 'T';
 	}
@@ -586,7 +586,6 @@ void Fork(void)
 		PCB_Array[numPID].WaitID = 0xFF;
 		PCB_Array[numPID].TDMA = 0;
 		readyq(&(PCB_Array[numPID].PID), 1);
-
 		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
 
 		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over
@@ -595,6 +594,7 @@ void Fork(void)
 
 		}
 		numPID++; 	//increment number of processes
+
 		Current_PCB->TDMA=TDMA_Setting;
 	}
 }
@@ -614,7 +614,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	char tempbuff[4];					//more storage
 	int lengthbuff[4];					//get program length
 	fflush(stdin);
-	int fildes1=open((char *)filename,O_RDONLY);	//open that file ... do dah doo doo
+	int fildes1 = open((char *)filename,O_RDONLY);		//open that file ... do dah doo doo
 
 
 
