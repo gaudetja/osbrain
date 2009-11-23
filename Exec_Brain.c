@@ -75,7 +75,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	{
 		PID=readyq(&(Current_PCB->PID),0);		//Get next process from ready queue.
 		ContextSwitchCount++;
-		printf("Context Switches: %d\n",ContextSwitchCount);
+
 		Current_PCB=&PCB_Array[(int)PID];
 		while(Current_PCB->TDMA<TDMA_Setting)
 		{
@@ -436,10 +436,11 @@ void printstatus()
 {
 
 
-#if SystemStatus
+#if SharedStatus
 	printf("Shared Memory Status: \n");
+	printf("Context Switches: %d\n",ContextSwitchCount);
 	PrintShared();
-#elif SharedStatus
+#elif SystemStatus
 	printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 	printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
 	MemoryDump(Current_PCB->BR);
