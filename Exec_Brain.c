@@ -443,9 +443,18 @@ void LoadHigh(u_int8_t rand1,u_int8_t rand2)
 void LoadLow(u_int8_t rand1,u_int8_t rand2)
 {
 	MemoryContents=ReadMemory(rand1-48,rand2-48,Current_PCB->BR);
-	Current_PCB->R=(Current_PCB->R & 0xFF00);
-	Current_PCB->R=(MemoryContents.word|0x00FF) & Current_PCB->R;
+
+	u_int8_t Tempbyte4=MemoryContents.word%10+48;
+	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
+
+	MemoryContents.bytes.byte3=Tempbyte3;
+	MemoryContents.bytes.byte4=Tempbyte4;
+	//hg sucks, and craig is wearing gloves
+	Current_PCB->R=(Current_PCB->R & 0xFFFFF0F0);
+	Current_PCB->R=(MemoryContents.word & 0x0000FFFF) | Current_PCB->R;
+	MemoryContents.word = Current_PCB->R;
 }
+
 void Send(u_int8_t rand1,u_int8_t rand2)
 {
 		u_int16_t Dest_PID;
