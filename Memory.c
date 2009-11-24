@@ -68,7 +68,7 @@ int ProgramWrite(u_int16_t* Program_Length)
 	buildq();
 
 
-	Memory_Avail_End =	Memory_Avail_Start+RAM/4;
+	Memory_Avail_End = Memory_Avail_Start+RAM/4;
 	Memory_Avail_Current = Memory_Avail_Start;
 	for (i=0;i<RAM/4;i++)
 		Memory_Avail_Start[i]=1;
@@ -373,7 +373,7 @@ void MemoryDump(u_int16_t BR)
 {
 	int i;
 	for (i=0;i<10;i++)
-		printf("Memory %03d:%03d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",BR+i*10,BR+10+i*10, Memory_Start[BR+0+i*10],Memory_Start[BR+1+i*10],Memory_Start[i*10+2+BR],Memory_Start[i*10+3+BR],Memory_Start[i*10+4+BR],Memory_Start[i*10+5+BR],Memory_Start[i*10+6+BR],Memory_Start[i*10+7+BR],Memory_Start[i*10+8+BR],Memory_Start[i*10+9+BR]);
+		printf("Memory %03d:%03d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",BR+i*10,BR+9+i*10, Memory_Start[BR+0+i*10],Memory_Start[BR+1+i*10],Memory_Start[i*10+2+BR],Memory_Start[i*10+3+BR],Memory_Start[i*10+4+BR],Memory_Start[i*10+5+BR],Memory_Start[i*10+6+BR],Memory_Start[i*10+7+BR],Memory_Start[i*10+8+BR],Memory_Start[i*10+9+BR]);
 }
 void HoleStatusDump()
 {

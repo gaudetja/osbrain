@@ -33,11 +33,11 @@ LR32	#	set up VE
 LL02	#30
 SR32
 VE00
-LR36
+LR36	#	set up other VE
 LL06
 SR36	#35
 VE00
-BU12
+H
 LR03
 SR02
 H	#40
