@@ -22,13 +22,13 @@ void test(void)
 	semaphore
 }*/
 void InitShared(void) {
-	int i;
+	int i= 100;
 
 	shared=calloc(numshared,4);
-	semaphore = calloc(numshared,sizeof(semaphore));
+	semaphore = malloc(numshared*sizeof(semaphore));
 
 	//semaphore =tmp;
-	for(i=0;i<numshared;i++) {
+	for(i=0;i<100;i++) {
 		semaphore[i].PID=-1;
 		semaphore[i].value=1;
 		semaphore[i].head = semaphore[i].waiting;
@@ -127,7 +127,7 @@ void ST(u_int8_t rand1, u_int8_t rand2) {
 void enqwait(int whichsem, u_int8_t * pPID) {
 	*(semaphore[whichsem].tail)= *pPID;
 	if (semaphore[whichsem].tail==(semaphore[whichsem].waiting+99) && semaphore[whichsem].head!=semaphore[whichsem].waiting) {
-		semaphore[whichsem].tail=0;
+		semaphore[whichsem].tail=semaphore[whichsem].waiting;
 	}
 	if (semaphore[whichsem].tail==(semaphore[whichsem].waiting+99) && semaphore[whichsem].head==semaphore[whichsem].waiting) {
 		 printf("somehow you managed to fill up the wait queue for this semaphore\n");
@@ -143,7 +143,6 @@ u_int8_t * deqwait(int whichsem) {
 	}
 	else {
 		returnval = semaphore[whichsem].head;
-		//*(semaphore[whichsem].head) = 0;
 
 		if(semaphore[whichsem].head==semaphore[whichsem].waiting+99) {
 			semaphore[whichsem].head=semaphore[whichsem].waiting;
