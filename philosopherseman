@@ -37,6 +37,6 @@ AD01	#	increment
 SR02	#	save it
 BU11	#35	Back to set up semaphore
 EXPH	#	Exec Philosopher
-H	#37
+H 	#37
 DATA
 END
