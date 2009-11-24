@@ -381,7 +381,7 @@ void HoleStatusDump()
 	printf("Number of Holes: %d\n",Holes);
 	for (i=0;i<Holes;i++)
 	{
-		printf("Hole %d: Start: %d  End:  %d\n",Holes,Spaces[i].Location,Spaces[i].Location+Spaces[i].Size);
+		printf("Hole %d: Start: %d  End:  %d\n",i,Spaces[i].Location,Spaces[i].Location+Spaces[i].Size);
 	}
 
 
