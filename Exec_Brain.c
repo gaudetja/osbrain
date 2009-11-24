@@ -442,6 +442,7 @@ void printstatus()
 		printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 		printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
 		MemoryDump(Current_PCB->BR);
+		printf("Context Switches: %d\n",ContextSwitchCount);
 	}
 
 }

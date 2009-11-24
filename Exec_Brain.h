@@ -1,7 +1,7 @@
 #ifndef _EXECBRAIN_H
 #define _EXECBRAIN_H
 
-#define TDMA_Setting 1
+#define TDMA_Setting 60
 
 
 #define HoleStatus   0

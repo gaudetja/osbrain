@@ -25,7 +25,7 @@ void InitShared(void) {
 	int i= 100;
 
 	shared=calloc(numshared,4);
-	semaphore = malloc(numshared*sizeof(semaphore));
+	semaphore = malloc(numshared*sizeof(*semaphore));
 
 	//semaphore =tmp;
 	for(i=0;i<100;i++) {
