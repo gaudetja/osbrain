@@ -124,12 +124,14 @@ int ProgramWrite(u_int16_t* Program_Length)
 
 			Memory_Start[Memory_Num]=*((u_int32_t*)tempbuff);	//put instr in memory
 			Memory_Num++;				//increment # bytes written
-			if(Memory_Num>RAM/4)			//check against end of memory
-			{
-				printf("Insufficient Memory\n");
-				return -1;
-			}
+
+	if	(Memory_Num>RAM/4)			//check against end of memory
+							{
+						printf		(	"Insufficient Memory\n"	)			;
+	return				 -1;
+											}
 		}
+
 		//*Program_Length = Memory_Num - i;	//get program length from old Memory_Num val
 		Memory_End=&Memory_Start[Memory_Num];
 		for (i=0;i<(Memory_End-Memory_Start);i++) 	//For Debugging
