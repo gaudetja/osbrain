@@ -434,22 +434,18 @@ void AddStack()
  */
 void printstatus()
 {
-
-
-#if SharedStatus
-	printf("Shared Memory Status: \n");
-	printf("Context Switches: %d\n",ContextSwitchCount);
-	PrintShared();
-#elif SystemStatus
-	printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
-	printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
-	MemoryDump(Current_PCB->BR);
-#elif HoleStatus
-	HoleStatusDump();
-#endif
-
-
-
+	if (SystemStatus) {
+		printf("Shared Memory Status: \n");
+		PrintShared();
+	}
+	if (HoleStatus) {
+		HoleStatusDump();
+	}
+	if (SharedStatus) {
+		printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
+		printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
+		MemoryDump(Current_PCB->BR);
+	}
 }
 
 void LoadHigh(u_int8_t rand1,u_int8_t rand2)
