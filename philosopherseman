@@ -11,15 +11,15 @@ BU11	#00
 0008	#
 0002	#	address of phil index
 0000	#10
-LR19	#	Set up which semaphore to initialize
-LL03	#	based on number of philosophers
-SR19	#
+NP	#
+NP	#
+NP	#
 LR03	#	Load number of philosophers to be forked
 CE10	#15	Is it zero?
 BT37	#	If so, we're done
 SU01	#	Otherwise subtract one
 SR03	#	Store this number back to number of phils to be forked
-SI00	#	Initialize the new semaphore
+NP	#	
 FK	#20	Fork that child
 CE10	#	Compare PID to 0
 BT36	#	If 0, then child, go to exec philosopher
