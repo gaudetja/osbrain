@@ -37,9 +37,9 @@ LR36	#	set up other VE
 LL06	#
 SR36	#35
 VE00	#
-H	#
+H 	#
 LR03	#
 SR02	#
-H	#40
+H 	#40
 DATA
 END
