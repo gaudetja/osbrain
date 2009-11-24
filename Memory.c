@@ -290,34 +290,24 @@ u_int32_t RequestMemory(u_int16_t Req_Length,u_int8_t Mode)
 		}
 		else
 		{
-			for (i=1;i<=Holes;i++)  //Given amount of holes
+			for (i=0;i<Holes;i++)  //Given amount of holes
 			{
-				TempMemBlock=holesq(&Spaces[i-1], 0);  //Pull a hole off the queue
-				if (TempMemBlock.Size<Req_Length)		 //Check to see if it meets the req length
+//				Spaces[i]=holesq(&Spaces[i-1], 0);  //Pull a hole off the queue
+				if (Spaces[i].Size>=Req_Length)		 //Check to see if it meets the req length
 				{
-					Spaces[TempMemBlock.Num]=TempMemBlock;
-					holesq(&Spaces[TempMemBlock.Num], 1);			 //If it doesn't, put it back in the holes list
-				}
-				else
-				{
-					sizeq(&TempMemBlock, 1);			 //If it does, put it in size queue (which is used to find best fit)
+					sizeq(&Spaces[i], 1);			 //If it does, put it in size queue (which is used to find best fit)
 					SpaceFound=1;
 				}
 			}
 			if (SpaceFound==1)							//If a hole was found that works
 			{
-				sizeq(&TempMemBlock, 0);				//Pull the hole
+				TempMemBlock=sizeq(&TempMemBlock, 0);				//Pull the hole
 				while(!curlyqueue_is_empty(sq))			//If holes list not empty
 				{
-					sizeq(&TempMemBlock1, 0);			//Pull another hole
+					TempMemBlock1=sizeq(&TempMemBlock1, 0);			//Pull another hole
 					if (TempMemBlock1.Size<TempMemBlock.Size) // Compare the two and push the worst fit back.
 					{
-						holesq(&TempMemBlock, 1);		//TempMemBlock1 is better fit, send back Temp and sort temp1 to temp
 						TempMemBlock=TempMemBlock1;
-					}
-					else
-					{
-						holesq(&TempMemBlock1, 1);		//TempMemBlock is better, send back temp1 and repeat
 					}
 				}
 				Space_A=TempMemBlock.Location;
@@ -349,11 +339,30 @@ void ReleaseMemory(u_int32_t BaseReg,u_int16_t LimitReg)
 	for (i=0;i<LimitReg;i++)
 	*(Memory_Avail_Start+BaseReg+i)=1;
 
-	Spaces[Holes].Size=LimitReg;
-	Spaces[Holes].Location=BaseReg;
-	Spaces[Holes].Num=Holes;
-	holesq(&Spaces[Holes], 1);
-	Holes++;
+
+	for (i=0;i<Holes;i++)
+	{
+		if ((BaseReg+LimitReg)==Spaces[i].Location)
+		{
+			Spaces[i].Location=Spaces[i].Location-LimitReg;
+			Spaces[i].Size=Spaces[i].Size+LimitReg;
+			break;
+		}
+		else
+		{
+			Spaces[Holes].Size=LimitReg;
+			Spaces[Holes].Location=BaseReg;
+			Spaces[Holes].Num=Holes;
+			holesq(&Spaces[Holes], 1);
+			Holes++;
+			break;
+		}
+
+	}
+
+
+
+
 }
 
 
@@ -368,6 +377,13 @@ void MemoryDump(u_int16_t BR)
 }
 void HoleStatusDump()
 {
+	int i;
 	printf("Number of Holes: %d\n",Holes);
+	for (i=0;i<Holes;i++)
+	{
+		printf("Hole %d: Start: %d  End:  %d\n",Holes,Spaces[i].Location,Spaces[i].Location+Spaces[i].Size);
+	}
+
+
 }
 
