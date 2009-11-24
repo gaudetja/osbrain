@@ -4,8 +4,8 @@
 #define TDMA_Setting 1
 
 #define HoleStatus   1
-#define SharedStatus 1
-#define SystemStatus 1
+#define SharedStatus 0
+#define SystemStatus 0
 
 
 #define  BESTFIT 1
