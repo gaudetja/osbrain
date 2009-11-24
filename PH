@@ -1,0 +1,45 @@
+BRAIN09	#Philosopher
+0050
+BU11	#0
+0001	#
+0000	#	location of philosopher index
+0000	#	storage for x in x%y
+0000	#	storage for x*floor(x/y)
+0000	#5	number of philosophers
+0000	#	storage for x%y
+0000
+0000
+0000
+0000	#10
+RC00	#	receive from parent
+LR15	#	load register with PE00
+LL02	#	mask off lower bits and put phil index
+SR15	#	put it back in 15
+PE00	#15
+LR02	#	load reg with phil index
+AD01	#	increase it
+SR03	# 	store it back
+DI03	#	now comes modulo, div by num phil
+MU03	#20	mult by num phil
+SR04	#	store to mem
+LR03	#	load reg with numerator
+SU04	#	subtract x*floor(x/y)
+SR06	#	store it to s%y
+LR28	#25	set up PE
+LL06
+SR28
+PE00
+LR32	#	set up VE
+LL02	#30
+SR32
+VE00
+LR36
+LL06
+SR36	#35
+VE00
+BU12
+LR03
+SR02
+H	#40
+DATA
+END
