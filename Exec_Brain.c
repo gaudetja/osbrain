@@ -297,12 +297,9 @@ void StoreReg(u_int8_t rand1,u_int8_t rand2)
 		MemoryContents.bytes.byte2=((Current_PCB->R/100)%10)+48;
 		MemoryContents.bytes.byte1=((Current_PCB->R/1000)%10)+48;
 	}
-	/*else {
-		MemoryContents.bytes.byte4=(Current_PCB->R%16)+48;
-		MemoryContents.bytes.byte3=((Current_PCB->R/16)%16)+48;
-		MemoryContents.bytes.byte2=((Current_PCB->R/256)%16)+48;
-		MemoryContents.bytes.byte1=((Current_PCB->R/4096)%16)+48;
-	}*/
+	else {
+		MemoryContents.word = Current_PCB->R;
+	}
 
 	WriteMemory(MemoryContents.word,rand1-48,rand2-48,Current_PCB->BR);
 }

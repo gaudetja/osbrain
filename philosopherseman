@@ -1,5 +1,5 @@
 BRAIN09
-0037
+0050
 BU11	#00
 0001	#
 0001	#	philosopher index
@@ -27,11 +27,11 @@ SR04	#	Save PID of child
 LR29	#	Change Send to send to child
 LL04	#25
 SR29	#
-SR31	#
+NP	#
 LR09	#	get location of phil index
 SD00	#
-LR05	#30
-SD00	#
+NP	#30
+NP	#
 LR02	#	get phil index
 AD01	#	increment
 SR02	#	save it

@@ -1,5 +1,5 @@
 BRAIN09	#Philosopher
-0040
+0050
 BU11	#0
 0001	#
 0000	#	location of philosopher index
@@ -11,26 +11,26 @@ BU11	#0
 0000
 0000
 0000	#10
-RC00
-LR15
-LL02
-SR15
+RC00	#	receive from parent
+LR15	#	load register with PE00
+LL02	#	mask off lower bits and put phil index
+SR15	#	put it back in 15
 PE00	#15
-LR02
-AD01
-SR03
-DI05
-MU03	#20
-SR04
-LR03
-SU04
-SR06
-LR28	#25
+LR02	#	load reg with phil index
+AD01	#	increase it
+SR03	# 	store it back
+DI03	#	now comes modulo, div by num phil
+MU03	#20	mult by num phil
+SR04	#	store to mem
+LR03	#	load reg with numerator
+SU04	#	subtract x*floor(x/y)
+SR06	#	store it to s%y
+LR28	#25	set up PE
 LL06
 SR28
 PE00
-LR32
-LL03	#30
+LR32	#	set up VE
+LL02	#30
 SR32
 VE00
 LR36
@@ -38,8 +38,8 @@ LL06
 SR36	#35
 VE00
 BU12
-H
-0000
-0000	#40
+LR03
+SR02
+H	#40
 DATA
 END
