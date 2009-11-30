@@ -252,6 +252,7 @@ u_int32_t RequestMemory(u_int16_t Req_Length,u_int8_t Mode)
 	u_int32_t Space_A=0;
 	if (Mode==0)
 	{
+		int i=0;
 		while(!Space_A)		//While Space Not Available
 		{
 			if (*Memory_Avail_Current==1) //Check Where Current Memory Index is pointing.
@@ -277,6 +278,10 @@ u_int32_t RequestMemory(u_int16_t Req_Length,u_int8_t Mode)
 		{
 			*Memory_Avail_Current=0;					//Set Memory as Unavailable
 			Memory_Avail_Current++;
+		}
+		if (i>10000)
+		{
+			exit(1);
 		}
 		return Space_A;									//Return Memory Location
 	}
