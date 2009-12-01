@@ -16,7 +16,7 @@ Init_PageMem(){
 
 
 
-//T_Pain
+//T_Pain Wrapper
 Load_Logical(){
 
 
