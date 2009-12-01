@@ -1,0 +1,42 @@
+BRAIN09
+0050
+BU11	#0
+0001	#
+0001	#	philosopher index
+0003	#	number of phils left to be forked
+0004	#
+0003	#5	numPhil
+0006	#
+0007	#
+0008	#
+0002	#	address of phil index
+0000	#10
+NP	#
+NP	#
+NP	#
+LR03	#	Load number of philosophers to be forked
+CE10	#15	Is it zero?
+BT37	#	If so, we're done
+SU01	#	Otherwise subtract one
+SR03	#	Store this number back to number of phils to be forked
+NP	#	
+FK	#20	Fork that child
+CE10	#	Compare PID to 0
+BT36	#	If 0, then child, go to exec philosopher
+SR04	#	Save PID of child
+LR29	#	Change Send to send to child
+LL04	#25
+NP	#
+NP	#
+NP	#	get location of phil index
+NP	#
+NP	#30
+NP	#
+LR02	#	get phil index
+AD01	#	increment
+SR02	#	save it
+BU11	#35	Back to set up semaphore
+EXPH	#	Exec Philosopher
+H 	#37
+DATA
+END
