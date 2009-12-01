@@ -94,4 +94,8 @@ void CopyRAM(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
  *@param rand1
  *@param rand2
  */
+void DeletePage()
+{
 
+
+}
