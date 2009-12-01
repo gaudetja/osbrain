@@ -45,7 +45,7 @@ int ProgramWrite(u_int16_t* pProgram_Length);
  *
  *return CurrentWord; (16byte word)
  */
-void CopyMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t PID1,u_int8_t PID2);
+
 WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
 
 /*

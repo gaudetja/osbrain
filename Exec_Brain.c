@@ -521,7 +521,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 			rand2=CurrentWord.bytes.byte4%10;
 			for (i=0;i<10;i++)
 			{
-				CopyMemory(rand1,rand2+i,Current_PCB->BR,PCB_Array[Source_PID].BR);  // Copy Memory Values
+				CopyRAM(rand1,rand2+i,Current_PCB->BR,PCB_Array[Source_PID].BR);  // Copy Memory Values
 			}
 
 			blockq(&(PCB_Array[Source_PID].PID),0);									 // Remove from blocked queue
@@ -554,7 +554,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 				Current_PCB->R=(u_int32_t)CurrentWord.bytes.byte4;
 				for (i=0;i<10;i++)
 				{
-						CopyMemory(rand1,rand2+i,Current_PCB->PID,Source_PID);		// Write over memory values
+						CopyRAM(rand1,rand2+i,Current_PCB->PID,Source_PID);		// Write over memory values
 				}
 				blockq(&(PCB_Array[Source_PID].PID),0);						// Remove from blocked queue
 				PCB_Array[Source_PID].Block=0;							// Unblock
