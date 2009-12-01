@@ -73,7 +73,7 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 	return;
 
 }
-void InsertPage()
+void InsertPage(u_int32_t location)
 {
 
 }
