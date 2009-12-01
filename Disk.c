@@ -213,6 +213,7 @@ void CopyDisk(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
  */
 void WriteDisk(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t BR)
 {
+
 	u_int16_t location=(rand1)*10+(rand2)+BR;
 	Memory_Start[location]=Value;
 	return;

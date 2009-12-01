@@ -42,3 +42,10 @@ Store_Logical()
 
 }
 
+
+void WriteRAM(u_int32_t Value, u_int32_t Physical_Address)
+{
+	RAM_Start[Physical_Address]=Value;
+	return;
+}
+
