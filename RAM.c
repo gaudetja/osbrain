@@ -87,9 +87,10 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 	}
 	return returnval;
 }
-void InsertPage(u_int32_t location)
-{
 
+void InsertPage(u_int32_t Logical_Address)
+{
+	Memory_Start[(Logical_Address / pagesize) * pagesize];
 }
 
 void RemovePage()
@@ -100,7 +101,6 @@ void RemovePage()
 void WriteRAM(u_int32_t Value, u_int32_t Physical_Address)
 {
 	RAM_Start[Physical_Address]=Value;
-	return;
 }
 void CopyRAM(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
 {
