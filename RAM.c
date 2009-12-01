@@ -28,7 +28,7 @@ cell * PageTable;
 
 int numpages;
 int pagesize;
-int Size_Of_Page_Table;
+int Size_PT;
 
 
 
@@ -38,7 +38,7 @@ void Init_PageMem(int n, int m)
 	RAM_Start = calloc(n,m);
 	RAM_End = &RAM_Start[n*m-1];
 	PageTable = calloc(10000/m+1 ,sizeof(cell));
-	Size_Of_Page_Table = 10000/m+1;
+	Size_PT= 10000/m+1;
 	numpages = n;
 	pagesize = m;
 	for (i=0;i<n*m;i++) {
@@ -121,8 +121,28 @@ void CopyRAM(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
  *@param rand1
  *@param rand2
  */
-void DeletePage()
+int DeletePage(void)
 {
+	int i=0;
+	u_int32_t Smallest;
+	u_int32_t Temp;
+	u_int32_t frame;
+	int Index_Smallest=0;
+	Smallest=PageTable[i].count;
+	for (i=1;i<Size_PT;i++)
+	{
+		Temp=PageTable[i].count;
+		if (Temp<Smallest)
+		{
+			Smallest=Temp;
+			Index_Smallest=i;
+		}
+	}
+	frame=PageTable[Index_Smallest].framenumber;
+	for(i=0;i<pagesize;i++)
+		Memory_Start[Index_Smallest*pagesize+i]=RAM_Start[frame*pagesize+i];
+	PageTable[Index_Smallest].v=0;
+	return Index_Smallest;
 
 
 }
