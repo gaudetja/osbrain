@@ -20,6 +20,7 @@
 #include <time.h>
 #include <string.h>
 
+#include "Disk.h"
 #include "RAM.h"
 #include "Exec_Brain.h"
 #include "sched.h"
