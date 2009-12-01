@@ -24,6 +24,7 @@
 
 int * RAM_Start;
 int * RAM_End;
+cell * PageTable;
 
 
 
@@ -34,7 +35,7 @@ void Init_PageMem(int n, int m)
 	RAM_Start = calloc(n,m);
 	RAM_End = &RAM_Start[n*m-1];
 	PageTable = calloc(n,sizeof(cell));
-
+}
 
 WORDBYTES ReadRAM(u_int32_t location)
 {
@@ -59,14 +60,15 @@ WORDBYTES ReadRAM(u_int32_t location)
 
 WORDBYTES WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
-;
 
+	return;
 
 }
 
 WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
-;
+
+	return;
 
 }
 
@@ -85,9 +87,11 @@ void CopyRAM(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
 //      printf("Memory Address %d :%d\n ",temp1,Memory_Start[rand1*10+rand2+PID1*100]);
 //      printf("Memory Address %d :%d\n ",temp2,Memory_Start[rand1*10+rand2+PID2*100]);
 }
+
 /*
  *Write a specified value to memory location(rand1 concatinaReadWord.bytes.byte3-48ted with rand2)
  *@param Value
  *@param rand1
  *@param rand2
  */
+
