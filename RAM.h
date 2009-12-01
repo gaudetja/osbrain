@@ -12,7 +12,7 @@
 
 typedef struct {
 	u_int32_t value;
-	char v;
+	char v; //1 for valid, 0 otherwise
 }cell;
 
 
