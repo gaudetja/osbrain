@@ -162,7 +162,7 @@ WORDBYTES GetInstruction(u_int16_t IC,u_int8_t BR)
 }
 
 /*
- *Reads from a specified memory location(rand1 concatinated with rand2)
+ *Reads from a specified memory location(rand1 concatenated with rand2)
  *@param rand1
  *@param rand2
  *CurrentWord.word=Memory_Start[i];
@@ -176,8 +176,7 @@ WORDBYTES ReadDisk(u_int8_t rand1,u_int8_t rand2,u_int8_t BR)
 
 	location=(rand1)*10 + (rand2)+ BR;
 	ReadWord.word=Memory_Start[location];
-	if (ReadWord.word==0)
-	{
+	if (ReadWord.word==0) {
 		ReadWord.bytes.byte1='0';
 		ReadWord.bytes.byte2='0';
 		ReadWord.bytes.byte3='0';
@@ -191,9 +190,7 @@ WORDBYTES ReadDisk(u_int8_t rand1,u_int8_t rand2,u_int8_t BR)
 		ReadWord.word=Temp1;
 	}
 
-
 	return ReadWord;
-
 }
 void CopyDisk(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
 {
