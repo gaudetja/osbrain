@@ -28,7 +28,7 @@ cell * PageTable;
 
 int numpages;
 int pagesize;
-
+int Size_Of_Page_Table;
 
 
 
@@ -37,12 +37,13 @@ void Init_PageMem(int n, int m)
 	int i;
 	RAM_Start = calloc(n,m);
 	RAM_End = &RAM_Start[n*m-1];
-	PageTable = calloc(n,sizeof(cell));
+	PageTable = calloc(10000/m+1 ,sizeof(cell));
+	Size_Of_Page_Table = 10000/m+1;
 	numpages = n;
 	pagesize = m;
 	for (i=0;i<n*m;i++) {
-/*		PageTable[i]->v=0;
-		PageTable[i]->value=0;*/
+		PageTable[i].v=0;
+		PageTable[i].framenumber=0;
 	}
 }
 

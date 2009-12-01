@@ -11,7 +11,7 @@
 
 
 typedef struct {
-	u_int32_t value;
+	u_int32_t framenumber;
 	char v; //1 for valid, 0 otherwise
 }cell;
 
