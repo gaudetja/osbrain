@@ -20,7 +20,7 @@
 #include <time.h>
 #include <string.h>
 
-#include "Memory.h"
+#include "Disk.h"
 #include "Exec_Brain.h"
 #include "curlyqueue.h"
 #include "sched.h"
@@ -43,12 +43,18 @@ int main(int argc, char* argv[])
 
 		//initialize shared memory
 		InitShared();
+
 		//initialize page file
 		//Init_PageMem();
-        //Loads Initial Program
-        LoadProgram(argv[1] , pProgram_Length);
-        //GetPage();
 
+		//Loads Initial Program
+        LoadProgram(argv[1] , pProgram_Length);
+
+        //Get First Program Block
+        //GetPage(0);//Get Block 0 From Disk.
+
+		//Setup RAM Based on M*N
+        //Init_RAM(M*N);
 
         //Run the program
         Exec_Brain(numPID , *pProgram_Length);
