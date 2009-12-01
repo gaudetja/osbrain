@@ -15,5 +15,6 @@
  * of RAM_Start at location *location*
  */
 WORDBYTES ReadRAM(u_int32_t location);
+void WriteRAM(u_int32_t Value, u_int32_t Physical_Address);
 
 #endif /* PAGEMEM_H_ */
