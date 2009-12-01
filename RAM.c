@@ -41,8 +41,8 @@ void Init_PageMem(int n, int m)
 	numpages = n;
 	pagesize = m;
 	for (i=0;i<n*m;i++) {
-		PageTable[i]->v=0;
-		PageTable[i]->value=0;
+/*		PageTable[i]->v=0;
+		PageTable[i]->value=0;*/
 	}
 }
 
