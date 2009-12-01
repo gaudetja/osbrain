@@ -21,7 +21,7 @@
 #include <string.h>
 
 #include "curlyqueue.h"
-#include "Memory.h"
+#include "Disk.h"
 #include "Exec_Brain.h"
 #include "sched.h"
 
