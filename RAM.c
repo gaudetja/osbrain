@@ -16,7 +16,7 @@
 #include <errno.h>
 #include <time.h>
 #include <string.h>
-
+#include "Disk.h"
 #include "curlyqueue.h"
 #include "RAM.h"
 #include "Exec_Brain.h"
@@ -29,7 +29,7 @@ int * RAM_End;
 
 
 
-Init_PageMem(int n, int m)
+void Init_PageMem(int n, int m)
 {
 	RAM_Start = calloc(n,m);
 }
@@ -57,14 +57,14 @@ WORDBYTES ReadRAM(u_int32_t location)
 
 WORDBYTES WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
-
+;
 
 
 }
 
 WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
-
+;
 
 }
 

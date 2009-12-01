@@ -7,8 +7,8 @@
  *      	Joe Gaudet
  */
 
-#ifndef PAGEMEM_H_
-#define PAGEMEM_H_
+#ifndef RAM_H_
+#define RAM_H_
 
 
 typedef struct {
@@ -21,6 +21,7 @@ typedef struct {
  * This function reads from RAM and returns the contents
  * of RAM_Start at location *location*
  */
+void Init_PageMem(int n, int m);
 WORDBYTES ReadRAM(u_int32_t location);
 
 /*

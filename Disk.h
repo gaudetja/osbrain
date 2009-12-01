@@ -1,5 +1,5 @@
-#ifndef _MEMORY_H
-#define _MEMORY_H
+#ifndef _DISK_H
+#define _DISK_H
 
 //This is used to convert 32byte words to 4 8byte words
 typedef struct bytes4
