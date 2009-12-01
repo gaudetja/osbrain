@@ -79,6 +79,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 		Current_PCB=&PCB_Array[(int)PID];
 		while(Current_PCB->TDMA<TDMA_Setting)
 		{
+
 			CurrentWord=GetInstruction(Current_PCB->IC,Current_PCB->BR);		//gets instruction
 			Current_PCB->IC++;
 			operator.bytes.byte1=CurrentWord.bytes.byte1;				//give operator 1 a value
