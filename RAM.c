@@ -34,9 +34,15 @@ int pagesize;
 
 void Init_PageMem(int n, int m)
 {
+	int i;
 	RAM_Start = calloc(n,m);
 	RAM_End = &RAM_Start[n*m-1];
 	PageTable = calloc(n,sizeof(cell));
+	numpages = n;
+	pagesize = m;
+	for (i=0;i<n*m;i++) {
+
+	}
 }
 
 WORDBYTES ReadRAM(u_int32_t location)
@@ -62,16 +68,24 @@ WORDBYTES ReadRAM(u_int32_t location)
 
 WORDBYTES WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
+	WORDBYTES returnval;
 
-	return;
+
+	return returnval;
 
 }
 
 WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
+	int i = rand1*10+rand2;
+	WORDBYTES returnval;
+	if () {
 
-	return;
+	}
+	else {
 
+	}
+	return returnval;
 }
 void InsertPage()
 {
