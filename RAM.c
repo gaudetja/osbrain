@@ -55,14 +55,14 @@ WORDBYTES ReadRAM(u_int32_t location)
 	return ReadWord;
 }
 
-Load_Logical()
+WORDBYTES WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
 
 
 
 }
 
-Store_Logical()
+WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
 
 

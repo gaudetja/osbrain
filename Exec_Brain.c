@@ -20,7 +20,8 @@
 #include <time.h>
 #include <string.h>
 
-#include "Memory.h"
+#include "Disk.h"
+#include "RAM.h"
 #include "Exec_Brain.h"
 #include "sched.h"
 #include "SharedMem.h"
@@ -176,7 +177,7 @@ void StackToReg()
 
 void LoadRegister(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadLogicalmory(rand1-48,rand2-48,Current_PCB->BR);
+	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->BR);
 	Current_PCB->R=MemoryContents.word;
 }
 
