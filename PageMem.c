@@ -6,3 +6,23 @@
  *      	Joe Gaudet
  */
 
+Init_PageMem()
+{
+
+
+
+}
+
+Load_Logical()
+{
+
+
+
+}
+
+Store_Logical()
+{
+
+
+}
+

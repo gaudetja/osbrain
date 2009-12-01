@@ -40,10 +40,16 @@ u_int16_t* pProgram_Length;
 int main(int argc, char* argv[])
 {
 	pProgram_Length=malloc(4);
+
+		//initialize shared memory
+		InitShared();
+		//initialize page file
+		//Init_PageMem();
         //Loads Initial Program
         LoadProgram(argv[1] , pProgram_Length);
-        //initialize shared memory
-        InitShared();
+        //GetPage();
+
+
         //Run the program
         Exec_Brain(numPID , *pProgram_Length);
         return 0;
@@ -68,4 +74,5 @@ int LoadProgram(char* argv , u_int16_t* pProgram_Length)
         dup(fildes);
         ProgramWrite(pProgram_Length);
         return 0;
+
 }

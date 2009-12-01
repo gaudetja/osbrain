@@ -1,17 +1,15 @@
 #ifndef _EXECBRAIN_H
 #define _EXECBRAIN_H
 
-#define TDMA_Setting 60
+#define TDMA_Setting 5
 
 
 #define HoleStatus   1
 #define SharedStatus 0
 #define SystemStatus 1
-
-
-
 #define  BESTFIT 1
 /*
+ *
  *Process control block(P    //request to send
         //send when ready, block if not
         //unblockCB) holds the current register, stack pointer, toggle(flag) and instruction counter
