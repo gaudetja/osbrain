@@ -32,6 +32,7 @@ int * RAM_End;
 Init_PageMem(int n, int m)
 {
 	RAM_Start = calloc(n,m);
+	RAM_End = RAM_Start[n*m-1];
 }
 
 WORDBYTES ReadRAM(u_int32_t location)
