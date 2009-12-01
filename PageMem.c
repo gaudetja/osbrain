@@ -7,23 +7,22 @@
  *      	Joe Gaudet
  */
 
-Init_PageMem(){
+Init_PageMem()
+{
 
 
 
 }
 
-
-
-
-//T_Pain Wrapper
-Load_Logical(){
+Load_Logical()
+{
 
 
 
 }
 
-Store_Logical(){
+Store_Logical()
+{
 
 
 }
