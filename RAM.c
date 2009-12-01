@@ -74,4 +74,19 @@ void WriteRAM(u_int32_t Value, u_int32_t Physical_Address)
 	RAM_Start[Physical_Address]=Value;
 	return;
 }
-
+void CopyRAM(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
+{
+//      int temp1=rand1*10+rand2+PID1*100;
+//      int temp2=rand1*10+rand2+PID2*100;
+//      printf("Memory Address %d :%d\n ",temp1,Memory_Start[rand1*10+rand2+PID1*100]);
+//      printf("Memory Address %d :%d\n ",temp2,Memory_Start[rand1*10+rand2+PID2*100]);
+	Memory_Start[rand1*10+rand2+BR1]=Memory_Start[rand1*10+rand2+BR2];
+//      printf("Memory Address %d :%d\n ",temp1,Memory_Start[rand1*10+rand2+PID1*100]);
+//      printf("Memory Address %d :%d\n ",temp2,Memory_Start[rand1*10+rand2+PID2*100]);
+}
+/*
+ *Write a specified value to memory location(rand1 concatinaReadWord.bytes.byte3-48ted with rand2)
+ *@param Value
+ *@param rand1
+ *@param rand2
+ */
