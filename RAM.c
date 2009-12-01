@@ -105,10 +105,7 @@ void InsertPage(u_int32_t Logical_Address)
 	PageTable[(Logical_Address / pagesize) * pagesize].value = PhysNum;
 }
 
-void RemovePage()
-{
 
-}
 
 void WriteRAM(u_int32_t Value, u_int32_t Physical_Address)
 {
@@ -131,7 +128,7 @@ void CopyRAM(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
  *@param rand1
  *@param rand2
  */
-int DeletePage(void)
+u_int32_t RemovePage(void)
 {
 	int i=0;
 	u_int32_t Smallest;
@@ -150,9 +147,9 @@ int DeletePage(void)
 	}
 	frame=PageTable[Index_Smallest].framenumber;
 	for(i=0;i<pagesize;i++)
-		Memory_Start[Index_Smallest*pagesize+i]=RAM_Start[frame*pagesize+i];
+		Memory_Start[frame*pagesize+i]=RAM_Start[frame*pagesize+i];
 	PageTable[Index_Smallest].v=0;
-	return Index_Smallest;
+	return frame;
 
 
 }

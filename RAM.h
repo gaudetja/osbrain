@@ -31,6 +31,6 @@ void WriteRAM(u_int32_t Value, u_int32_t Physical_Address);
 WORDBYTES WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
 WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
 void CopyRAM(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2);
-int DeletePage(void);
+u_int32_t RemovePage(void);
 
 #endif /* PAGEMEM_H_ */
