@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 		InitShared();
 
 		//initialize page file
-		//Init_PageMem();
+		//Init_PageMem(argv[2],argv[3]); //args are n m
 
 		//Loads Initial Program
         LoadProgram(argv[1] , pProgram_Length);

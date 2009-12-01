@@ -22,9 +22,14 @@
 #include "Exec_Brain.h"
 #include "sched.h"
 
-Init_PageMem()
-{
+int * RAM_Start;
+int * RAM_End;
 
+
+
+Init_PageMem(int n, int m)
+{
+	RAM_Start = calloc(n,m);
 
 
 }
