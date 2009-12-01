@@ -22,6 +22,18 @@
 #include "Exec_Brain.h"
 #include "sched.h"
 
+int * RAM_Start;
+int * RAM_End;
+
+
+
+
+
+Init_PageMem(int n, int m)
+{
+	RAM_Start = calloc(n,m);
+}
+
 WORDBYTES ReadRAM(u_int32_t location)
 {
 	WORDBYTES ReadWord;
