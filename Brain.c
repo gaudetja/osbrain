@@ -48,17 +48,17 @@ int main(int argc, char* argv[])
 		//Init_PageMem();
 
 		//Loads Initial Program
-        LoadProgram(argv[1] , pProgram_Length);
+		LoadProgram(argv[1] , pProgram_Length);
 
-        //Get First Program Block
-        //GetPage(0);//Get Block 0 From Disk.
+		//Get First Program Block
+		//GetPage(0);//Get Block 0 From Disk.
 
 		//Setup RAM Based on M*N
-        //Init_RAM(M*N);
+		//Init_RAM(M*N);
 
-        //Run the program
-        Exec_Brain(numPID , *pProgram_Length);
-        return 0;
+		//Run the program
+		Exec_Brain(numPID , *pProgram_Length);
+		return 0;
 }
 
 /*
