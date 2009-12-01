@@ -33,7 +33,8 @@ void Init_PageMem(int n, int m)
 {
 	RAM_Start = calloc(n,m);
 	RAM_End = &RAM_Start[n*m-1];
-}
+	PageTable = calloc(n,sizeof(cell));
+
 
 WORDBYTES ReadRAM(u_int32_t location)
 {
