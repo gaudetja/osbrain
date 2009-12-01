@@ -26,6 +26,8 @@ int * RAM_Start;
 int * RAM_End;
 cell * PageTable;
 
+int numpages;
+int pagesize;
 
 
 
