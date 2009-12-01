@@ -41,7 +41,8 @@ void Init_PageMem(int n, int m)
 	numpages = n;
 	pagesize = m;
 	for (i=0;i<n*m;i++) {
-
+		PageTable[i]->v=0;
+		PageTable[i]->value=0;
 	}
 }
 
@@ -77,15 +78,15 @@ WORDBYTES WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t 
 
 WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
-	int i = rand1*10+rand2;
+	/*int i = rand1*10+rand2;
 	WORDBYTES returnval;
-	if () {
-
+	if (PageTable[i]->v==1) {
+		//ReadRam();
 	}
 	else {
-
+		//ReadDisk();
 	}
-	return returnval;
+	return returnval;*/
 }
 
 void InsertPage(u_int32_t Logical_Address)
