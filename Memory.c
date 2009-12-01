@@ -169,7 +169,7 @@ WORDBYTES GetInstruction(u_int16_t IC,u_int8_t BR)
 			printf("%x\n",CurrentWord.word);
  *return ReadWord; (16byte word)
  */
-WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t BR)
+WORDBYTES ReadDisk(u_int8_t rand1,u_int8_t rand2,u_int8_t BR)
 {
 	int location;
 	WORDBYTES ReadWord;
@@ -195,7 +195,7 @@ WORDBYTES ReadMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t BR)
 	return ReadWord;
 
 }
-void CopyMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
+void CopyDisk(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
 {
 //      int temp1=rand1*10+rand2+PID1*100;
 //      int temp2=rand1*10+rand2+PID2*100;
@@ -211,7 +211,7 @@ void CopyMemory(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
  *@param rand1
  *@param rand2
  */
-void WriteMemory(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t BR)
+void WriteDisk(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t BR)
 {
 	u_int16_t location=(rand1)*10+(rand2)+BR;
 	Memory_Start[location]=Value;
@@ -367,7 +367,7 @@ void MemoryDump(u_int16_t BR)
 {
 	int i;
 	for (i=0;i<10;i++)
-		printf("Memory %03d:%03d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",BR+i*10,BR+9+i*10, Memory_Start[BR+0+i*10],Memory_Start[BR+1+i*10],Memory_Start[i*10+2+BR],Memory_Start[i*10+3+BR],Memory_Start[i*10+4+BR],Memory_Start[i*10+5+BR],Memory_Start[i*10+6+BR],Memory_Start[i*10+7+BR],Memory_Start[i*10+8+BR],Memory_Start[i*10+9+BR]);
+		printf("Disk %03d:%03d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",BR+i*10,BR+9+i*10, Memory_Start[BR+0+i*10],Memory_Start[BR+1+i*10],Memory_Start[i*10+2+BR],Memory_Start[i*10+3+BR],Memory_Start[i*10+4+BR],Memory_Start[i*10+5+BR],Memory_Start[i*10+6+BR],Memory_Start[i*10+7+BR],Memory_Start[i*10+8+BR],Memory_Start[i*10+9+BR]);
 }
 void HoleStatusDump()
 {

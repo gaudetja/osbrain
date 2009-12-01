@@ -4,7 +4,7 @@
 #define TDMA_Setting 60
 
 
-#define HoleStatus   0
+#define HoleStatus   1
 #define SharedStatus 0
 #define SystemStatus 1
 
