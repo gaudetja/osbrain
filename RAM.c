@@ -19,7 +19,7 @@
 #include "Disk.h"
 #include "curlyqueue.h"
 #include "RAM.h"
-#include "Exec_Brain.h"
+
 #include "sched.h"
 
 int * RAM_Start;
@@ -68,29 +68,27 @@ WORDBYTES ReadRAM(u_int32_t location)
 	return ReadWord;
 }
 
-WORDBYTES WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
+void WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
-	WORDBYTES returnval;
 
-
-	return returnval;
 
 }
 
 WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
-	/*int i = rand1*10+rand2;
+	int i = rand1*10+rand2;
 	WORDBYTES returnval;
-	if (PageTable[i]->v==1) {
-		//ReadRam();
+	if (PageTable[(i/numpages)].v==1) {
+		returnval = ReadRAM(PageTable[i].framenumber+i%numpages);
 	}
 	else {
-		//ReadDisk();
+		//returnval = ReadDisk(rand1,rand2, Current_PCB.BR);
+		//InsertPage(i);
 	}
-	return returnval;*/
+	return returnval;
 }
 
-void InsertPage(u_int32_t Logical_Address)
+/*void InsertPage(u_int32_t Logical_Address)
 {
 	int PhysNum = 0;
 	int PageNum = 0;
@@ -103,7 +101,7 @@ void InsertPage(u_int32_t Logical_Address)
 	}
 	PageTable[(Logical_Address / pagesize) * pagesize].v = 1;
 	PageTable[(Logical_Address / pagesize) * pagesize].value = PhysNum;
-}
+}*/
 
 
 
