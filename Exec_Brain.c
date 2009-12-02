@@ -598,6 +598,8 @@ void Fork(void)
 
 		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
 
+
+
 		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over
 			*(Memory_Start+PCB_Array[numPID].BR+i)= *(Memory_Start+Current_PCB->BR+i);
 			Memory_Num++;
