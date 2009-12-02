@@ -88,22 +88,28 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 	return returnval;
 }
 
-/*void InsertPage(u_int32_t Logical_Address)
+void InsertPage(u_int32_t Logical_Address)
 {
-	int PhysNum = 0;
-	int PageNum = 0;
-	while (PageNum < numpages) {
-		if ((PageTable[PageNum].value == PhysNum) && PageTable[PageNum].v) {
-			PhysNum++;
-			PageNum = -1;
-		}
-		PageNum++;
+	//Find Which Physical Memory to Write to
+	int PhysNum = 0;									//start by checking this physical address for contents
+	int PageNum = 0;									//start by checking page 0 for contents
+	int i;
+	while (PageNum < numpages) {								//until i reach end of page table
+		if ((PageTable[PageNum].framenumber == PhysNum) && PageTable[PageNum].v) {	//if i find a valid page with my physical address
+			PhysNum++;								 //check next physical address and
+			PageNum = 0;								 //start back at beginning
+		} else if (PhysNum > numpages) {						//if i reach end of RAM, then kick one out
+			PhysNum = RemovePage();							 //and get that value
+		} else PageNum++;								//otherwise check next page
+	}											//close curly brace
+	PageTable[(Logical_Address / pagesize) * pagesize].v = 1;				//set correct valid bit to 1
+	PageTable[(Logical_Address / pagesize) * pagesize].framenumber = PhysNum;		//set correct value to physical address
+
+	//Put Page in Physical Memory
+	for (i = 0 ; i < pagesize ; i++) {
+		RAM_Start[(Physnum * pagesize) + i] = Memory_Start[((Logical_Address / numpages) * numpages) + i];
 	}
-	PageTable[(Logical_Address / pagesize) * pagesize].v = 1;
-	PageTable[(Logical_Address / pagesize) * pagesize].value = PhysNum;
-}*/
-
-
+}
 
 void WriteRAM(u_int32_t Value, u_int32_t Physical_Address)
 {
