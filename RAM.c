@@ -107,7 +107,7 @@ void InsertPage(u_int32_t Logical_Address)
 
 	//Put Page in Physical Memory
 	for (i = 0 ; i < pagesize ; i++) {
-		RAM_Start[(Physnum * pagesize) + i] = Memory_Start[((Logical_Address / numpages) * numpages) + i];
+		RAM_Start[(PhysNum * pagesize) + i] = Memory_Start[((Logical_Address / numpages) * numpages) + i];
 	}
 }
 
