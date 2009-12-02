@@ -17,7 +17,7 @@ typedef struct {
 	char v; //1 for valid, 0 otherwise
 }cell;
 
-
+void InsertPage(u_int32_t Logical_Address);
 /*
  * This function reads from RAM and returns the contents
  * of RAM_Start at location *location*
