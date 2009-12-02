@@ -70,7 +70,15 @@ WORDBYTES ReadRAM(u_int32_t location)
 
 void WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
+	int i = rand1*10+rand2;
+	if (PageTable[(i/numpages)].v==1) {
+		WriteRAM(Value,PageTable[i].framenumber+i%numpages);
+	}
+	else {
+		InsertPage(Current_PCB->BR+i);
+		WriteRAM(Value,PageTable[i].framenumber+i%numpages);
 
+	}
 
 }
 
