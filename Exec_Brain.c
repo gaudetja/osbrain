@@ -583,7 +583,7 @@ void Fork(void)
 		Current_PCB->R = 0;						//insufficient memory
 	}
 	else {
-//		PCB_Array[numPID].BR = BaseReg;				//Base register starts at end of last process
+//		PCB_Array[numPID].BR = BaseReg;					//Base register starts at end of last process
 		PCB_Array[numPID].Block = 0;					//
 		PCB_Array[numPID].C = Current_PCB->C;				//Same truth value
 		PCB_Array[numPID].IC = Current_PCB->IC;				//Same instruction counter

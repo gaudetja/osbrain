@@ -112,6 +112,7 @@ void InsertPage(u_int32_t Logical_Address)
 	}											//close curly brace
 	PageTable[(Logical_Address / pagesize) * pagesize].v = 1;				//set correct valid bit to 1
 	PageTable[(Logical_Address / pagesize) * pagesize].framenumber = PhysNum;		//set correct value to physical address
+	PageTable[(Logical_Address / pagesize) * pagesize].count = 1;
 
 	//Put Page in Physical Memory
 	for (i = 0 ; i < pagesize ; i++) {
