@@ -82,7 +82,7 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 		returnval = ReadRAM(PageTable[i].framenumber+i%numpages);
 	}
 	else {
-		//returnval = ReadDisk(rand1,rand2, Current_PCB.BR);
+		returnval = ReadDisk(rand1,rand2, Current_PCB->BR);
 		//InsertPage(i);
 	}
 	return returnval;
@@ -107,7 +107,7 @@ void InsertPage(u_int32_t Logical_Address)
 
 	//Put Page in Physical Memory
 	for (i = 0 ; i < pagesize ; i++) {
-		RAM_Start[(Physnum * pagesize) + i] = Memory_Start[((Logical_Address / numpages) * numpages) + i];
+		RAM_Start[(PhysNum * pagesize) + i] = Memory_Start[((Logical_Address / numpages) * numpages) + i];
 	}
 }
 
