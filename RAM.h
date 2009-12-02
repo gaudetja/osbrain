@@ -8,7 +8,8 @@
 
 #ifndef RAM_H_
 #define RAM_H_
-
+#include "Exec_Brain.h"
+extern PCB * Current_PCB;
 
 typedef struct {
 	u_int32_t framenumber;
@@ -28,7 +29,7 @@ WORDBYTES ReadRAM(u_int32_t location);
  * This function writes value *Value* to location *Physical_Address*
  */
 void WriteRAM(u_int32_t Value, u_int32_t Physical_Address);
-WORDBYTES WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
+void WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
 WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
 void CopyRAM(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2);
 u_int32_t RemovePage(void);
