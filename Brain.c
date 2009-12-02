@@ -25,6 +25,7 @@
 #include "curlyqueue.h"
 #include "sched.h"
 #include "SharedMem.h"
+#include "RAM.h"
 
 int numPID = 0;
 int LoadProgram(char* argv,  u_int16_t* pProgram_Length );
@@ -39,13 +40,20 @@ int LoadProgram(char* argv,  u_int16_t* pProgram_Length );
 u_int16_t* pProgram_Length;
 int main(int argc, char* argv[])
 {
+	if (argc != 4) {
+		printf("Not enough arguments, should be Brain BRAIN09 numpages pagesize");
+		exit(0);
+	}
 	pProgram_Length=malloc(4);
 
 		//initialize shared memory
 		InitShared();
 
 		//initialize page file
-		//Init_PageMem(argv[2],argv[3]); //args are n m
+		int n = atoi(argv[2]);
+		int m = atoi(argv[3]);
+		printf("Number of pages: %d Size of Page: %d", n,m);
+		Init_PageMem(n,m); //args are n m
 
 		//Loads Initial Program
 		LoadProgram(argv[1] , pProgram_Length);

@@ -91,7 +91,7 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 	}
 	else {
 		returnval = ReadDisk(rand1,rand2, Current_PCB->BR);
-		//InsertPage(i);
+		InsertPage(i+Current_PCB->BR);
 	}
 	return returnval;
 }
@@ -99,8 +99,8 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 void InsertPage(u_int32_t Logical_Address)
 {
 	//Find Which Physical Memory to Write to
-	int PhysNum = 0;									//start by checking this physical address for contents
-	int PageNum = 0;									//start by checking page 0 for contents
+	int PhysNum = 0;		//start by checking this physical address for contents
+	int PageNum = 0;					//start by checking page 0 for contents
 	int i;
 	while (PageNum < numpages) {								//until i reach end of page table
 		if ((PageTable[PageNum].framenumber == PhysNum) && PageTable[PageNum].v) {	//if i find a valid page with my physical address
