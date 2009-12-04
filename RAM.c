@@ -74,12 +74,12 @@ WORDBYTES ReadRAM(u_int32_t location)
 void WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
 	int i = rand1*10+rand2;
-	if (PageTable[((PCB_Array[PID].BR+i)/numpages)].v==1) {
+	if (PageTable[((PCB_Array[PID].BR+i)/pagesize)].v==1) {
 		WriteRAM(Value,PageTable[(PCB_Array[PID].BR+i)/pagesize].framenumber*pagesize+i%pagesize);
 	}
 	else {
 		FaultCount++;
-		printf("Fault count thus far: %d\n",FaultCount);
+	//	printf("Fault count thus far: %d\n",FaultCount);
 		InsertPage(PCB_Array[PID].BR+i);
 		WriteRAM(Value,PageTable[i/pagesize].framenumber*pagesize+i%pagesize);
 	}
@@ -97,7 +97,7 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 	else
 	{
 		FaultCount++;
-		printf("Fault count thus far: %d\n",FaultCount);
+	//	printf("Fault count thus far: %d\n",FaultCount);
 		returnval = ReadDisk(rand1,rand2, PCB_Array[PID].BR);
 		InsertPage(i+PCB_Array[PID].BR);
 	}

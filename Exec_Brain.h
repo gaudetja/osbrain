@@ -4,10 +4,11 @@
 #define TDMA_Setting 5
 
 
-#define HoleStatus   1
+#define HoleStatus   0
 #define SharedStatus 0
 #define SystemStatus 1
 #define  BESTFIT 1
+
 /*
  *
  *Process control block(P    //request to send

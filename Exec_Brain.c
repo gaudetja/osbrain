@@ -80,7 +80,9 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 		while(Current_PCB->TDMA<TDMA_Setting)
 		{
 			CurrentWord=ReadLogical(0,Current_PCB->IC,Current_PCB->PID);		//gets instruction
+			//gary
 			printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
+			//gary
 			printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
 			Current_PCB->IC++;
 			operator.bytes.byte1=CurrentWord.bytes.byte1;				//give operator 1 a value
@@ -714,6 +716,9 @@ void printstatus()
 {
 //	printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 //	printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
+
+
+	//gary
 	RAMDump();
 
 
@@ -729,7 +734,9 @@ void printstatus()
 	if (SystemStatus) {
 		//printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 		//printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
+		//Gary
 		DiskDump(Current_PCB->BR);
+		PageTableDump();
 		//printf("Context Switches: %d\n",ContextSwitchCount);
 	}
 
