@@ -71,7 +71,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	readyq(&(PCB_Array[numPID].PID), 1);
 
 	numPID++;
-
+	ReadLogical(0,0,0);
 	while(1)
 	{
 		PID=readyq(&(Current_PCB->PID),0);		//Get next process from ready queue.
