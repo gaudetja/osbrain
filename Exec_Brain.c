@@ -71,13 +71,15 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	readyq(&(PCB_Array[numPID].PID), 1);
 
 	numPID++;
+	PID=readyq(&(Current_PCB->PID),0);
+	Current_PCB=&PCB_Array[(int)PID];
 	ReadLogical(0,0,0);
 	while(1)
 	{
-		PID=readyq(&(Current_PCB->PID),0);		//Get next process from ready queue.
+
 		ContextSwitchCount++;
 
-		Current_PCB=&PCB_Array[(int)PID];
+
 		while(Current_PCB->TDMA<TDMA_Setting)
 		{
 
@@ -91,6 +93,8 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 		}
 		Current_PCB->TDMA=0;
 		if (Current_PCB->Block==0) readyq(&(Current_PCB->PID),1);
+		PID=readyq(&(Current_PCB->PID),0);		//Get next process from ready queue.
+		Current_PCB=&PCB_Array[(int)PID];
 	}
 return 0;
 }
