@@ -92,6 +92,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 		PID=readyq(&(Current_PCB->PID),0);		//Get next process from ready queue.
 		Current_PCB=&PCB_Array[(int)PID];
 		ContextSwitchCount++;
+		printstatus();
 	}
 return 0;
 }
