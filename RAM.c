@@ -129,6 +129,7 @@ void InsertPage(u_int32_t Logical_Address)
 			PageIndex = 0;								 //start back at beginning
 		} else if (PhysIndex >= numpages) {						//if i reach end of RAM, then kick one out
 			PhysIndex = RemoveLeastUsedPage();					 //and get that value
+			break;
 		} else PageIndex++;								//otherwise check next page
 	}											//close curly brace
 	PageTable[Logical_Address / pagesize].v = 1;				//set correct valid bit to 1
