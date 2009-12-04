@@ -34,7 +34,7 @@ void InitShared(void) {
 		semaphore[i].head = semaphore[i].waiting;
 		semaphore[i].tail = semaphore[i].waiting;
 	}
-	PrintShared();
+//	PrintShared();
 }
 void PrintShared(void) {
 	int i,k;

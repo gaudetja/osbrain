@@ -74,16 +74,12 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	PID=readyq(&(Current_PCB->PID),0);
 	Current_PCB=&PCB_Array[(int)PID];
 	ReadLogical(0,0,0);
+    printstatus();
 	while(1)
 	{
-
-		ContextSwitchCount++;
-
-
 		while(Current_PCB->TDMA<TDMA_Setting)
 		{
-
-			CurrentWord=GetInstruction(Current_PCB->IC,Current_PCB->BR);		//gets instruction
+			CurrentWord=GetInstruction(Current_PCB->IC,Current_PCB->PID);		//gets instruction
 			Current_PCB->IC++;
 			operator.bytes.byte1=CurrentWord.bytes.byte1;				//give operator 1 a value
 			operator.bytes.byte2=CurrentWord.bytes.byte2;						//give operator 1 a value
@@ -95,6 +91,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 		if (Current_PCB->Block==0) readyq(&(Current_PCB->PID),1);
 		PID=readyq(&(Current_PCB->PID),0);		//Get next process from ready queue.
 		Current_PCB=&PCB_Array[(int)PID];
+		ContextSwitchCount++;
 	}
 return 0;
 }
@@ -151,7 +148,7 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 
 			default:								break;
 		}
-		printstatus();
+		//printstatus();
 	return;
 }
 
