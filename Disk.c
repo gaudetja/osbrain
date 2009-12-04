@@ -137,7 +137,7 @@ int ProgramWrite(u_int16_t* Program_Length)
 		for (i=0;i<(Memory_End-Memory_Start);i++) 	//For Debugging
 		{
 			CurrentWord.word=Memory_Start[i];
-			printf("%x\n",CurrentWord.word);
+			//printf("%x\n",CurrentWord.word);
 		}
 		return 0;
 	}
@@ -222,7 +222,7 @@ void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t BR)
 		tempbuff[1]=buff[i*4+2];
 		tempbuff[0]=buff[i*4+3];
 		Memory_Start[(rand1-48)*10+i+BR]=*((u_int32_t*)tempbuff);
-		printf("Memory After Get Data (%d), %x\n",rand1-48,Memory_Start[rand1*10+rand2+i+BR]);
+		//printf("Memory After Get Data (%d), %x\n",rand1-48,Memory_Start[rand1*10+rand2+i+BR]);
 	}
 }
 
