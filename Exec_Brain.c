@@ -141,16 +141,16 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_HN:  Current_PCB->Block=1;Current_PCB->TDMA=TDMA_Setting; break;                      // Halt (H)
 			case ISTR_SD:  Send(rand1,rand2);               break;  // Send (SD)
 			case ISTR_RC:  Rec(rand1,rand2);                break;  // Receive (RC)
-			case ISTR_GP:  GetPID();						break;  // Return Process ID to reg
-			case ISTR_FK:  Fork(); 							break;	// Fork a new process
-			case ISTR_EX:  Exec(rand1,rand2);				break;	// Execute a new process
-			case ISTR_PE:  PE(rand1,rand2); 				break;
-			case ISTR_VE:  VE(rand1,rand2); 				break;
-			case ISTR_SI:  SI(rand1,rand2); 				break;
-			case ISTR_LS:  LS(rand1,rand2); 				break;
-			case ISTR_ST:  ST(rand1,rand2); 				break;
+			case ISTR_GP:  GetPID();			break;  // Return Process ID to reg
+			case ISTR_FK:  Fork(); 				break;	// Fork a new process
+			case ISTR_EX:  Exec(rand1,rand2);		break;	// Execute a new process
+			case ISTR_PE:  PE(rand1,rand2); 		break;
+			case ISTR_VE:  VE(rand1,rand2); 		break;
+			case ISTR_SI:  SI(rand1,rand2); 		break;
+			case ISTR_LS:  LS(rand1,rand2); 		break;
+			case ISTR_ST:  ST(rand1,rand2); 		break;
 
-			default:								break;
+			default:					break;
 		}
 		//printstatus();
 	return;
