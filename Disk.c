@@ -157,7 +157,7 @@ int ProgramWrite(u_int16_t* Program_Length)
 WORDBYTES GetInstruction(u_int16_t IC,u_int8_t PID)
 {
 	WORDBYTES CurrentWord;
-	CurrentWord.word=ReadLogical(0,IC,PID);
+//	CurrentWord=ReadLogical(0,IC,PID);
 	return CurrentWord;
 }
 
