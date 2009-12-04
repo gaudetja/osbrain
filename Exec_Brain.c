@@ -591,6 +591,17 @@ void Fork(void)
 		for (i=0; i < Current_PCB->LR ; i+= pagesize) {
 			for (j=0;j<pagesize;j++) {
 				tmp=ReadLogical(i/10,i%10+j,Current_PCB->PID);
+				if (tmp.word<=9999)
+				{
+					u_int8_t Tempbyte4=tmp.word%10+48;
+					u_int8_t Tempbyte3=(tmp.word/10)%10+48;
+					u_int8_t Tempbyte2=(tmp.word/100)%10+48;
+					u_int8_t Tempbyte1=(tmp.word/1000)%10+48;
+					tmp.bytes.byte1=Tempbyte1;
+					tmp.bytes.byte2=Tempbyte2;
+					tmp.bytes.byte3=Tempbyte3;
+					tmp.bytes.byte4=Tempbyte4;
+				}
 				WriteDisk(tmp.word,i/10,i%10+j,Current_PCB->BR);
 			}
 		}
