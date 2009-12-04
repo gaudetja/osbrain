@@ -90,7 +90,7 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 	WORDBYTES returnval;
 	if (PageTable[(i/pagesize)].v==1)
 	{
-		returnval = ReadRAM(PageTable[i/pagesize].framenumber+i%numpages);
+		returnval = ReadRAM(PageTable[i/pagesize].framenumber*pagesize+(i%pagesize));
 		PageTable[(i/pagesize)].count++;
 	}
 	else
