@@ -591,7 +591,7 @@ void Fork(void)
 		for (i= Current_PCB->BR; i < Current_PCB->BR+Current_PCB->LR ; i+= pagesize) {
 			for (j=0;j<pagesize;j++) {
 				tmp=ReadLogical(i/10,i%10,Current_PCB->PID);
-				WriteDisk(tmp.word,i/10,1%10,Current_PCB->BR);
+				WriteDisk(tmp.word,i/10,i%10,Current_PCB->BR);
 			}
 		}
 		//existing fork copy stuff
