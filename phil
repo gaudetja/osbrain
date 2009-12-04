@@ -1,0 +1,90 @@
+BRAIN09	#	Philosoraptor 1 pid00
+GD50	#00	Get Data
+LR50	#01	Get data to send
+SD05	#02	Send to chopstick 3
+RC05	#03	Receive from chopstick 3
+LR50	#04	Get send data
+SD01	#05	Send to chopstick 1
+RC01	#06	Receive from chopstick 1
+NP	#07	Philosopher's meal time
+NP	#08	om
+NP	#09	nom
+NP	#10	nom
+NP	#11	nom
+SD05	#12	Send to chopstick 3
+SD01	#13	Send to chopstick 1
+H
+BRAIN09	#	cstick1		pid01
+GD50	#00	Get some data
+RC00	#01	Receive first message from philosopher 1
+LD50	#02	Get send data
+SD00	#03	Send back to philosopher 1
+RC00	#04	Wait until philosopher 1 is done eating
+LR50	#05	Get send data
+RC02	#06	Receive first message from philosopher 2
+SD02	#07	Send back to philosopher 2
+RC02	#08	Wait until philosopher 2 is done eating
+H	
+BRAIN09	#	Philosoraptor 2 pid02
+GD50	#00	Get Data
+LR50	#01	Get data to send
+SD01	#02	Send to chopstick 1
+RC01	#03	Receive from chopstick 1
+LR50	#04	Get data to send
+SD03	#05	Send to chopstick 2
+RC03	#06	Receive from chopstick 2
+NP	#07	Philosopher's meal time
+NP	#08	om
+NP	#09	nom
+NP	#10	nom
+NP	#11	nom
+SD01	#12	Send to chopstick 1
+SD03	#13	Send to chopstick 2
+H
+BRAIN09	#	cstick2		pid03
+GD50	#00	Get some data
+RC02	#01	Receive first message from philosopher 2
+LR50	#02	Get send data
+SD02	#03	Send back to philosopher 2
+RC02	#04	Wait until philosopher 2 is done eating
+RC04	#05	Receive first message from philosopher 3
+LR50	#06	Get send data
+SD04	#07	Send to philosopher 3
+RC04	#08	Wait until philosopher 3 is done eating
+H
+BRAIN09	#	Philosoraptor 3 pid04
+GD50	#00	Get Data
+LR50	#01	Get data to send
+SD03	#02	Send to chopstick 2
+RC03	#03	Receive from chopstick 2
+LR50	#04	Get data to send
+SD05	#05	Send to chopstick 3
+RC05	#06	Receive from chopstick 3
+NP	#07	Philosopher's meal time
+NP	#08	om
+NP	#09	nom
+NP	#10	nom
+NP	#11	nom
+SD03	#12	Send to chopstick 2
+SD05	#13	Send to chopstick 3
+H
+BRAIN09	#	cstick3		pid05
+GD50	#00	Get some data
+RC00	#01	Receive first message from philosopher 1
+LR50	#02	Get send data
+SD00	#03	Send to philosopher 1
+RC00	#04	Wait until philosopher 1 is done eating
+LR50	#05	Get send data
+RC04	#06	Receive first message from philosopher 3
+LR50	#07	Get send data
+SD04	#08	Send to philosopher 3
+RC04	#09	Wait until philosopher 3 is done eating
+H
+DATA
+0060000000000000000000000000000000000000
+0060000000000000000000000000000000000000
+0060000000000000000000000000000000000000
+0060000000000000000000000000000000000000
+0060000000000000000000000000000000000000
+0060000000000000000000000000000000000000
+END
