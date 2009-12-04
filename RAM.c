@@ -99,6 +99,20 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 	return returnval;
 }
 
+void WritePage(int pagenum)
+{
+	int i;
+	if(PageTable[pagenum].v==1) {
+		for(i=0;i<pagesize;i++) {
+			Memory_Start[pagenum*pagesize+i]=RAM_Start[pagenum*pagesize+i];
+		}
+	}
+	else {
+		printf("Invalid page writeback\n");
+		exit(0);
+	}
+}
+
 void InsertPage(u_int32_t Logical_Address)
 {
 	//Find Which Physical Memory to Write to
@@ -154,6 +168,13 @@ u_int32_t RemoveLeastUsedPage(void)
 
 
 }
+
+void CopyLogical(int startaddr, int endaddr)
+{
+	/*int start = startaddr + Current_PCB->BR;
+	if()*/
+}
+
 u_int32_t RemovePages(u_int32_t Base,u_int32_t Limit)
 {
 	int First_Page=Base/pagesize;
