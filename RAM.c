@@ -168,7 +168,7 @@ u_int32_t RemoveLeastUsedPage(void)
 	}
 	frame=PageTable[Index_Smallest].framenumber;
 	for(i=0;i<pagesize;i++)
-		Memory_Start[frame*pagesize+i]=RAM_Start[frame*pagesize+i];
+		Memory_Start[Index_Smallest*pagesize+i]=RAM_Start[frame*pagesize+i];
 	PageTable[Index_Smallest].v=0;
 	PageTable[Index_Smallest].count=0xFFFFFFFF;
 	return frame;
