@@ -8,7 +8,7 @@
 #define SharedStatus 0
 #define SystemStatus 1
 #define  BESTFIT 1
-
+#define PARSE 0 //set to 0 for debugging
 /*
  *
  *Process control block(P    //request to send
