@@ -646,7 +646,7 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 		lengthbuff[3] = (buff[3] - 48) * 1;
 
 		ReleaseMemory(Current_PCB->BR,Current_PCB->LR);
-
+		RemovePages(Current_PCB->BR,Current_PCB->LR);
 		#if BESTFIT
 		PCB_Array[numPID].BR = RequestMemory(lengthbuff[0] + lengthbuff[1] + lengthbuff[2] + lengthbuff[3] , 1);
 		#elif NEXTFIT
