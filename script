@@ -1,0 +1,19 @@
+#!/bin/tcsh
+set n = 1
+set m = 1
+set p = 0
+while ($n <100)
+	while ($m <100)
+	#echo "n" $n
+	#echo "m" $m
+	@ p = $n * $m
+	#echo "product" $p "\n"
+	brain ptest $n $m
+	@ m = $m + 1 
+	end
+	set m = 1
+	set p = 0
+	@ n = $n + 1
+end
+
+
