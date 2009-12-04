@@ -137,8 +137,8 @@ void Instruction(u_int16_t rator,u_int8_t rand1,u_int8_t rand2)
 			case ISTR_MS:  MultStack();                     break;  // Multiply Stack (MS)
 			case ISTR_DS:  DivStack();                      break;  // Divide Stack (DS)
 			case ISTR_NP:                                   break;  // No-op (NP)
-			case ISTR_H:   Current_PCB->Block=1;Current_PCB->TDMA=TDMA_Setting; break;                      // Halt (H)
-			case ISTR_HN:  Current_PCB->Block=1;Current_PCB->TDMA=TDMA_Setting; break;                      // Halt (H)
+			case ISTR_H:   Current_PCB->Block=1;Current_PCB->TDMA=TDMA_Setting; printfaults(); break;        // Halt (H)
+			case ISTR_HN:  Current_PCB->Block=1;Current_PCB->TDMA=TDMA_Setting; printfaults(); break;        // Halt (H)
 			case ISTR_SD:  Send(rand1,rand2);               break;  // Send (SD)
 			case ISTR_RC:  Rec(rand1,rand2);                break;  // Receive (RC)
 			case ISTR_GP:  GetPID();			break;  // Return Process ID to reg
@@ -566,7 +566,7 @@ void Fork(void)
 	#endif
 
 //	u_int16_t BaseReg = RequestMemory(Current_PCB->LR);
-	u_int16_t i;
+	u_int16_t i,j;
 	WORDBYTES tmp;
 	if (Current_PCB->LR > (RAM/4 - Memory_Num)) {
 		Current_PCB->R = 0;						//insufficient memory
@@ -588,9 +588,11 @@ void Fork(void)
 		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
 
 		//push all pages held to disk
-		for (i= Current_PCB->BR; i < Current_PCB->LR ; i+= pagesize) {
-			tmp=ReadLogical(i/10,i%10,Current_PCB->PID);
-			WriteLogical(tmp.word,i/10,1%10,numPID);
+		for (i= Current_PCB->BR; i < Current_PCB->BR+Current_PCB->LR ; i+= pagesize) {
+			for (j=0;j<pagesize;j++) {
+				tmp=ReadLogical(i/10,i%10,Current_PCB->PID);
+				WriteDisk(tmp.word,i/10,1%10,Current_PCB->BR);
+			}
 		}
 		//existing fork copy stuff
 		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over

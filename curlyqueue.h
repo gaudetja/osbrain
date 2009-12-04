@@ -9,6 +9,8 @@
 #define NULL	0
 #endif
 
+
+
 typedef struct	except_t			except_t;
 typedef struct	curlyqueue_node_t 	curlyqueue_node_t;
 typedef	struct	curlyqueue_t		curlyqueue_t;
@@ -32,7 +34,7 @@ struct curlyqueue_t {
 };
 
 /**
- * A node in a linked list. 
+ * A node in a linked list.
  */
 struct curlyqueue_node_t {
 	void*			value;	/**< The value of the node item */
@@ -69,6 +71,8 @@ void	curlyqueue_delete_value_at_iterator( curlyqueue_t* queue, except_t* e );
 void	curlyqueue_insert_value_before_iterator( curlyqueue_t* queue, void* value, except_t* e );
 void	curlyqueue_insert_value_after_iterator( curlyqueue_t* queue, void* value, except_t* e );
 /* END: insert, delete, and get value */
+
+extern curlyqueue_t * rq;
 
 /* END: method list */
 

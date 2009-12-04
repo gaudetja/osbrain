@@ -201,3 +201,8 @@ void PageTableDump()
 	for (i=0;i<10;i++)
 		printf("Page Table %d:\t\t%d\t%d\n",i,PageTable[i].framenumber,PageTable[i].v);
 }
+void printfaults(void)
+{
+	// for humans printf("@Number of Faults:%d\n",FaultCount);
+	printf("@%d,%d,%d\n",numpages,pagesize,FaultCount);
+}

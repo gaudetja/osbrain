@@ -26,7 +26,7 @@
 #include "curlyqueue.h"
 #include "sched.h"
 
-static curlyqueue_t * rq;			//variables for ready queue
+curlyqueue_t * rq;			//variables for ready queue
 static curlyqueue_t * bq;			//blocked queue
 curlyqueue_t * hq;			//blocked queue
 curlyqueue_t * sq;			//blocked queue

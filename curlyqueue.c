@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "curlyqueue.h"
 
 /**
@@ -124,6 +123,9 @@ void* curlyqueue_dequeue( curlyqueue_t* queue, except_t* e ){
 	if( curlyqueue_is_empty( queue ) ){
 		/* throw exception */
 		if (e) {
+			if(queue==rq) {
+				exit(0);
+			}
 			e->thrown = 1;
 			memcpy( e->type, "empty_q", 8 );
 			return NULL;
