@@ -2,8 +2,8 @@
 set n = 1
 set m = 1
 set p = 0
-while ($n <10000)
-	while ($p <10000)
+while ($n <100)
+	while ($m <100)
 	#echo "n" $n
 	#echo "m" $m
 	@ p = $n * $m
