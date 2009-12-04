@@ -74,7 +74,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	PID=readyq(&(Current_PCB->PID),0);
 	Current_PCB=&PCB_Array[(int)PID];
 	ReadLogical(0,0,0);
-    printstatus();
+//    printstatus();
 	while(1)
 	{
 		while(Current_PCB->TDMA<TDMA_Setting)
