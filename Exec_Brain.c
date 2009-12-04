@@ -431,23 +431,6 @@ void AddStack()
 /*
  *Prints status of memory block and process control block
  */
-void printstatus()
-{
-	if (SharedStatus) {
-		printf("Shared Memory Status: \n");
-		PrintShared();
-	}
-	if (HoleStatus) {
-		HoleStatusDump();
-	}
-	if (SystemStatus) {
-		printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
-		printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
-		MemoryDump(Current_PCB->BR);
-		printf("Context Switches: %d\n",ContextSwitchCount);
-	}
-
-}
 
 void LoadHigh(u_int8_t rand1,u_int8_t rand2)
 {
@@ -521,7 +504,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 			rand2=CurrentWord.bytes.byte4%10;
 			for (i=0;i<10;i++)
 			{
-				CopyRAM(rand1,rand2+i,Current_PCB->BR,PCB_Array[Source_PID].BR);  // Copy Memory Values
+				CopyDisk(rand1,rand2+i,Current_PCB->BR,PCB_Array[Source_PID].BR);  // Copy Memory Values
 			}
 
 			blockq(&(PCB_Array[Source_PID].PID),0);							// Remove from blocked queue
@@ -554,7 +537,7 @@ void Rec(u_int8_t rand1,u_int8_t rand2)
 				Current_PCB->R=(u_int32_t)CurrentWord.bytes.byte4;
 				for (i=0;i<10;i++)
 				{
-						CopyRAM(rand1,rand2+i,Current_PCB->PID,Source_PID);		// Write over memory values
+						CopyDisk(rand1,rand2+i,Current_PCB->PID,Source_PID);		// Write over memory values
 				}
 				blockq(&(PCB_Array[Source_PID].PID),0);						// Remove from blocked queue
 				PCB_Array[Source_PID].Block=0;							// Unblock
@@ -701,3 +684,25 @@ int Exec(u_int8_t rand1,u_int8_t rand2)
 	}
 	// End of ProgramWrite with a few mods
 }
+
+void printstatus()
+{
+
+
+// Old Stuff
+/*	if (SharedStatus) {
+		printf("Shared Memory Status: \n");
+		PrintShared();
+	}
+	if (HoleStatus) {
+		HoleStatusDump();
+	}
+	if (SystemStatus) {
+		printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
+		printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
+		MemoryDump(Current_PCB->BR);
+		printf("Context Switches: %d\n",ContextSwitchCount);
+	}
+*/
+}
+
