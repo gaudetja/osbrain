@@ -82,10 +82,11 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 		while(Current_PCB->TDMA<TDMA_Setting)
 		{
 			CurrentWord=ReadLogical(0,Current_PCB->IC,Current_PCB->PID);		//gets instruction
-			//gary
-			printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
-			//gary
-			printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
+			if(!PARSE){
+				printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
+				printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
+			}
+
 			Current_PCB->IC++;
 			operator.bytes.byte1=CurrentWord.bytes.byte1;				//give operator 1 a value
 			operator.bytes.byte2=CurrentWord.bytes.byte2;						//give operator 1 a value
@@ -572,7 +573,7 @@ void Fork(void)
 
 //	u_int16_t BaseReg = RequestMemory(Current_PCB->LR);
 	u_int16_t i,j;
-	WORDBYTES tmp;
+	//WORDBYTES tmp;
 	if (Current_PCB->LR > (RAM/4 - Memory_Num)) {
 		Current_PCB->R = 0;						//insufficient memory
 	}
@@ -726,7 +727,9 @@ void printstatus()
 //	printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
 
 
-	//gary	RAMDump();
+	if(!PARSE){
+		RAMDump();
+	}
 
 
 // Old Stuff
@@ -741,8 +744,10 @@ void printstatus()
 	if (SystemStatus) {
 		//printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 		//printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
-		//Gary
-		DiskDump(Current_PCB->BR);		RAMDump();
+		if(!PARSE){
+			DiskDump(Current_PCB->BR);
+			PageTableDump();
+		}
 		//printf("Context Switches: %d\n",ContextSwitchCount);
 	}
 
