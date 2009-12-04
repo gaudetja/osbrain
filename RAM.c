@@ -171,3 +171,10 @@ void RAMDump()
 	for (i=0;i<10;i++)
 		printf("Disk %03d:%03d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",i*10,9+i*10, Memory_Start[i*10],Memory_Start[1+i*10],Memory_Start[i*10+2],Memory_Start[i*10+3],Memory_Start[i*10+4],Memory_Start[i*10+5],Memory_Start[i*10+6],Memory_Start[i*10+7],Memory_Start[i*10+8],Memory_Start[i*10+9]);
 }
+void PageTableDump()
+{
+	int i;
+	printf("Page Table Number:\tFrame \tValid \n");
+	for (i=0;i<10;i++)
+		printf("Page Table %d:\t\t%d\t%d\n",i,PageTable[i].framenumber,PageTable[i].v);
+}
