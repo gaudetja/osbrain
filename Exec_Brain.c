@@ -79,7 +79,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 	{
 		while(Current_PCB->TDMA<TDMA_Setting)
 		{
-			CurrentWord=GetInstruction(Current_PCB->IC,Current_PCB->PID);		//gets instruction
+			CurrentWord=ReadLogical(0,Current_PCB->IC,Current_PCB->PID);		//gets instruction
 			Current_PCB->IC++;
 			operator.bytes.byte1=CurrentWord.bytes.byte1;				//give operator 1 a value
 			operator.bytes.byte2=CurrentWord.bytes.byte2;						//give operator 1 a value
