@@ -73,8 +73,8 @@ WORDBYTES ReadRAM(u_int32_t location)
 void WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
 	int i = rand1*10+rand2;
-	if (PageTable[(i/numpages)].v==1) {
-		WriteRAM(Value,PageTable[i/pagesize].framenumber*pagesize+i%pagesize);
+	if (PageTable[((PCB_Array[PID].BR+i)/numpages)].v==1) {
+		WriteRAM(Value,PageTable[(PCB_Array[PID].BR+i)/pagesize].framenumber*pagesize+i%pagesize);
 	}
 	else {
 		FaultCount++;
@@ -88,10 +88,10 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
 	int i = rand1*10+rand2;
 	WORDBYTES returnval;
-	if (PageTable[(i/pagesize)].v==1)
+	if (PageTable[((PCB_Array[PID].BR+i)/pagesize)].v==1)
 	{
-		returnval = ReadRAM(PageTable[i/pagesize].framenumber*pagesize+(i%pagesize));
-		PageTable[(i/pagesize)].count++;
+		returnval = ReadRAM(PageTable[(PCB_Array[PID].BR+i)/pagesize].framenumber*pagesize+(i%pagesize));  //PageTable[(i+BR)/pagesize]???
+		PageTable[((PCB_Array[PID].BR+i)/pagesize)].count++;
 	}
 	else
 	{
