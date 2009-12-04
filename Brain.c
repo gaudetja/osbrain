@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 		//initialize page file
 		int n = atoi(argv[2]);		//num pages
 		int m = atoi(argv[3]);		//page size
-		printf("Number of pages: %d Size of Page: %d", n,m);
+		printf("Number of pages: %d Size of Page: %d\n", n,m);
 		Init_PageMem(n,m); //args are n m
 
 		//Loads Initial Program
