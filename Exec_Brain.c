@@ -31,7 +31,9 @@
 
 #define NPID 100
 #define RAM 4*10000
-
+extern cell * PageTable;
+extern int Size_PT;
+extern int * RAM_Start;
 PCB* Current_PCB;			       //Current Process control block
 PCB* PCB_Array;
 WORDBYTES CurrentWord;			  //Current 4 byte word read from memory
@@ -80,14 +82,17 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 		while(Current_PCB->TDMA<TDMA_Setting)
 		{
 			CurrentWord=ReadLogical(0,Current_PCB->IC,Current_PCB->PID);		//gets instruction
-			//gary			printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
-			//gary			printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
+			//gary
+			printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
+			//gary
+			printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
 			Current_PCB->IC++;
 			operator.bytes.byte1=CurrentWord.bytes.byte1;				//give operator 1 a value
 			operator.bytes.byte2=CurrentWord.bytes.byte2;						//give operator 1 a value
 			Instruction(operator.twobytes, CurrentWord.bytes.byte3, CurrentWord.bytes.byte4);	//Calls Instruction function
 			Current_PCB->TDMA++;
 			printstatus();
+			PageTableDump();
 
 		}
 		Current_PCB->TDMA=0;
@@ -588,21 +593,26 @@ void Fork(void)
 		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
 
 		//push all pages held to disk
-		for (i=0; i < Current_PCB->LR ; i+= pagesize) {
-			for (j=0;j<pagesize;j++) {
-				tmp=ReadLogical(i/10,i%10+j,Current_PCB->PID);
-				if (tmp.word<=9999)
+		for (i=0; i < Size_PT ; i++)
+		{
+			if(PageTable[i].v==1)
+			{
+				for (j=0;j<pagesize;j++)
 				{
-					u_int8_t Tempbyte4=tmp.word%10+48;
-					u_int8_t Tempbyte3=(tmp.word/10)%10+48;
-					u_int8_t Tempbyte2=(tmp.word/100)%10+48;
-					u_int8_t Tempbyte1=(tmp.word/1000)%10+48;
-					tmp.bytes.byte1=Tempbyte1;
-					tmp.bytes.byte2=Tempbyte2;
-					tmp.bytes.byte3=Tempbyte3;
-					tmp.bytes.byte4=Tempbyte4;
+
+					Memory_Start[i*pagesize+j]=RAM_Start[PageTable[i].framenumber*pagesize+j];
+/*					if (tmp.word<=9999)
+					{
+						u_int8_t Tempbyte4=tmp.word%10+48;
+						u_int8_t Tempbyte3=(tmp.word/10)%10+48;
+						u_int8_t Tempbyte2=(tmp.word/100)%10+48;
+						u_int8_t Tempbyte1=(tmp.word/1000)%10+48;
+						tmp.bytes.byte1=Tempbyte1;
+						tmp.bytes.byte2=Tempbyte2;
+						tmp.bytes.byte3=Tempbyte3;
+						tmp.bytes.byte4=Tempbyte4;
+					}*/
 				}
-				WriteDisk(tmp.word,i/10,i%10+j,Current_PCB->BR);
 			}
 		}
 		//existing fork copy stuff
@@ -731,7 +741,8 @@ void printstatus()
 	if (SystemStatus) {
 		//printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 		//printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
-		//Gary		DiskDump(Current_PCB->BR);		PageTableDump();
+		//Gary
+		DiskDump(Current_PCB->BR);		RAMDump();
 		//printf("Context Switches: %d\n",ContextSwitchCount);
 	}
 
