@@ -81,7 +81,8 @@ void WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 		FaultCount++;
 	//	printf("Fault count thus far: %d\n",FaultCount);
 		InsertPage(PCB_Array[PID].BR+i);
-		WriteRAM(Value,PageTable[i/pagesize].framenumber*pagesize+i%pagesize);
+		WriteRAM(Value,PageTable[(PCB_Array[PID].BR+i)/pagesize].framenumber*pagesize+i%pagesize);
+	//	WriteRAM(Value,PageTable[i/pagesize].framenumber*pagesize+i%pagesize);
 	}
 }
 
@@ -195,7 +196,7 @@ void RAMDump()
 {
 	int i;
 	for (i=0;i<10;i++)
-		printf("RAM  %03d:%03d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",Current_PCB->BR + i*10,Current_PCB->BR + 9+i*10, RAM_Start[Current_PCB->BR + i*10],RAM_Start[Current_PCB->BR + 1+i*10],RAM_Start[Current_PCB->BR + i*10+2],RAM_Start[Current_PCB->BR + i*10+3],RAM_Start[Current_PCB->BR + i*10+4],RAM_Start[Current_PCB->BR + i*10+5],RAM_Start[Current_PCB->BR + i*10+6],RAM_Start[Current_PCB->BR + i*10+7],RAM_Start[Current_PCB->BR + i*10+8],RAM_Start[Current_PCB->BR + i*10+9]);
+		printf("RAM  %03d:%03d   %8x %8x %8x %8x %8x %8x %8x %8x %8x %8x\n",i*10, + 9+i*10, RAM_Start[i*10],RAM_Start[1+i*10],RAM_Start[ i*10+2],RAM_Start[ i*10+3],RAM_Start[ i*10+4],RAM_Start[ i*10+5],RAM_Start[ i*10+6],RAM_Start[ i*10+7],RAM_Start[ i*10+8],RAM_Start[ i*10+9]);
 }
 void PageTableDump()
 {
