@@ -74,13 +74,13 @@ void WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
 	int i = rand1*10+rand2;
 	if (PageTable[(i/numpages)].v==1) {
-		WriteRAM(Value,PageTable[i/pagesize].framenumber*pagesize+i%numpages);
+		WriteRAM(Value,PageTable[i/pagesize].framenumber*pagesize+i%pagesize);
 	}
 	else {
 		FaultCount++;
 		printf("Fault count thus far: %d\n",FaultCount);
 		InsertPage(PCB_Array[PID].BR+i);
-		WriteRAM(Value,PageTable[i/pagesize].framenumber*pagesize+i%numpages);
+		WriteRAM(Value,PageTable[i/pagesize].framenumber*pagesize+i%pagesize);
 	}
 }
 
