@@ -75,7 +75,7 @@ void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t PID);
  *Prints all 100 bytes of memory on in blocks of 10
  */
 
-
+void CopyDisk(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2);
 void MemoryDump(u_int16_t PID);
 void HoleStatusDump(void);
 
