@@ -76,7 +76,7 @@ void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t PID);
  */
 
 void CopyDisk(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2);
-void MemoryDump(u_int16_t PID);
+void DiskDump(u_int16_t PID);
 void HoleStatusDump(void);
 
 u_int32_t RequestMemory(u_int16_t Req_Length, u_int8_t Mode);

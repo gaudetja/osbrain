@@ -34,4 +34,5 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
 
 u_int32_t RemovePages(u_int32_t Base,u_int32_t Limit);
 u_int32_t RemoveLeastUsedPage(void);
+void RAMDump();
 #endif /* PAGEMEM_H_ */
