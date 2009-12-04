@@ -36,8 +36,8 @@ int FaultCount;
 void Init_PageMem(int n, int m)
 {
 	int i;
-	RAM_Start = calloc(n,m);
-	RAM_End = &RAM_Start[n*m-1];
+	RAM_Start = calloc(n,m*4);
+	RAM_End = &RAM_Start[n*m*4-1];
 	PageTable = calloc(10000/m+1 ,sizeof(cell));
 	Size_PT= 10000/m+1;
 	numpages = n;
