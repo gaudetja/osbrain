@@ -8,10 +8,10 @@ BU08	#0
 0003	#5	numPhil
 0000	#	storage for PID%numPhil 
 0000	#
-GP	#
+GP		#
 SU01	#
 SR02	#10
-NP	#	
+NP	 	#	
 LR15	#	load register with PE00
 LL02	#	mask off lower bits and put (PID - 1)
 SR15	#	put it back in 15
