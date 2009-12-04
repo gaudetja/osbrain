@@ -176,7 +176,7 @@ void RegToStack()
  */
 void StackToReg()
 {
-	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 	Current_PCB->R=MemoryContents.word;
 	Current_PCB->SP--;
 }
@@ -350,10 +350,10 @@ void PutData(u_int8_t rand1)
  */
 void SubStack()
 {
-	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 	u_int32_t Temp=MemoryContents.word;
 	Current_PCB->SP-=1;
-	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 	MemoryContents.word=MemoryContents.word-Temp;
 	u_int8_t Tempbyte4=MemoryContents.word%10+48;
 	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
@@ -372,10 +372,10 @@ void SubStack()
  */
 void MultStack()
 {
-	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 	u_int32_t Temp=MemoryContents.word;
 	Current_PCB->SP-=1;
-	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 	MemoryContents.word=MemoryContents.word*Temp;
 	u_int8_t Tempbyte4=MemoryContents.word%10+48;
 	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
@@ -394,10 +394,10 @@ void MultStack()
  */
 void DivStack()
 {
-	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 	u_int32_t Temp=MemoryContents.word;
 	Current_PCB->SP-=1;
-	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 	MemoryContents.word=MemoryContents.word/Temp;
 	u_int8_t Tempbyte4=MemoryContents.word%10+48;
 	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
@@ -417,10 +417,10 @@ void DivStack()
  */
 void AddStack()
 {
-	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 	u_int32_t Temp=MemoryContents.word;
 	Current_PCB->SP-=1;
-	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	MemoryContents=ReadLogical((Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 	MemoryContents.word=MemoryContents.word+Temp;
 	u_int8_t Tempbyte4=MemoryContents.word%10+48;
 	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
