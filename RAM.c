@@ -42,9 +42,10 @@ void Init_PageMem(int n, int m)
 	Size_PT= 10000/m+1;
 	numpages = n;
 	pagesize = m;
-	for (i=0;i<n*m;i++) {
+	for (i=0;i<Size_PT;i++) {
 		PageTable[i].v=0;
 		PageTable[i].framenumber=0;
+		PageTable[i].count=0xFFFFFFFF;
 	}
 	FaultCount=0;
 }
@@ -169,6 +170,7 @@ u_int32_t RemoveLeastUsedPage(void)
 	for(i=0;i<pagesize;i++)
 		Memory_Start[frame*pagesize+i]=RAM_Start[frame*pagesize+i];
 	PageTable[Index_Smallest].v=0;
+	PageTable[Index_Smallest].count=0xFFFFFFFF;
 	return frame;
 
 
