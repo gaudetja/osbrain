@@ -85,7 +85,8 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 {
 	int i = rand1*10+rand2;
 	WORDBYTES returnval;
-	if (PageTable[(i/numpages)].v==1) {
+	if (PageTable[(i/numpages)].v==1)
+	{
 		returnval = ReadRAM(PageTable[i].framenumber+i%numpages);
 	}
 	else {
