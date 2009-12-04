@@ -166,6 +166,17 @@ u_int32_t RemoveLeastUsedPage(void)
 }
 u_int32_t RemovePages(u_int32_t Base,u_int32_t Limit)
 {
-;
+	int First_Page=Base/pagesize;
+	int Num_Pages=Limit/pagesize;
+	int i,j;
+	for (i=0;i<Num_Pages;i++)
+	{
+		for(j=0;j<pagesize;j++)
+		{
+		Memory_Start[(First_Page+i)*pagesize+j]=RAM_Start[PageTable[First_Page+i].framenumber*pagesize+j];
+		}
+		PageTable[First_Page+i].v=0;
+	}
+	return 0;
 }
 
