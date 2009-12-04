@@ -691,6 +691,7 @@ void printstatus()
 	printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
 	RAMDump();
 
+
 // Old Stuff
 /*	if (SharedStatus) {
 		printf("Shared Memory Status: \n");
