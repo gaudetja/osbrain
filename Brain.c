@@ -50,8 +50,8 @@ int main(int argc, char* argv[])
 		InitShared();
 
 		//initialize page file
-		int n = atoi(argv[2]);
-		int m = atoi(argv[3]);
+		int n = atoi(argv[2]);		//num pages
+		int m = atoi(argv[3]);		//page size
 		printf("Number of pages: %d Size of Page: %d", n,m);
 		Init_PageMem(n,m); //args are n m
 
