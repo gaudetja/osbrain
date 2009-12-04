@@ -63,12 +63,8 @@ void WriteDisk(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
  *@param rand1
  *@param rand2
  */
-WORDBYTES GetInstruction(u_int16_t IC,u_int8_t PID);
 
-/*
- *Gets memory from data location
- *@param rand1
- */
+
 void GetData(u_int8_t rand1, u_int8_t rand2, u_int8_t PID);
 
 /*
