@@ -302,7 +302,12 @@ u_int32_t RequestMemory(u_int16_t Req_Length,u_int8_t Mode)
 					Spaces[TempMemBlock.Num]=TempMemBlock;
 					holesq(&Spaces[TempMemBlock.Num], 1);
 				}
+				else
+				{
+					holesq(&Spaces[TempMemBlock.Num], 0);
+					Holes--;
 
+				}
 
 			}
 

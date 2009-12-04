@@ -588,10 +588,10 @@ void Fork(void)
 		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
 
 		//push all pages held to disk
-		for (i= Current_PCB->BR; i < Current_PCB->BR+Current_PCB->LR ; i+= pagesize) {
+		for (i=0; i < Current_PCB->LR ; i+= pagesize) {
 			for (j=0;j<pagesize;j++) {
-				tmp=ReadLogical(i/10,i%10,Current_PCB->PID);
-				WriteDisk(tmp.word,i/10,i%10,Current_PCB->BR);
+				tmp=ReadLogical(i/10,i%10+j,Current_PCB->PID);
+				WriteDisk(tmp.word,i/10,i%10+j,Current_PCB->BR);
 			}
 		}
 		//existing fork copy stuff
@@ -706,7 +706,7 @@ void printstatus()
 	RAMDump();
 
 
-/* Old Stuff
+// Old Stuff
 	if (SharedStatus) {
 		printf("Shared Memory Status: \n");
 		PrintShared();
@@ -714,7 +714,7 @@ void printstatus()
 	if (HoleStatus) {
 		HoleStatusDump();
 	}
-*/
+
 	if (SystemStatus) {
 		//printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 		//printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
