@@ -124,12 +124,12 @@ void InsertPage(u_int32_t Logical_Address)
 			PhysNum++;								 //check next physical address and
 			PageNum = 0;								 //start back at beginning
 		} else if (PhysNum > numpages) {						//if i reach end of RAM, then kick one out
-			PhysNum = RemoveLeastUsedPage();							 //and get that value
+			PhysNum = RemoveLeastUsedPage();					 //and get that value
 		} else PageNum++;								//otherwise check next page
 	}											//close curly brace
-	PageTable[(Logical_Address / pagesize) * pagesize].v = 1;				//set correct valid bit to 1
-	PageTable[(Logical_Address / pagesize) * pagesize].framenumber = PhysNum;		//set correct value to physical address
-	PageTable[(Logical_Address / pagesize) * pagesize].count = 1;
+	PageTable[Logical_Address / pagesize].v = 1;				//set correct valid bit to 1
+	PageTable[Logical_Address / pagesize].framenumber = PhysNum;		//set correct value to physical address
+	PageTable[Logical_Address / pagesize].count = 1;
 
 	//Put Page in Physical Memory
 	for (i = 0 ; i < pagesize ; i++) {
