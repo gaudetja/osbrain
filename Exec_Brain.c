@@ -85,6 +85,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 			operator.bytes.byte2=CurrentWord.bytes.byte2;						//give operator 1 a value
 			Instruction(operator.twobytes, CurrentWord.bytes.byte3, CurrentWord.bytes.byte4);	//Calls Instruction function
 			Current_PCB->TDMA++;
+			printstatus();
 
 		}
 		Current_PCB->TDMA=0;
@@ -92,7 +93,7 @@ int Exec_Brain(int nPID , u_int16_t Program_Length)
 		PID=readyq(&(Current_PCB->PID),0);		//Get next process from ready queue.
 		Current_PCB=&PCB_Array[(int)PID];
 		ContextSwitchCount++;
-		printstatus();
+
 	}
 return 0;
 }
