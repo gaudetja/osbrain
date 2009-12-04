@@ -262,7 +262,7 @@ void AddToReg(u_int8_t rand1,u_int8_t rand2)
  */
 void RegDivide(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadLogical (rand1-48,rand2-48,Current_PCB->BR);
+	MemoryContents=ReadLogical (rand1-48,rand2-48,Current_PCB->PID);
 	Current_PCB->R = (Current_PCB->R) / MemoryContents.word;
 }
 
