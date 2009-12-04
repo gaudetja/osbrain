@@ -77,7 +77,6 @@ void WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 	else {
 		InsertPage(Current_PCB->BR+i);
 		WriteRAM(Value,PageTable[i].framenumber+i%numpages);
-
 	}
 
 }
@@ -107,7 +106,7 @@ void InsertPage(u_int32_t Logical_Address)
 			PhysNum++;								 //check next physical address and
 			PageNum = 0;								 //start back at beginning
 		} else if (PhysNum > numpages) {						//if i reach end of RAM, then kick one out
-			PhysNum = RemovePage();							 //and get that value
+			PhysNum = RemoveLeastUsedPage();							 //and get that value
 		} else PageNum++;								//otherwise check next page
 	}											//close curly brace
 	PageTable[(Logical_Address / pagesize) * pagesize].v = 1;				//set correct valid bit to 1
@@ -141,7 +140,7 @@ void CopyRAM(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
  *@param rand1
  *@param rand2
  */
-u_int32_t RemovePage(void)
+u_int32_t RemoveLeastUsedPage(void)
 {
 	int i=0;
 	u_int32_t Smallest;
@@ -166,3 +165,19 @@ u_int32_t RemovePage(void)
 
 
 }
+u_int32_t RemovePages(u_int32_t Base,u_int32_t Limit)
+{
+	int First_Page=Base/pagesize;
+	int Num_Pages=Limit/pagesize;
+	int i,j;
+	for (i=0;i<Num_Pages;i++)
+	{
+		for(j=0;j<pagesize;j++)
+		{
+		Memory_Start[(First_Page+i)*pagesize+j]=RAM_Start[PageTable[First_Page+i].framenumber*pagesize+j];
+		}
+		PageTable[First_Page+i].v=0;
+	}
+	return 0;
+}
+
