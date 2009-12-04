@@ -1,0 +1,45 @@
+BRAIN09	#Philosopher
+0050
+BU08	#0
+0001	#
+0000	#	location of PID - 1
+0000	#	storage for PID in PID%numPhil
+0000	#	storage for PID*floor(PID/numPhil)
+0003	#5	numPhil
+0000	#	storage for PID%numPhil 
+0000	#
+GP	#
+SU01	#
+SR02	#10
+NP	#	
+LR15	#	load register with PE00
+LL02	#	mask off lower bits and put (PID - 1)
+SR15	#	put it back in 15
+PE00	#15
+LR02	#	load reg with (PID - 1) 
+AD01	#	increase it to PID
+SR03	# 	store it back
+DI05	#	now comes modulo, div by numPhil
+MU03	#20	mult by PID
+SR04	#	store to mem
+LR03	#	load reg with PID
+SU04	#	subtract PID*floor(PID/numPhil)
+SR06	#	store it to PID%numPID
+LR28	#25	set up PE
+LL06	#
+SR28	#
+PE00	#
+LR32	#	set up VE
+LL02	#30
+SR32	#
+VE00	#
+LR36	#	set up other VE
+LL06	#
+SR36	#35
+VE00	#
+H 	#
+LR03	#
+SR02	#
+H 	#40
+DATA
+END
