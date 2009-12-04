@@ -565,6 +565,7 @@ void Fork(void)
 
 //	u_int16_t BaseReg = RequestMemory(Current_PCB->LR);
 	u_int16_t i;
+	WORDBYTES tmp;
 	if (Current_PCB->LR > (RAM/4 - Memory_Num)) {
 		Current_PCB->R = 0;						//insufficient memory
 	}
@@ -584,13 +585,19 @@ void Fork(void)
 
 		Current_PCB->R = PCB_Array[numPID].PID;				//calling PCB has new PID in R
 
-
-
+		//push all pages held to disk
+		for (i= Current_PCB->BR; i < Current_PCB->LR ; i+= pagesize) {
+			tmp=ReadLogical(i/10,i%10,Current_PCB->PID);
+			WriteLogical(tmp.word,i/10,1%10,numPID);
+		}
+		//existing fork copy stuff
 		for (i=0 ; i < Current_PCB->LR ; i++) {				//copy instructions over
 			*(Memory_Start+PCB_Array[numPID].BR+i)= *(Memory_Start+Current_PCB->BR+i);
 			Memory_Num++;
 
 		}
+
+
 		numPID++; 	//increment number of processes
 		Current_PCB->TDMA=TDMA_Setting;
 	}

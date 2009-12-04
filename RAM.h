@@ -18,11 +18,11 @@ typedef struct {
 }cell;
 
 void InsertPage(u_int32_t Logical_Address);
+void Init_PageMem(int n, int m);
 /*
  * This function reads from RAM and returns the contents
  * of RAM_Start at location *location*
  */
-void Init_PageMem(int n, int m);
 WORDBYTES ReadRAM(u_int32_t location);
 
 /*
@@ -31,7 +31,6 @@ WORDBYTES ReadRAM(u_int32_t location);
 void WriteRAM(u_int32_t Value, u_int32_t Physical_Address);
 void WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
 WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID);
-void CopyLogical(int startaddr, int endaddr);
 u_int32_t RemovePages(u_int32_t Base,u_int32_t Limit);
 u_int32_t RemoveLeastUsedPage(void);
 void RAMDump();

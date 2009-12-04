@@ -14,6 +14,9 @@
         //send when ready, block if not
         //unblockCB) holds the current register, stack pointer, toggle(flag) and instruction counter
  */
+
+
+
 typedef struct ProcessControl
 {
         u_int32_t R;
@@ -265,7 +268,7 @@ extern u_int32_t * Memory_Start;			//Start of memory block
 extern u_int32_t * Memory_End;			//End of memory block
 extern u_int16_t Memory_Num;			//number of elements in memory block
 extern int numPID;
-
+extern int pagesize;
 
 #endif
 

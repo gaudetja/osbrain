@@ -29,6 +29,7 @@ cell * PageTable;
 int numpages;
 int pagesize;
 int Size_PT;
+int FaultCount;
 
 
 
@@ -45,6 +46,7 @@ void Init_PageMem(int n, int m)
 		PageTable[i].v=0;
 		PageTable[i].framenumber=0;
 	}
+	FaultCount=0;
 }
 
 WORDBYTES ReadRAM(u_int32_t location)
@@ -75,10 +77,11 @@ void WriteLogical(u_int32_t Value, u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 		WriteRAM(Value,PageTable[i].framenumber+i%numpages);
 	}
 	else {
+		FaultCount++;
+		printf("Fault count thus far: %d\n",FaultCount);
 		InsertPage(Current_PCB->BR+i);
 		WriteRAM(Value,PageTable[i].framenumber+i%numpages);
 	}
-
 }
 
 WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
@@ -89,10 +92,11 @@ WORDBYTES ReadLogical(u_int8_t rand1,u_int8_t rand2, u_int8_t PID)
 	{
 		returnval = ReadRAM(PageTable[i].framenumber+i%numpages);
 		PageTable[(i/pagesize)].count++;
-
 	}
 	else
 	{
+		FaultCount++;
+		printf("Fault count thus far: %d\n",FaultCount);
 		returnval = ReadDisk(rand1,rand2, Current_PCB->BR);
 		InsertPage(i+Current_PCB->BR);
 	}
@@ -167,12 +171,6 @@ u_int32_t RemoveLeastUsedPage(void)
 	return frame;
 
 
-}
-
-void CopyLogical(int startaddr, int endaddr)
-{
-	/*int start = startaddr + Current_PCB->BR;
-	if()*/
 }
 
 u_int32_t RemovePages(u_int32_t Base,u_int32_t Limit)
