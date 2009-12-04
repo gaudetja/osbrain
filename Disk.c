@@ -154,10 +154,10 @@ int ProgramWrite(u_int16_t* Program_Length)
  *
  *return CurrentWord; (16byte word)
  */
-WORDBYTES GetInstruction(u_int16_t IC,u_int8_t BR)
+WORDBYTES GetInstruction(u_int16_t IC,u_int8_t PID)
 {
 	WORDBYTES CurrentWord;
-	CurrentWord.word=Memory_Start[IC+BR];
+	CurrentWord.word=ReadLogical(0,IC,PID);
 	return CurrentWord;
 }
 
