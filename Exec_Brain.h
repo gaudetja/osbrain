@@ -7,7 +7,7 @@
 #define HoleStatus   1
 #define SharedStatus 0
 #define SystemStatus 1
-#define  NEXTFIT 1
+#define  BESTFIT 1
 /*
  *
  *Process control block(P    //request to send
