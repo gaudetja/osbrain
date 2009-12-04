@@ -120,24 +120,24 @@ void WritePage(int pagenum)
 void InsertPage(u_int32_t Logical_Address)
 {
 	//Find Which Physical Memory to Write to
-	int PhysNum = 0;		//start by checking this physical address for contents
-	int PageNum = 0;					//start by checking page 0 for contents
+	int PhysIndex = 0;		//start by checking this physical address for contents
+	int PageIndex = 0;					//start by checking page 0 for contents
 	int i;
-	while (PageNum < numpages) {								//until i reach end of page table
-		if ((PageTable[PageNum].framenumber == PhysNum) && PageTable[PageNum].v) {	//if i find a valid page with my physical address
-			PhysNum++;								 //check next physical address and
-			PageNum = 0;								 //start back at beginning
-		} else if (PhysNum > numpages) {						//if i reach end of RAM, then kick one out
-			PhysNum = RemoveLeastUsedPage();					 //and get that value
-		} else PageNum++;								//otherwise check next page
+	while (PageIndex < Size_PT) {								//until i reach end of page table
+		if ((PageTable[PageIndex].framenumber == PhysIndex) && PageTable[PageIndex].v) {	//if i find a valid page with my physical address
+			PhysIndex++;								 //check next physical address and
+			PageIndex = 0;								 //start back at beginning
+		} else if (PhysIndex >= numpages) {						//if i reach end of RAM, then kick one out
+			PhysIndex = RemoveLeastUsedPage();					 //and get that value
+		} else PageIndex++;								//otherwise check next page
 	}											//close curly brace
 	PageTable[Logical_Address / pagesize].v = 1;				//set correct valid bit to 1
-	PageTable[Logical_Address / pagesize].framenumber = PhysNum;		//set correct value to physical address
+	PageTable[Logical_Address / pagesize].framenumber = PhysIndex;		//set correct value to physical address
 	PageTable[Logical_Address / pagesize].count = 1;
 
 	//Put Page in Physical Memory
 	for (i = 0 ; i < pagesize ; i++) {
-		RAM_Start[(PhysNum * pagesize) + i] = Memory_Start[(Logical_Address / pagesize) * pagesize + i];
+		RAM_Start[(PhysIndex * pagesize) + i] = Memory_Start[(Logical_Address / pagesize) * pagesize + i];
 	}
 }
 
