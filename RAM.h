@@ -10,6 +10,7 @@
 #define RAM_H_
 #include "Exec_Brain.h"
 extern PCB * Current_PCB;
+extern PCB * PCB_Array;
 
 typedef struct {
 	u_int32_t framenumber;
