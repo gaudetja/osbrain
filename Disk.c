@@ -351,7 +351,7 @@ void ReleaseMemory(u_int32_t BaseReg,u_int16_t LimitReg)
 /*
  *Prints all 100 bytes of memory on in blocks of 10
  */
-void MemoryDump(u_int16_t BR)
+void DiskDump(u_int16_t BR)
 {
 	int i;
 	for (i=0;i<10;i++)
@@ -368,12 +368,8 @@ void HoleStatusDump()
 }
 void CopyDisk(u_int8_t rand1,u_int8_t rand2,u_int8_t BR1,u_int8_t BR2)
 {
-//      int temp1=rand1*10+rand2+PID1*100;
-//      int temp2=rand1*10+rand2+PID2*100;
-//      printf("Memory Address %d :%d\n ",temp1,Memory_Start[rand1*10+rand2+PID1*100]);
-//      printf("Memory Address %d :%d\n ",temp2,Memory_Start[rand1*10+rand2+PID2*100]);
+
 	Memory_Start[rand1*10+rand2+BR1]=Memory_Start[rand1*10+rand2+BR2];
-//      printf("Memory Address %d :%d\n ",temp1,Memory_Start[rand1*10+rand2+PID1*100]);
-//      printf("Memory Address %d :%d\n ",temp2,Memory_Start[rand1*10+rand2+PID2*100]);
+
 }
 
