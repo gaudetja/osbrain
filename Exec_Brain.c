@@ -164,7 +164,7 @@ void RegToStack()
 	MemoryContents.bytes.byte3=((Current_PCB->R/10)%10)+48;
 	MemoryContents.bytes.byte2=((Current_PCB->R/100)%10)+48;
 	MemoryContents.bytes.byte1=((Current_PCB->R/1000)%10)+48;
-	WriteLogical(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	WriteLogical(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 }
 
 /*
@@ -180,13 +180,13 @@ void StackToReg()
 
 void LoadRegister(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->BR);
+	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->PID);
 	Current_PCB->R=MemoryContents.word;
 }
 
 void CompareEqual(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->BR);
+	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->PID);
 	if(Current_PCB->R==MemoryContents.word)
 	{
 		Current_PCB->C = 'T';
@@ -205,7 +205,7 @@ void CompareEqual(u_int8_t rand1,u_int8_t rand2)
  */
 void CompareLess(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->BR);
+	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->PID);
 	if(Current_PCB->R<MemoryContents.word)
 	{
 		Current_PCB->C = 'T';
@@ -248,7 +248,7 @@ void BranchUnc(u_int8_t rand1,u_int8_t rand2)
  */
 void AddToReg(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->BR);
+	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->PID);
 	Current_PCB->R=Current_PCB->R+MemoryContents.word;
 }
 
@@ -284,7 +284,7 @@ void RegSubtract(u_int8_t rand1,u_int8_t rand2)
  */
 void RegMultiply(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->BR);
+	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->PID);
 	Current_PCB->R = (Current_PCB->R) * MemoryContents.word;
 }
 
@@ -306,7 +306,7 @@ void StoreReg(u_int8_t rand1,u_int8_t rand2)
 		MemoryContents.word = Current_PCB->R;
 	}
 
-	WriteLogical(MemoryContents.word,rand1-48,rand2-48,Current_PCB->BR);
+	WriteLogical(MemoryContents.word,rand1-48,rand2-48,Current_PCB->PID);
 }
 
 /*
@@ -359,7 +359,7 @@ void SubStack()
 	MemoryContents.bytes.byte2=Tempbyte2;
 	MemoryContents.bytes.byte3=Tempbyte3;
 	MemoryContents.bytes.byte4=Tempbyte4;
-	WriteLogical(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	WriteLogical(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 
 }
 
@@ -381,7 +381,7 @@ void MultStack()
 	MemoryContents.bytes.byte2=Tempbyte2;
 	MemoryContents.bytes.byte3=Tempbyte3;
 	MemoryContents.bytes.byte4=Tempbyte4;
-	WriteLogical(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	WriteLogical(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 
 }
 
@@ -403,7 +403,7 @@ void DivStack()
 	MemoryContents.bytes.byte2=Tempbyte2;
 	MemoryContents.bytes.byte3=Tempbyte3;
 	MemoryContents.bytes.byte4=Tempbyte4;
-	WriteLogical(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	WriteLogical(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 
 }
 
@@ -426,7 +426,7 @@ void AddStack()
 	MemoryContents.bytes.byte2=Tempbyte2;
 	MemoryContents.bytes.byte3=Tempbyte3;
 	MemoryContents.bytes.byte4=Tempbyte4;
-	WriteLogical(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->BR);
+	WriteLogical(MemoryContents.word,(Current_PCB->SP/10)%10,(Current_PCB->SP%10),Current_PCB->PID);
 
 
 }
@@ -437,14 +437,14 @@ void AddStack()
 
 void LoadHigh(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->BR);
+	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->PID);
 	Current_PCB->R=(Current_PCB->R & 0x00FF);
 	Current_PCB->R=(MemoryContents.word|0xFF00)&Current_PCB->R;
 }
 
 void LoadLow(u_int8_t rand1,u_int8_t rand2)
 {
-	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->BR);
+	MemoryContents=ReadLogical(rand1-48,rand2-48,Current_PCB->PID);
 
 	u_int8_t Tempbyte4=MemoryContents.word%10+48;
 	u_int8_t Tempbyte3=(MemoryContents.word/10)%10+48;
@@ -703,7 +703,7 @@ void printstatus()
 
 
 // Old Stuff
-/*	if (SharedStatus) {
+	if (SharedStatus) {
 		printf("Shared Memory Status: \n");
 		PrintShared();
 	}
@@ -713,9 +713,8 @@ void printstatus()
 	if (SystemStatus) {
 		printf("PCB Status:  R:%d  SP:%d  IC:%d C:%c PID:%d\n", Current_PCB->R,Current_PCB->SP,Current_PCB->IC,Current_PCB->C,Current_PCB->PID);
 		printf("Current Instr:  %c%c%c%c\n",CurrentWord.bytes.byte1,CurrentWord.bytes.byte2,CurrentWord.bytes.byte3,CurrentWord.bytes.byte4);
-		MemoryDump(Current_PCB->BR);
+		DiskDump(Current_PCB->BR);
 		printf("Context Switches: %d\n",ContextSwitchCount);
 	}
-*/
-}
 
+}
