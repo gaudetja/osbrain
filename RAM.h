@@ -36,6 +36,7 @@ u_int32_t RemovePages(u_int32_t Base,u_int32_t Limit);
 u_int32_t RemoveLeastUsedPage(void);
 void RAMDump();
 void printfaults(void);
+void PageTableDump(void);
 #endif /* PAGEMEM_H_ */
 
 
